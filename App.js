@@ -9,6 +9,8 @@ import { ThemeProvider } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
 import { theme } from './theme';
 
+console.log('GOOG', process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
