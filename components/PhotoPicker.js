@@ -3,7 +3,7 @@ import { Button, Image, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import { GOOGLE_APPLICATION_CREDENTIALS } from 'react-native-dotenv';
+import { GOOGLE_CLOUD_VISION_API_KEY } from '../config/secrets';
 
 export default class PhotoPicker extends React.Component {
   state = {
@@ -14,7 +14,7 @@ export default class PhotoPicker extends React.Component {
 
   render() {
     let { image } = this.state;
-    console.log('env', Environment);
+
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Button
@@ -23,7 +23,10 @@ export default class PhotoPicker extends React.Component {
         />
         <Button title="Take a photo" onPress={this._takePhoto} />
         {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+          <Image
+            source={{ uri: image.uri }}
+            style={{ width: 200, height: 200 }}
+          />
         )}
       </View>
     );
@@ -51,18 +54,15 @@ export default class PhotoPicker extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      base64: true,
     });
 
     this.setState({ uploading: true });
-
-    if (image) {
-      console.log(image);
-      await this.quickstart(image.uri);
-    }
-
     if (!image.cancelled) {
-      this.setState({ image: image.uri });
+      this.setState({ image: image });
+    }
+    if (image) {
+      await this.submitToGoogle();
     }
   };
 
@@ -71,34 +71,71 @@ export default class PhotoPicker extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      base64: true,
     });
 
-    if (image) {
-      console.log(image);
-      await this.quickstart(image.uri);
+    if (!image.cancelled) {
+      this.setState({ image });
     }
 
-    if (!image.cancelled) {
-      this.setState({ image: image.uri });
+    if (image) {
+      await this.submitToGoogle();
     }
   };
 
-  async quickstart() {
-    // Imports the Google Cloud client library
-    const vision = require('@google-cloud/vision');
-
-    // Creates a client
-    const client = new vision.ImageAnnotatorClient({
-      keyFilename: '../config/apiKey.json',
-    });
-
-    // Performs label detection on the image file
-    const [result] = await client.labelDetection(
-      'https://static.puzzlefactory.pl/puzzle/201/241/original.jpg'
-    );
-    const labels = result.labelAnnotations;
-    console.log('Labels:');
-    labels.forEach(label => console.log(label.description));
-  }
+  submitToGoogle = async () => {
+    try {
+      this.setState({ uploading: true });
+      let { image } = this.state;
+      let body = JSON.stringify({
+        requests: [
+          {
+            features: [{ type: 'LABEL_DETECTION', maxResults: 10 }],
+            image: {
+              content: image.base64,
+            },
+          },
+        ],
+      });
+      let response = await fetch(
+        'https://vision.googleapis.com/v1/images:annotate?key=' +
+          GOOGLE_CLOUD_VISION_API_KEY,
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: body,
+        }
+      );
+      let responseJson = await response.json();
+      console.log(responseJson);
+      this.setState({
+        googleResponse: responseJson,
+        uploading: false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
+
+//   async quickstart() {
+//     // Imports the Google Cloud client library
+//     const vision = require('@google-cloud/vision');
+
+//     // Creates a client
+//     const client = new vision.ImageAnnotatorClient({
+//       keyFilename: '../config/apiKey.json',
+//     });
+
+//     // Performs label detection on the image file
+//     const [result] = await client.labelDetection(
+//       'https://static.puzzlefactory.pl/puzzle/201/241/original.jpg'
+//     );
+//     const labels = result.labelAnnotations;
+//     console.log('Labels:');
+//     labels.forEach(label => console.log(label.description));
+//   }
+// }
