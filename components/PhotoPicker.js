@@ -3,15 +3,18 @@ import { Button, Image, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import { GOOGLE_APPLICATION_CREDENTIALS } from 'react-native-dotenv';
 
 export default class PhotoPicker extends React.Component {
   state = {
     image: null,
+    uploading: false,
+    googleResponse: null,
   };
 
   render() {
     let { image } = this.state;
-
+    console.log('env', Environment);
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Button
@@ -44,32 +47,58 @@ export default class PhotoPicker extends React.Component {
   };
 
   _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result);
+    this.setState({ uploading: true });
 
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
+    if (image) {
+      console.log(image);
+      await this.quickstart(image.uri);
+    }
+
+    if (!image.cancelled) {
+      this.setState({ image: image.uri });
     }
   };
 
   _takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
+    let image = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result);
+    if (image) {
+      console.log(image);
+      await this.quickstart(image.uri);
+    }
 
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
+    if (!image.cancelled) {
+      this.setState({ image: image.uri });
     }
   };
+
+  async quickstart() {
+    // Imports the Google Cloud client library
+    const vision = require('@google-cloud/vision');
+
+    // Creates a client
+    const client = new vision.ImageAnnotatorClient({
+      keyFilename: '../config/apiKey.json',
+    });
+
+    // Performs label detection on the image file
+    const [result] = await client.labelDetection(
+      'https://static.puzzlefactory.pl/puzzle/201/241/original.jpg'
+    );
+    const labels = result.labelAnnotations;
+    console.log('Labels:');
+    labels.forEach(label => console.log(label.description));
+  }
 }
