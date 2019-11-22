@@ -22,7 +22,9 @@ const InitialScreen = (props) => {
           />
       );
     } 
-    else if (props.isLoggedIn) {
+
+    //TODO REMOVE ! WHEN READY
+    else if (!props.isLoggedIn) {
       return (
           <ThemeProvider theme={theme}>
             <View style={styles.container}>
