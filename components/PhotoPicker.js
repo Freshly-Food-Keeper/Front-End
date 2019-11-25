@@ -136,7 +136,7 @@ export default class PhotoPicker extends React.Component {
     }
   };
 
-  _pickImage = async () => {
+  pickImage = async () => {
     let image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -153,7 +153,7 @@ export default class PhotoPicker extends React.Component {
     }
   };
 
-  _takePhoto = async () => {
+  takePhoto = async () => {
     let image = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
