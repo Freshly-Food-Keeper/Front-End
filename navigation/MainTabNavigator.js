@@ -9,6 +9,8 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import PhotoPicker from '../components/PhotoPicker';
 import SettingsScreen from '../screens/SettingsScreen';
+import DataVisualization from '../screens/DataVisualization'
+
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -61,6 +63,29 @@ LinksStack.navigationOptions = {
 
 LinksStack.path = '';
 
+const DataStack = createStackNavigator(
+  {
+    Data: DataVisualization
+  },
+  config
+)
+
+DataStack.navigationOptions = {
+  tabBarLabel: 'Data',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? 'ios-add-circle-outline'
+          : 'md-add-circle-outline'
+      }
+    />
+  )
+}
+
+DataStack.path = ''
+
 const SettingsStack = createStackNavigator(
   {
     Settings: SettingsScreen,
@@ -83,6 +108,7 @@ SettingsStack.path = '';
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
+  DataStack,
   SettingsStack,
 });
 
