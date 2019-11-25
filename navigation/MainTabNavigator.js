@@ -7,8 +7,8 @@ import {
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import PhotoPicker from '../components/PhotoPicker';
 import SettingsScreen from '../screens/SettingsScreen';
+import PhotoPicker from '../components/PhotoPicker'
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -38,29 +38,6 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
-const LinksStack = createStackNavigator(
-  {
-    Links: PhotoPicker,
-  },
-  config
-);
-
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Add Item',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? 'ios-add-circle-outline'
-          : 'md-add-circle-outline'
-      }
-    />
-  ),
-};
-
-LinksStack.path = '';
-
 const SettingsStack = createStackNavigator(
   {
     Settings: SettingsScreen,
@@ -82,7 +59,14 @@ SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  PhotoPicker: {
+    tabBarLabel: '',
+    screen: () => null,
+    navigationOptions: {
+    tabBarIcon: <PhotoPicker />
+    },
+    config
+},
   SettingsStack,
 });
 
