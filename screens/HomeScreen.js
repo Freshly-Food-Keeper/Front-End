@@ -1,16 +1,6 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button, ThemeProvider } from 'react-native-elements';
-import { MonoText } from '../components/StyledText';
 
 const theme = {
   Button: {
@@ -20,25 +10,39 @@ const theme = {
   },
 };
 
-export default function HomeScreen() {
-  return (
-    <ThemeProvider theme={theme}>
-      <View style={styles.container}>
-        <View style={styles.contentContainer}>
-          <Image
-            style={styles.logo}
-            source={require('../assets/logos/circle.png')}
-          />
-          <Text style={styles.freshly}>freshly</Text>
+export default class HomeScreen extends React.Component {
+  render() {
+    return (
+      <ThemeProvider theme={theme}>
+        <View style={styles.container}>
+          <View style={styles.contentContainer}>
+            <Image
+              style={styles.logo}
+              source={require('../assets/logos/circle.png')}
+            />
+            <Text style={styles.freshly}>freshly</Text>
 
-          <View style={styles.buttonContainer}>
-            <Button title="LOGIN" buttonStyle={styles.buttons} />
-            <Button title="SIGN UP" buttonStyle={styles.buttons} />
+            <View style={styles.buttonContainer}>
+              <Button
+                title="LOGIN"
+                buttonStyle={styles.buttons}
+                onPress={() => {
+                  this.props.navigation.navigate('Login');
+                }}
+              />
+              <Button
+                title="SIGN UP"
+                buttonStyle={styles.buttons}
+                onPress={() => {
+                  this.props.navigation.navigate('SignUp');
+                }}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </ThemeProvider>
-  );
+      </ThemeProvider>
+    );
+  }
 }
 
 HomeScreen.navigationOptions = {

@@ -1,38 +1,37 @@
-import axios from 'axios'
+import axios from 'axios';
 // import history from '../history'
 
 /**
  * ACTION TYPES
  */
-const GET_USER = 'GET_USER'
-const REMOVE_USER = 'REMOVE_USER'
-const UPDATED_USER = 'UPDATED_USER'
+const GET_USER = 'GET_USER';
+const REMOVE_USER = 'REMOVE_USER';
+const UPDATED_USER = 'UPDATED_USER';
 
 /**
  * INITIAL STATE
  */
-const defaultUser = {}
+const defaultUser = {};
 
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({type: GET_USER, user})
-const removeUser = () => ({type: REMOVE_USER})
-const updatedUser = user => ({type: UPDATED_USER, user})
+const getUser = user => ({ type: GET_USER, user });
+const removeUser = () => ({ type: REMOVE_USER });
+const updatedUser = user => ({ type: UPDATED_USER, user });
 
 /**
  * THUNK CREATORS
  */
 
-//TODO: Verify authorization routes
 export const me = () => async dispatch => {
   try {
-    const res = await axios.get('/auth/me')
-    dispatch(getUser(res.data || defaultUser))
+    const res = await axios.get('/auth/me');
+    dispatch(getUser(res.data || defaultUser));
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 export const auth = (
   firstName,
@@ -41,44 +40,45 @@ export const auth = (
   password,
   method
 ) => async dispatch => {
-  let res
+  let res;
   try {
-    res = await axios.post(`/auth/${method}`, {
-      firstName,
-      lastName,
-      email,
-      password
-    })
+    res = await axios.post(
+      `https://freshly-back-end.herokuapp.com/auth/${method}`,
+      {
+        firstName,
+        lastName,
+        email,
+        password,
+      }
+    );
   } catch (authError) {
-    return dispatch(getUser({error: authError}))
+    return dispatch(getUser({ error: authError }));
   }
 
   try {
-    dispatch(getUser({...res.data, isLoggedIn: true}))
-    // history.push('/home')
+    dispatch(getUser({ ...res.data, isLoggedIn: true }));
   } catch (dispatchOrHistoryErr) {
-    console.error(dispatchOrHistoryErr)
+    console.error(dispatchOrHistoryErr);
   }
-}
+};
 
 export const logout = () => async dispatch => {
   try {
-    await axios.post('/auth/logout')
-    dispatch(removeUser())
-    // history.push('/login')
+    await axios.post('/auth/logout');
+    dispatch(removeUser());
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 export const updateUser = user => async dispatch => {
   try {
-    await axios.patch(`/api/users/${user.id}`, user)
-    dispatch(updatedUser(user))
+    await axios.patch(`/api/users/${user.id}`, user);
+    dispatch(updatedUser(user));
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 /**
  * REDUCER
@@ -86,12 +86,12 @@ export const updateUser = user => async dispatch => {
 export default function(state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
-      return action.user
+      return action.user;
     case REMOVE_USER:
-      return defaultUser
+      return defaultUser;
     case UPDATED_USER:
-      return {...state, ...action.user}
+      return { ...state, ...action.user };
     default:
-      return state
+      return state;
   }
 }
