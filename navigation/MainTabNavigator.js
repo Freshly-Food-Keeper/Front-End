@@ -9,6 +9,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import PhotoPicker from '../components/PhotoPicker';
 import SettingsScreen from '../screens/SettingsScreen';
+import FoodScreen from '../screens/FoodScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -37,6 +38,29 @@ HomeStack.navigationOptions = {
 };
 
 HomeStack.path = '';
+
+const FoodStack = createStackNavigator(
+  {
+    MyFood: FoodScreen,
+  },
+  config
+);
+
+FoodStack.navigationOptions = {
+  tabBarLabel: 'My Food',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-leaf`
+          : 'md-leaf'
+      }
+    />
+  ),
+};
+
+FoodStack.path = '';
 
 const LinksStack = createStackNavigator(
   {
@@ -82,6 +106,7 @@ SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
+  FoodStack,
   LinksStack,
   SettingsStack,
 });
