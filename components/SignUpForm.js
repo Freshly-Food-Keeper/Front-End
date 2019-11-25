@@ -1,42 +1,37 @@
 import * as React from 'react';
 import { Input } from 'react-native-elements';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import { createUser } from '../store';
 
-export default class SignUp extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: null,
-      lastName: null,
-      email: null,
-      password: null,
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+  handleSubmit() {
+    this.props.createUser(this.state);
+    this.props.navigation.navigate('UserHome');
   }
 
   render() {
+    const { error } = this.props;
     return (
       <View style={styles.container}>
-        {/* <View style={{ ...StyleSheet.absoluteFill }}>
-          <Image
-            source={require('../assets/images/background.jpeg')}
-            style={styles.image}
-          />
-        </View> */}
-
-        <Text style={styles.header}>Sign Up</Text>
         <View style={styles.form}>
           <View style={styles.input}>
             <Input
               name="firstName"
               placeholder="First Name"
-              onChangeText={text => this.handleChange}
+              onChangeText={firstName => this.setState({ firstName })}
+              value={this.state.firstName}
               errorMessage="This field is required"
             />
           </View>
@@ -44,7 +39,8 @@ export default class SignUp extends React.Component {
             <Input
               name="lastName"
               placeholder="Last Name"
-              onChangeText={text => this.handleChange}
+              onChangeText={lastName => this.setState({ lastName })}
+              value={this.state.lastName}
               errorMessage="This field is required"
             />
           </View>
@@ -52,7 +48,8 @@ export default class SignUp extends React.Component {
             <Input
               name="email"
               placeholder="Email"
-              onChangeText={text => this.handleChange}
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email}
               errorMessage="This field is required"
             />
           </View>
@@ -60,21 +57,37 @@ export default class SignUp extends React.Component {
             <Input
               name="password"
               placeholder="Password"
-              onChangeText={text => this.handleChange}
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
               errorMessage="This field is required"
             />
           </View>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
               <Text style={styles.buttonText}>SUBMIT</Text>
             </TouchableOpacity>
+            {error && error.response && <div> {error.response.data} </div>}
           </View>
         </View>
       </View>
     );
   }
 }
+
+const mapState = state => {
+  return {
+    error: state.user.error,
+  };
+};
+
+const mapDispatch = dispatch => {
+  return {
+    createUser: user => dispatch(createUser(user)),
+  };
+};
+
+export default connect(mapState, mapDispatch)(SignUp);
 
 const styles = StyleSheet.create({
   container: {

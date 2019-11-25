@@ -1,14 +1,13 @@
 import React from 'react';
 import store from './store';
 import { Provider } from 'react-redux';
-import AppNavigator from './components/AppNavigator';
+import InitialScreen from './screens/InitialScreen';
 
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <AppNavigator />
-        {/* <InitialScreen /> */}
+        <InitialScreen />
       </Provider>
     );
   }

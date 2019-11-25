@@ -1,40 +1,39 @@
 import * as React from 'react';
 import { Input } from 'react-native-elements';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Header, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { loginUser } from '../store';
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: null,
-      password: null,
+      email: '',
+      password: '',
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+  handleSubmit() {
+    console.log('submitted');
+    this.props.loginUser(this.state);
+    this.props.navigation.navigate('UserHome');
   }
 
   render() {
+    const { error } = this.props;
+
     return (
       <View style={styles.container}>
-        {/* <View style={{ ...StyleSheet.absoluteFill }}>
-          <Image
-            source={require('../assets/images/background.jpeg')}
-            style={styles.image}
-          />
-        </View> */}
-
-        <Text style={styles.header}>Login</Text>
         <View style={styles.form}>
           <View style={styles.input}>
             <Input
               name="email"
               placeholder="Email"
-              onChangeText={text => this.handleChange}
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email}
               errorMessage="This field is required"
             />
           </View>
@@ -42,15 +41,17 @@ export default class Login extends React.Component {
             <Input
               name="password"
               placeholder="Password"
-              onChangeText={text => this.handleChange}
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
               errorMessage="This field is required"
             />
           </View>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
               <Text style={styles.buttonText}>LOGIN</Text>
             </TouchableOpacity>
+            {error && error.response && <div> {error.response.data} </div>}
           </View>
         </View>
       </View>
@@ -58,6 +59,23 @@ export default class Login extends React.Component {
   }
 }
 
+const mapState = state => {
+  return {
+    error: state.user.error,
+  };
+};
+
+const mapDispatch = dispatch => {
+  return {
+    loginUser: user => dispatch(loginUser(user)),
+  };
+};
+
+export default connect(mapState, mapDispatch)(Login);
+
+Login.propTypes = {
+  error: PropTypes.object,
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -82,7 +100,6 @@ const styles = StyleSheet.create({
     padding: 3,
     margin: 3,
     fontSize: 20,
-    // backgroundColor: 'white',
     width: 300,
     borderRadius: 5,
   },

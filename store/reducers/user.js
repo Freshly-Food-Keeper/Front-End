@@ -4,8 +4,9 @@ import axios from 'axios';
 /**
  * ACTION TYPES
  */
-const GET_USER = 'GET_USER';
-const REMOVE_USER = 'REMOVE_USER';
+const CREATED_USER = 'CREATED_USER';
+const GOT_USER = 'GOT_USER';
+const REMOVED_USER = 'REMOVED_USER';
 const UPDATED_USER = 'UPDATED_USER';
 
 /**
@@ -16,8 +17,9 @@ const defaultUser = {};
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({ type: GET_USER, user });
-const removeUser = () => ({ type: REMOVE_USER });
+const createdUser = user => ({ type: CREATED_USER, user });
+const gotUser = user => ({ type: GOT_USER, user });
+const removedUser = () => ({ type: REMOVED_USER });
 const updatedUser = user => ({ type: UPDATED_USER, user });
 
 /**
@@ -27,45 +29,47 @@ const updatedUser = user => ({ type: UPDATED_USER, user });
 export const me = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me');
-    dispatch(getUser(res.data || defaultUser));
+    dispatch(gotUser(res.data || defaultUser));
   } catch (err) {
     console.error(err);
   }
 };
 
-export const auth = (
-  firstName,
-  lastName,
-  email,
-  password,
-  method
-) => async dispatch => {
-  let res;
-  try {
-    res = await axios.post(
-      `https://freshly-back-end.herokuapp.com/auth/${method}`,
-      {
-        firstName,
-        lastName,
-        email,
-        password,
-      }
-    );
-  } catch (authError) {
-    return dispatch(getUser({ error: authError }));
-  }
+// export const auth = (
+//   firstName,
+//   lastName,
+//   email,
+//   password,
+//   method
+// ) => async dispatch => {
+//   let res;
+//   try {
+//     console.log('yoyo');
+//     res = await axios.post(
+//       `http:/172.16.26.110:8080/auth/login`,
+//       // `https://freshly-back-end.herokuapp.com/auth/${method}`,
+//       {
+//         firstName,
+//         lastName,
+//         email,
+//         password,
+//       }
+//     );
+//   } catch (authError) {
+//     return dispatch(getUser({ error: authError }));
+//   }
 
-  try {
-    dispatch(getUser({ ...res.data, isLoggedIn: true }));
-  } catch (dispatchOrHistoryErr) {
-    console.error(dispatchOrHistoryErr);
-  }
-};
+//   try {
+//     dispatch(getUser({ ...res.data, isLoggedIn: true }));
+//   } catch (dispatchOrHistoryErr) {
+//     console.error(dispatchOrHistoryErr);
+//   }
+// };
 
 export const logout = () => async dispatch => {
   try {
     await axios.post('/auth/logout');
-    dispatch(removeUser());
+    dispatch(removedUser());
   } catch (err) {
     console.error(err);
   }
@@ -80,14 +84,38 @@ export const updateUser = user => async dispatch => {
   }
 };
 
+export const loginUser = user => async dispatch => {
+  try {
+    await axios.post(`https://freshly-back-end.herokuapp.com/auth/login`, user);
+    dispatch(gotUser(user));
+    console.log('user logged in:', user);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const createUser = user => async dispatch => {
+  try {
+    await axios.post(
+      `https://freshly-back-end.herokuapp.com/auth/signup`,
+      user
+    );
+    dispatch(createdUser(user));
+    console.log('user signed up:', user);
+  } catch (err) {
+    console.error(err);
+  }
+};
 /**
  * REDUCER
  */
 export default function(state = defaultUser, action) {
   switch (action.type) {
-    case GET_USER:
+    case CREATED_USER:
       return action.user;
-    case REMOVE_USER:
+    case GOT_USER:
+      return action.user;
+    case REMOVED_USER:
       return defaultUser;
     case UPDATED_USER:
       return { ...state, ...action.user };
