@@ -6,27 +6,6 @@ import { connect } from 'react-redux'
 import { getAllInventory } from '../store/reducers/food'
 import user from '../store/reducers/user'
 
-const foods = [
-  {
-    id: 2,
-    name: 'apple',
-    expiresIn: 14,
-    imageUrl: 'https://spoonacular.com/cdn/ingredients_250x250/apple.jpg'
-  },
-  {
-    id: 3,
-    name: 'orange',
-    expiresIn: 7,
-    imageUrl: 'https://spoonacular.com/cdn/ingredients_250x250/orange.jpg'
-  },
-  {
-    id: 5,
-    name: 'blueberries',
-    expiresIn: 2,
-    imageUrl: 'https://spoonacular.com/cdn/ingredients_250x250/blueberries.jpg'
-  }
-]
-
 const titleCase = title => {
   return title
     .toLowerCase()
@@ -73,9 +52,7 @@ function AvatarComponent({ food, showBadge }) {
       <Avatar
         size='small'
         rounded
-        source={{
-          uri: food.imageUrl
-        }}
+        source={(food.imageUrl === null) ? require('../assets/images/food-placeholder.jpg') : {uri: food.imageUrl}}
       />
       {showBadge && (
         <Badge
@@ -89,12 +66,20 @@ function AvatarComponent({ food, showBadge }) {
 
 class FoodScreen extends Component {
   componentDidMount() {
-    this.props.getInventory()
+    //TODO: change this to a dynamic userid
+    this.props.getInventory(2)
   }
 
   render() {
-    console.log('PROPS', this.props)
+    // TODO: WHEN ROUTES GETS WORKED OUT, WE NEED TO SORT FOODS FOR HOMESCREEN VS. FOODSCREEN
+    // DO SORTING HERE NOT IN BACKEND
+    // console.log(this.props.navigation)
+    // if (this.props.navigation.state.routeName === 'Links') {
+    // } else {
+    // }
+    const foods = this.props.allFoods
     return (
+      (foods) ?
       <View style={styles.container}>
         {foods.map(food => (
           <ListItem
@@ -115,6 +100,7 @@ class FoodScreen extends Component {
           />
         ))}
       </View>
+      : <View />
     )
   }
 }
