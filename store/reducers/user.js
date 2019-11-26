@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 // import history from '../history'
 
 /**
@@ -85,25 +86,38 @@ export const updateUser = user => async dispatch => {
 };
 
 export const loginUser = user => async dispatch => {
+  let res
   try {
-    await axios.post(`https://freshly-back-end.herokuapp.com/auth/login`, user);
-    dispatch(gotUser(user));
+    res = await axios.post(`https://freshly-back-end.herokuapp.com/auth/login`, user);
+    // dispatch(gotUser(user));
     console.log('user logged in:', user);
-  } catch (err) {
-    console.error(err);
+  } catch (authError) {
+    return dispatch(gotUser({error: authError}))
+  }
+
+  try {
+    await AsyncStorage.setItem('userId', `${data.id}`);
+    dispatch(gotUser(res.data))
+  } catch (dispatchError) {
+    console.error(dispatchError)
   }
 };
 
 export const createUser = user => async dispatch => {
+  let res
   try {
-    await axios.post(
-      `https://freshly-back-end.herokuapp.com/auth/signup`,
-      user
-    );
-    dispatch(createdUser(user));
-    console.log('user signed up:', user);
-  } catch (err) {
-    console.error(err);
+    res = await axios.post(`https://freshly-back-end.herokuapp.com/auth/signup`, user);
+    // dispatch(gotUser(user));
+    console.log('user signed in:', user);
+  } catch (authError) {
+    return dispatch(gotUser({ error: authError }))
+  }
+
+  try {
+    await AsyncStorage.setItem('userId', `${data.id}`);
+    dispatch(gotUser(res.data))
+  } catch (dispatchError) {
+    console.error(dispatchError)
   }
 };
 /**

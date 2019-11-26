@@ -8,11 +8,11 @@ import {
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import PhotoPicker from '../components/PhotoPicker';
+import HomeScreen from '../screens/WelcomeScreen';
+import PhotoPicker from '../components/AddItem';
 import SettingsScreen from '../screens/SettingsScreen';
-import SignUpForm from '../components/SignUpForm';
-import LoginForm from '../components/LoginForm';
+import SignUpForm from '../screens/SignUpScreen';
+import LoginForm from '../screens/LoginScreen';
 import UserHomeScreen from '../screens/UserHomeScreen';
 
 const config = Platform.select({

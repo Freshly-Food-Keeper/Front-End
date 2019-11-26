@@ -1,33 +1,49 @@
 import * as React from 'react';
 import { Input } from 'react-native-elements';
-import { View, Text, StyleSheet, Header, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { loginUser } from '../store';
+import { createUser } from '../store';
 
-class Login extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
   handleSubmit() {
-    console.log('submitted');
-    this.props.loginUser(this.state);
+    this.props.createUser(this.state);
     this.props.navigation.navigate('UserHome');
   }
 
   render() {
     const { error } = this.props;
-
     return (
       <View style={styles.container}>
         <View style={styles.form}>
+          <View style={styles.input}>
+            <Input
+              name="firstName"
+              placeholder="First Name"
+              onChangeText={firstName => this.setState({ firstName })}
+              value={this.state.firstName}
+              errorMessage="This field is required"
+            />
+          </View>
+          <View style={styles.input}>
+            <Input
+              name="lastName"
+              placeholder="Last Name"
+              onChangeText={lastName => this.setState({ lastName })}
+              value={this.state.lastName}
+              errorMessage="This field is required"
+            />
+          </View>
           <View style={styles.input}>
             <Input
               name="email"
@@ -49,9 +65,9 @@ class Login extends React.Component {
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
-              <Text style={styles.buttonText}>LOGIN</Text>
+              <Text style={styles.buttonText}>SUBMIT</Text>
             </TouchableOpacity>
-            {error && error.response && <div> {error.response.data} </div>}
+            {error && error.response && <Text> {error.response.data} </Text>}
           </View>
         </View>
       </View>
@@ -67,15 +83,12 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    loginUser: user => dispatch(loginUser(user)),
+    createUser: user => dispatch(createUser(user)),
   };
 };
 
-export default connect(mapState, mapDispatch)(Login);
+export default connect(mapState, mapDispatch)(SignUp);
 
-Login.propTypes = {
-  error: PropTypes.object,
-};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,6 +113,7 @@ const styles = StyleSheet.create({
     padding: 3,
     margin: 3,
     fontSize: 20,
+    // backgroundColor: 'white',
     width: 300,
     borderRadius: 5,
   },

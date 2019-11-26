@@ -5,7 +5,7 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { GOOGLE_CLOUD_VISION_API_KEY } from '../config/secrets';
 
-export default class PhotoPicker extends React.Component {
+export default class AddItem extends React.Component {
   state = {
     image: null,
     uploading: false,
