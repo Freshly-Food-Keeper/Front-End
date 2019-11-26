@@ -27,6 +27,7 @@ class AddItem extends React.Component {
         image: null,
         uploading: false,
         googleResponse: null,
+        hasMounted: false, 
       }
       this.showActionSheet = this.showActionSheet.bind(this)
   }
@@ -44,34 +45,35 @@ class AddItem extends React.Component {
         }
       })
   }
-  componentDidMount(){
-    // ActionSheetIOS.showActionSheetWithOptions({
-    //   options: ['Take Photo', 'Choose From Camera Roll'],
-    //   destructiveButtonIndex: 1,
-    //   cancelButtonIndex: 0,
-    // },
-    //   (buttonIndex) => {
-    //     if (buttonIndex === 1) {
-    //       this.setState({ clicked: BUTTONS[buttonIndex] });
-    //     }
-    //   }
-    // )
-    // this.props.navigation.addListener(
-    //   'didFocus',
-    //   payload => {
-    //     this.showActionSheet()
-    //   }
-    // )
-  }
-  render() {
-    let { image } = this.state;
 
-    if(this.props.navigation.isFocused()){
+  componentDidMount() {
+    console.log('in component did mount')
+    this.setState({hasMounted: true})
+  }
+
+  render() {
+    let { image, hasMounted } = this.state;
+
+    console.log(hasMounted)
+
+    if(hasMounted) {
       ActionSheetIOS.showActionSheetWithOptions({
         options: ['Take Photo', 'Choose From Camera Roll', 'Cancel'],
 
       },
         (buttonIndex) => {
+          this.setState({actionSheetOpen: true})
+          if (buttonIndex === 2) {
+            this.props.navigation.navigate('Food')
+          }
+      })
+    } else if(this.props.navigation.isFocused()){
+      ActionSheetIOS.showActionSheetWithOptions({
+        options: ['Take Photo', 'Choose From Camera Roll', 'Cancel'],
+
+      },
+        (buttonIndex) => {
+          this.setState({actionSheetOpen: true})
           if (buttonIndex === 2) {
             this.props.navigation.navigate('Food')
           }
