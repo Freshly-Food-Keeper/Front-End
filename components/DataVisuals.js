@@ -4,10 +4,10 @@ import { PieChart } from 'react-native-svg-charts'
 import { getWastedPercentage } from '../store/reducers/dataVisuals'
 import { connect } from 'react-redux'
 
-class DataScreen extends React.PureComponent {
+class DataVisuals extends React.PureComponent {
   componentDidMount() {
     //TODO: NEED USER ID
-    this.props.getWastedPercentage(2)
+    this.props.getWastedPercentage()
   }
   render() {
     const userData = this.props.percentages
@@ -34,7 +34,7 @@ class DataScreen extends React.PureComponent {
   }
 }
 
-DataScreen.navigationOptions = {
+DataVisuals.navigationOptions = {
   header: null
 }
 
@@ -60,7 +60,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getWastedPercentage: userId => dispatch(getWastedPercentage(userId))
+  getWastedPercentage: () => dispatch(getWastedPercentage())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(DataVisuals)
