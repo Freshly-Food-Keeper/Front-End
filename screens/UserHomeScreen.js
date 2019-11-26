@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
+import DataVisuals from '../components/DataVisuals'
+import FoodScreen from './FoodScreen'
 
 const theme = {
   Button: {
@@ -15,12 +17,11 @@ export default class UserHomeScreen extends React.Component {
     return (
       <ThemeProvider theme={theme}>
         <View style={styles.container}>
-          <View style={styles.contentContainer}>
-            <Text style={styles.freshly}>Hi!</Text>
-          </View>
+          <DataVisuals />
+          <FoodScreen />
         </View>
       </ThemeProvider>
-    );
+    )
   }
 }
 
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    paddingTop: 20
   },
   contentContainer: {
     alignItems: 'center',
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     fontSize: 30,
-    color: 'white',
+    color: 'black',
   },
   logo: {
     alignSelf: 'center',
