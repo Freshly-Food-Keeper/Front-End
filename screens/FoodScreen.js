@@ -69,7 +69,7 @@ class FoodScreen extends Component {
     //TODO: change this to a dynamic userid
     this.props.getInventory(2)
   }
-
+  han
   render() {
     // TODO: WHEN ROUTES GETS WORKED OUT, WE NEED TO SORT FOODS FOR HOMESCREEN VS. FOODSCREEN
     // DO SORTING HERE NOT IN BACKEND
