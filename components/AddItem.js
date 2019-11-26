@@ -1,35 +1,73 @@
 import * as React from 'react';
-import { Button, Image, View } from 'react-native';
+import { Button, Image, View, ActionSheetIOS } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { GOOGLE_CLOUD_VISION_API_KEY } from '../config/secrets';
 
-export default class AddItem extends React.Component {
-  state = {
-    image: null,
-    uploading: false,
-    googleResponse: null,
-  };
 
+const showActionSheet = () => {
+  ActionSheetIOS.showActionSheetWithOptions({
+    options: ['Take Photo', 'Choose From Camera Roll'],
+    destructiveButtonIndex: 1,
+    cancelButtonIndex: 0,
+  },
+    (buttonIndex) => {
+      if (buttonIndex === 1) {
+        this.setState({ clicked: BUTTONS[buttonIndex] });
+      }
+    })
+}
+
+export default class AddItem extends React.Component {
+  constructor(props){
+    super(props)
+      this.state = {
+        image: null,
+        uploading: false,
+        googleResponse: null,
+      }
+      this.showActionSheet = this.showActionSheet.bind(this)
+  }
+  showActionSheet(){
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Take Photo', 'Choose From Camera Roll'],
+      destructiveButtonIndex: 1,
+      cancelButtonIndex: 0,
+    },
+      (buttonIndex) => {
+        if (buttonIndex === 1) {
+          this.setState({ clicked: BUTTONS[buttonIndex] });
+        }
+      })
+  }
+  componentDidMount(){
+    this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        this.showActionSheet()
+      }
+    )
+  }
   render() {
     let { image } = this.state;
 
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button
-          title="Pick an image from camera roll"
-          onPress={this._pickImage}
-        />
-        <Button title="Take a photo" onPress={this._takePhoto} />
-        {image && (
-          <Image
-            source={{ uri: image.uri }}
-            style={{ width: 200, height: 200 }}
-          />
-        )}
-      </View>
-    );
+    <View></View>
+      // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      //   <Button
+      //     title="Pick an image from camera roll"
+      //     onPress={this._pickImage}
+      //   />
+      //   <Button title="Take a photo" onPress={this._takePhoto} />
+      //   {image && (
+      //     <Image
+      //       source={{ uri: image.uri }}
+      //       style={{ width: 200, height: 200 }}
+      //     />
+      //   )}
+      // </View>
+    )
   }
 
   componentDidMount() {

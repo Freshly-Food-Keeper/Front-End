@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, ActionSheetIOS } from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -61,6 +61,7 @@ const AddItemStack = createStackNavigator({
   AddItem: AddItem
 })
 
+
 AddItemStack.navigationOptions = {
   tabBarLabel: 'Add Item',
   tabBarIcon: ({ focused }) => (
@@ -73,6 +74,11 @@ AddItemStack.navigationOptions = {
       }
     />
   ),
+  // tabBarOnPress: ({ navigation, defaultHandler }) => {
+  //   console.log('this will be fired just before nagivation happens')
+  //   showActionSheet
+  //   // defaultHandler({showActionSheet()}) // if you omit this, navigation will not happen
+  // }
 };
 
 const TabNavigator = createBottomTabNavigator({
