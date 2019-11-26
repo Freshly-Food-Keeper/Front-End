@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 
 class DataVisuals extends React.PureComponent {
   componentDidMount() {
-    //TODO: NEED USER ID
     this.props.getWastedPercentage()
   }
   render() {
