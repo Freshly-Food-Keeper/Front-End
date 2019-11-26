@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { AsyncStorage } from 'react-native'
+import { BACK_END_SERVER  } from  '../../config/secrets.js'
 
 const dataVisuals = {
   percents: {}
@@ -11,12 +13,16 @@ const gotWastedPrecentage = percents => ({
   percents
 })
 
-export const getWastedPercentage = userId => {
+export const getWastedPercentage = () => {
   return async dispatch => {
     try {
-      const { data } = await axios.get(
-        `https://freshly-back-end.herokuapp.com/api/data/${userId}`
-      )
+      const userId = await AsyncStorage.getItem('userId')
+      const { data } = await axios.get(`${BACK_END_SERVER}/api/data/`,
+        {
+          params: {
+            userId
+          }
+        })
       dispatch(gotWastedPrecentage(data))
     } catch (error) {
       console.error(error)

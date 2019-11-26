@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { AsyncStorage } from 'react-native'
+import { BACK_END_SERVER } from '../../config/secrets.js'
 
 const foods = []
 
@@ -9,12 +11,15 @@ const gotAllInventory = allFoods => ({
   allFoods
 })
 
-export const getAllInventory = userId => {
+export const getAllInventory = () => {
   return async dispatch => {
     try {
-      const { data } = await axios.get(
-        `https://freshly-back-end.herokuapp.com/api/${userId}/foods`
-      )
+      const userId = await AsyncStorage.getItem('userId')
+      const { data } = await axios.get(`${BACK_END_SERVER}/api/food/`, {
+        params: {
+          userId
+        }
+      })
       dispatch(gotAllInventory(data))
     } catch (error) {
       console.error(error)
