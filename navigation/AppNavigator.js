@@ -67,16 +67,8 @@ const AddItemStack = createStackNavigator(
 );
 
 AddItemStack.navigationOptions = {
-  tabBarLabel: 'Add Item',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? 'ios-add-circle-outline'
-          : 'md-add-circle-outline'
-      }
-    />
+    <PhotoPicker />
   ),
 };
 
@@ -103,16 +95,35 @@ SettingsStack.path = '/settings';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  PhotoPicker: {
-    tabBarLabel: '',
-    screen: () => null,
-    navigationOptions: {
-      tabBarIcon: <PhotoPicker />
-    },
-    config
-  },
+  AddItemStack,
   SettingsStack,
+}, {
+   tabBarOptions: { showLabel: false }
 });
+// const Tabs = createBottomTabNavigator({
+//   Home: {
+//     screen: Home,
+//     navigationOptions: {
+//       tabBarIcon: ({ focused, tintcolor }) => (
+//         <Icon name="ios-home" size={24} />
+//       )
+//     }
+//   },
+//   ...
+//   ,
+//   Settings: {
+//     screen: Settings,
+//     navigationOptions: {
+//       tabBarIcon: ({ tintcolor }) => (
+//         <Icon name="ios-settings" size={24} />
+//       )
+//     }
+//   }
+
+// }
+// }, {
+//   tabBarOptions: { showLabel: false }
+// });
 
 tabNavigator.path = '';
 
@@ -135,7 +146,7 @@ const AppNavigator = createAppContainer(
       Login: Login,
     },
     {
-      initialRouteName: 'Home',
+      initialRouteName: 'App',
     }
   )
 );
