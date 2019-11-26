@@ -13,7 +13,8 @@ import AddItem from '../components/AddItem';
 import SignUpScreen from '../screens/SignUpScreen';
 import LoginScreen from '../screens/LoginScreen';
 import UserHomeScreen from '../screens/UserHomeScreen';
-import FoodScreen from '../screens/FoodScreen'
+import FoodScreen from '../screens/FoodScreen';
+import SingleFoodScreen from '../screens/SingleFoodScreen';
 
 const AuthStack = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -40,7 +41,8 @@ UserHomeStack.navigationOptions = {
 };
 
 const FoodStack = createStackNavigator({
-  Food: FoodScreen
+  Food: FoodScreen,
+  SingleFood: SingleFoodScreen
 });
 
 FoodStack.navigationOptions = {
@@ -81,10 +83,11 @@ AddItemStack.navigationOptions = {
   // }
 };
 
+
 const TabNavigator = createBottomTabNavigator({
   UserHomeStack,
   AddItemStack,
-  FoodStack,
+  FoodStack
 });
 
 const App = createAppContainer(
