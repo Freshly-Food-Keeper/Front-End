@@ -96,7 +96,11 @@ export const loginUser = user => async dispatch => {
   }
 
   try {
+<<<<<<< HEAD
     await AsyncStorage.setItem('userId', `${user.id}`);
+=======
+    await AsyncStorage.setItem('userId', `${res.data.id}`);
+>>>>>>> 6b78cace5d99a603639fe451d705fe1fbe77b74b
     dispatch(gotUser(res.data))
   } catch (dispatchError) {
     console.error(dispatchError)
@@ -114,7 +118,7 @@ export const createUser = user => async dispatch => {
   }
 
   try {
-    await AsyncStorage.setItem('userId', `${data.id}`);
+    await AsyncStorage.setItem('userId', `${res.data.id}`);
     dispatch(gotUser(res.data))
   } catch (dispatchError) {
     console.error(dispatchError)

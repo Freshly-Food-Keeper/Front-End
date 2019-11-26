@@ -67,8 +67,7 @@ function AvatarComponent({ food, showBadge }) {
 
 class FoodScreen extends Component {
   componentDidMount() {
-    //TODO: change this to a dynamic userid
-    this.props.getInventory(2)
+    this.props.getInventory()
   }
   render() {
     // TODO: WHEN ROUTES GETS WORKED OUT, WE NEED TO SORT FOODS FOR HOMESCREEN VS. FOODSCREEN
@@ -122,7 +121,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getInventory: userId => dispatch(getAllInventory(userId))
+  getInventory: () => dispatch(getAllInventory())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoodScreen)
