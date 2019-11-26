@@ -58,7 +58,8 @@ FoodStack.navigationOptions = {
 };
 
 const AddItemStack = createStackNavigator({
-  AddItem: AddItem
+  AddItem: AddItem,
+  // UserHome: UserHomeScreen
 })
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
 
 const theme = {
@@ -12,6 +12,7 @@ const theme = {
 
 export default class UserHomeScreen extends React.Component {
   render() {
+    console.log('in user home screen')
     return (
       <ThemeProvider theme={theme}>
         <View style={styles.container}>
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     fontSize: 30,
-    color: 'white',
+    color: 'black',
   },
   logo: {
     alignSelf: 'center',
