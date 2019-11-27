@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, ActionSheetIOS } from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -8,86 +8,61 @@ import {
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/WelcomeScreen';
-import PhotoPicker from '../components/AddItem';
-import SettingsScreen from '../screens/SettingsScreen';
-import SignUpForm from '../screens/SignUpScreen';
-import LoginForm from '../screens/LoginScreen';
+import WelcomeScreen from '../screens/WelcomeScreen';
+import SignUpScreen from '../screens/SignUpScreen';
+import LoginScreen from '../screens/LoginScreen';
 import UserHomeScreen from '../screens/UserHomeScreen';
+import FoodScreen from '../screens/FoodScreen';
+import SingleFoodScreen from '../screens/SingleFoodScreen';
+import AddButton from '../components/AddButton';
+import SettingsScreen from '../screens/SettingsScreen'
 
-const config = Platform.select({
-  web: { headerMode: 'screen' },
-  default: {},
+const AuthStack = createStackNavigator({
+  Welcome: WelcomeScreen,
+  SignUp: SignUpScreen,
+  Login: LoginScreen
 });
 
-const SignUp = createStackNavigator(
-  {
-    Signup: SignUpForm,
-  },
-  config
-);
-SignUp.path = '/signup';
+const UserHomeStack = createStackNavigator({
+  UserHome: UserHomeScreen
+});
 
-const Login = createStackNavigator(
-  {
-    Login: LoginForm,
-  },
-  config
-);
-SignUp.path = '/login';
-
-const HomeStack = createStackNavigator(
-  {
-    Home: HomeScreen,
-  },
-  config
-);
-
-HomeStack.navigationOptions = {
+UserHomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? `ios-home`
+          : 'md-home'
       }
     />
   ),
 };
 
-HomeStack.path = '';
+const FoodStack = createStackNavigator({
+  Food: FoodScreen,
+  SingleFood: SingleFoodScreen
+});
 
-const AddItemStack = createStackNavigator(
-  {
-    Links: PhotoPicker,
-  },
-  config
-);
-
-AddItemStack.navigationOptions = {
-  tabBarLabel: 'Add Item',
+FoodStack.navigationOptions = {
+  tabBarLabel: 'My Food',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? 'ios-add-circle-outline'
-          : 'md-add-circle-outline'
+          ? 'ios-leaf'
+          : 'md-leaf'
       }
     />
   ),
 };
 
-AddItemStack.path = '/AddItem';
-
-const SettingsStack = createStackNavigator(
-  {
-    Settings: SettingsScreen,
-  },
-  config
-);
+const SettingsStack = createStackNavigator({
+  SettingsScreen: SettingsScreen
+})
 
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
@@ -96,41 +71,72 @@ SettingsStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
     />
-  ),
-};
+  )
+}
 
-SettingsStack.path = '/settings';
+// const AddItemStack = createStackNavigator({
+//   AddItem: AddItem,
+//   // UserHome: UserHomeScreen
+// })
 
-const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  AddItemStack,
-  SettingsStack,
-});
+// AddItemStack.navigationOptions = {
+//   tabBarLabel: 'Add Item',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={
+//         Platform.OS === 'ios'
+//           ? 'ios-add-circle-outline'
+//           : 'md-add-circle-outline'
+//       }
+//     />
+//   ),
+//   // tabBarOnPress: ({ navigation, defaultHandler }) => {
+//   //   console.log('this will be fired just before nagivation happens')
+//   //   showActionSheet
+//   //   // defaultHandler({showActionSheet()}) // if you omit this, navigation will not happen
+//   // }
+// };
 
-tabNavigator.path = '';
 
-const UserHome = createStackNavigator(
+const TabNavigator = createBottomTabNavigator(
   {
-    UserHome: UserHomeScreen,
-    App: tabNavigator,
+    UserHomeStack,
+    Add: {
+      screen: () => null,
+      navigationOptions: {
+        tabBarIcon: <AddButton />
+      }
+    },
+    FoodStack,
+    SettingsStack,
   },
-  config
-);
-UserHome.path = '/userhome';
+  {
+    tabBarOptions: {
+      showLabel: false
+    }
+  }
+)
 
-const AppNavigator = createAppContainer(
+const App = createAppContainer(
   createSwitchNavigator(
     {
-      Home: HomeScreen,
-      UserHome: UserHomeScreen,
-      App: tabNavigator,
-      SignUp: SignUp,
-      Login: Login,
+      Auth: AuthStack,
+      App: TabNavigator,
     },
     {
-      initialRouteName: 'Home',
+      initialRouteName: 'Auth',
+      defaultNavigationOptions: {
+        headerStyle: {
+          backgroundColor: '#035640',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      },
     }
   )
 );
 
-export default AppNavigator;
+export default App;
