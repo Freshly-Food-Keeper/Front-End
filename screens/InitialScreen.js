@@ -6,7 +6,7 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider } from 'react-native-elements';
 import { connect } from 'react-redux';
-import NewAppNavigator from '../navigation/NewAppNavigator';
+import AppNavigator from '../navigation/AppNavigator';
 import { theme } from '../theme';
 import HomeScreen from './WelcomeScreen';
 
@@ -34,9 +34,9 @@ const InitialScreen = props => {
       <ThemeProvider theme={theme}>
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <NewAppNavigator>
+          <AppNavigator>
             <HomeScreen />
-          </NewAppNavigator>
+          </AppNavigator>
         </View>
       </ThemeProvider>
     );

@@ -1,14 +1,16 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import user from './reducers/user'
-import food from './reducers/food'
-import data from './reducers/dataVisuals'
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import user from './reducers/user';
+import food from './reducers/food';
+import data from './reducers/dataVisuals';
+import googleVision from './reducers/googleVision';
 
-const reducer = combineReducers({user, food, data})
-const middleware = applyMiddleware(thunkMiddleware)
-const store = createStore(reducer, middleware)
+const reducer = combineReducers({ user, food, data, googleVision });
+const middleware = applyMiddleware(thunkMiddleware);
+const store = createStore(reducer, middleware);
 
-export default store
-export * from './reducers/user'
-export * from './reducers/food'
-export * from './reducers/dataVisuals'
+export default store;
+export * from './reducers/user';
+export * from './reducers/food';
+export * from './reducers/dataVisuals';
+export * from './reducers/googleVision';

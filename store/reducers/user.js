@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
-// import history from '../history'
+import { BACK_END_SERVER } from '../../config/secrets';
 
 /**
  * ACTION TYPES
  */
-const CREATED_USER = 'CREATED_USER';
 const GOT_USER = 'GOT_USER';
 const REMOVED_USER = 'REMOVED_USER';
 const UPDATED_USER = 'UPDATED_USER';
@@ -18,7 +17,6 @@ const defaultUser = {};
 /**
  * ACTION CREATORS
  */
-const createdUser = user => ({ type: CREATED_USER, user });
 const gotUser = user => ({ type: GOT_USER, user });
 const removedUser = () => ({ type: REMOVED_USER });
 const updatedUser = user => ({ type: UPDATED_USER, user });
@@ -38,7 +36,7 @@ export const me = () => async dispatch => {
 
 export const logout = () => async dispatch => {
   try {
-    await AsyncStorage.clear()
+    await AsyncStorage.clear();
     dispatch(removedUser());
   } catch (err) {
     console.error(err);
@@ -55,34 +53,34 @@ export const updateUser = user => async dispatch => {
 };
 
 export const loginUser = user => async dispatch => {
-  let res
+  let res;
   try {
-    res = await axios.post(`https://freshly-back-end.herokuapp.com/auth/login`, user);
+    res = await axios.post(`${BACK_END_SERVER}/auth/login`, user);
   } catch (authError) {
-    return dispatch(gotUser({error: authError}))
+    return dispatch(gotUser({ error: authError }));
   }
 
   try {
     await AsyncStorage.setItem('userId', `${res.data.id}`);
-    dispatch(gotUser(res.data))
+    dispatch(gotUser(res.data));
   } catch (dispatchError) {
-    console.error(dispatchError)
+    console.error(dispatchError);
   }
 };
 
 export const createUser = user => async dispatch => {
-  let res
+  let res;
   try {
-    res = await axios.post(`https://freshly-back-end.herokuapp.com/auth/signup`, user);
+    res = await axios.post(`${BACK_END_SERVER}/auth/signup`, user);
   } catch (authError) {
-    return dispatch(gotUser({ error: authError }))
+    return dispatch(gotUser({ error: authError }));
   }
 
   try {
     await AsyncStorage.setItem('userId', `${res.data.id}`);
-    dispatch(gotUser(res.data))
+    dispatch(gotUser(res.data));
   } catch (dispatchError) {
-    console.error(dispatchError)
+    console.error(dispatchError);
   }
 };
 /**
@@ -90,8 +88,6 @@ export const createUser = user => async dispatch => {
  */
 export default function(state = defaultUser, action) {
   switch (action.type) {
-    case CREATED_USER:
-      return action.user;
     case GOT_USER:
       return action.user;
     case REMOVED_USER:
