@@ -7,13 +7,16 @@ import {
   Platform,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Text
+  Text,
+  Image
 } from "react-native";
 import { FontAwesome5, FontAwesome, AntDesign } from "@expo/vector-icons";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { GOOGLE_CLOUD_VISION_API_KEY } from "../config/secrets";
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { classes } from "istanbul-lib-coverage"
 
 export default class AddButton extends React.Component {
   constructor(props) {
@@ -21,7 +24,8 @@ export default class AddButton extends React.Component {
     this.state = {
       image: null,
       uploading: false,
-      googleResponse: null
+      googleResponse: null,
+      setModalVisible: false
     };
     this.handlePress = this.handlePress.bind(this);
     this.pickImage = this.pickImage.bind(this);
@@ -172,11 +176,26 @@ export default class AddButton extends React.Component {
       outputRange: [-50, -100]
     });
 
-    const isIOS = Platform.OS === "ios";
-    console.log(isIOS);
+    let { image } = this.state
 
     return (
       <View style={{ position: "absolute", alignItems: "center" }}>
+        <Dialog
+          containerStyle={styles.dialogContainer}
+          visible={!!this.state.image}
+          onTouchOutside={() => {
+            this.setState({ image: null });
+          }}
+        >
+          <DialogContent style={styles.dialogContent}>
+            <View className={classes.imageConatiner}>
+              <Image
+                style={styles.logo}
+                source={image}
+              />
+            </View>
+          </DialogContent>
+        </Dialog>
         <Animated.View
           style={[
             styles.secondaryButton,
