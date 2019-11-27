@@ -5,6 +5,7 @@ import TouchableScale from 'react-native-touchable-scale' // https://github.com/
 import { connect } from 'react-redux'
 import { getAllInventory } from '../store/reducers/food'
 import user from '../store/reducers/user'
+import SingleFood from './SingleFoodScreen'
 
 const titleCase = title => {
   return title
@@ -68,7 +69,6 @@ class FoodScreen extends Component {
   componentDidMount() {
     this.props.getInventory()
   }
-
   render() {
     // TODO: WHEN ROUTES GETS WORKED OUT, WE NEED TO SORT FOODS FOR HOMESCREEN VS. FOODSCREEN
     // DO SORTING HERE NOT IN BACKEND
@@ -95,6 +95,7 @@ class FoodScreen extends Component {
             subtitle={dayCalculator(food.expiresIn)}
             subtitleStyle={{ color: '#262626' }}
             chevron={{ color: '#262626' }}
+            onPress={() => this.props.navigation.navigate('SingleFood', {food: food})}
             bottomDivider
           />
         ))}

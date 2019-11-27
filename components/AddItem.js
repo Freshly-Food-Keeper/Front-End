@@ -6,7 +6,6 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { GOOGLE_CLOUD_VISION_API_KEY } from '../config/secrets';
 
-
 // const showActionSheet = () => {
 //   ActionSheetIOS.showActionSheetWithOptions({
 //     options: ['Take Photo', 'Choose From Camera Roll'],
@@ -51,6 +50,49 @@ class AddItem extends React.Component {
     this.setState({hasMounted: true})
   }
 
+const showActionSheet = () => {
+  ActionSheetIOS.showActionSheetWithOptions({
+    options: ['Take Photo', 'Choose From Camera Roll'],
+    destructiveButtonIndex: 1,
+    cancelButtonIndex: 0,
+  },
+    (buttonIndex) => {
+      if (buttonIndex === 1) {
+        this.setState({ clicked: BUTTONS[buttonIndex] });
+      }
+    })
+}
+
+export default class AddItem extends React.Component {
+  constructor(props){
+    super(props)
+      this.state = {
+        image: null,
+        uploading: false,
+        googleResponse: null,
+      }
+      this.showActionSheet = this.showActionSheet.bind(this)
+  }
+  showActionSheet(){
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Take Photo', 'Choose From Camera Roll'],
+      destructiveButtonIndex: 1,
+      cancelButtonIndex: 0,
+    },
+      (buttonIndex) => {
+        if (buttonIndex === 1) {
+          this.setState({ clicked: BUTTONS[buttonIndex] });
+        }
+      })
+  }
+  componentDidMount(){
+    this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        this.showActionSheet()
+      }
+    )
+  }
   render() {
     let { image, hasMounted } = this.state;
 
