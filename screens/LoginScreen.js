@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Input } from 'react-native-elements';
-import { View, Text, StyleSheet, Header, Image } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -58,6 +58,26 @@ class Login extends React.Component {
       </View>
     );
   }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: 'Log In to Freshly',
+      headerRight: <Button
+        onPress={() => {
+          navigation.navigate('SignUp')
+        }}
+        title="Sign Up"
+        color="#fff" 
+      />,
+      headerStyle: {
+        backgroundColor: '#035640',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }
+  };
 }
 
 const mapState = state => {

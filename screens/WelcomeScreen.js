@@ -65,6 +65,10 @@ export default class WelcomeScreen extends React.Component {
     }
 }
 
+WelcomeScreen.navigationOptions = {	
+  header: null,	
+};
+
 async function loadResourcesAsync() {
   await Promise.all([
     Asset.loadAsync([
