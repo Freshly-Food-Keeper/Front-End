@@ -1,6 +1,6 @@
 import React from 'react'
 import SettingsList from 'react-native-settings-list'
-import { View, Image, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { logout } from '../store/reducers/user'
 import { connect } from 'react-redux'
 
