@@ -6,21 +6,30 @@ import {
   Animated,
   Platform,
   TouchableOpacity,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  Text
 } from "react-native";
-import {
-  FontAwesome5,
-  Feather,
-  Ionicons,
-  FontAwesome,
-  AntDesign
-} from "@expo/vector-icons";
+import { FontAwesome5, FontAwesome, AntDesign } from "@expo/vector-icons";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { GOOGLE_CLOUD_VISION_API_KEY } from "../config/secrets";
 
 export default class AddButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      image: null,
+      uploading: false,
+      googleResponse: null
+    };
+    this.handlePress = this.handlePress.bind(this);
+    this.pickImage = this.pickImage.bind(this);
+    this.takePhoto = this.takePhoto.bind(this);
+    this.submitToGoogle = this.submitToGoogle.bind(this);
+    this.getPermissionAsync = this.getPermissionAsync.bind(this);
+  }
+
   buttonSize = new Animated.Value(1);
   mode = new Animated.Value(0);
 
@@ -28,7 +37,7 @@ export default class AddButton extends React.Component {
     Animated.sequence([
       Animated.timing(this.buttonSize, {
         toValue: 0.95,
-        duration: 200
+        duration: 100
       }),
       Animated.timing(this.buttonSize, {
         toValue: 1
@@ -163,96 +172,60 @@ export default class AddButton extends React.Component {
       outputRange: [-50, -100]
     });
 
+    const isIOS = Platform.OS === "ios";
+    console.log(isIOS);
+
     return (
       <View style={{ position: "absolute", alignItems: "center" }}>
-        {Platform.OS ? (
-          <React.Fragment>
-            <Animated.View
-              style={[
-                styles.secondaryButton,
-                { position: "absolute", left: cameraX, top: cameraY }
-              ]}
-            >
-              <TouchableHighlight onPress={this.takePhoto}>
-                <View>
-                  <FontAwesome name="camera" size={24} color="#FFF" />
-                </View>
-              </TouchableHighlight>
-            </Animated.View>
+        <Animated.View
+          style={[
+            styles.secondaryButton,
+            { position: "absolute", left: cameraX, top: cameraY }
+          ]}
+        >
+          <TouchableHighlight
+            onPress={this.takePhoto}
+            underlayColor="#7F58FF"
+          >
+            <FontAwesome name="camera" size={24} color="#FFF" />
+          </TouchableHighlight>
+        </Animated.View>
 
-            <Animated.View
-              style={[
-                styles.secondaryButton,
-                { position: "absolute", left: photosX, top: photosY }
-              ]}
-            >
-              <TouchableHighlight onPress={this.pickImage}>
-                <View>
-                  <FontAwesome name="file-photo-o" size={24} color="#FFF" />
-                </View>
-              </TouchableHighlight>
-            </Animated.View>
+        <Animated.View
+          style={[
+            styles.secondaryButton,
+            { position: "absolute", left: photosX, top: photosY }
+          ]}
+        >
+          <TouchableHighlight
+            onPress={() => this.pickImage()}
+            underlayColor="#7F58FF"
+            // style={{ }}
+          >
+            <FontAwesome name="file-photo-o" size={24} color="#FFF" />
+          </TouchableHighlight>
+        </Animated.View>
 
-            <Animated.View
-              style={[
-                styles.secondaryButton,
-                { position: "absolute", left: formX, top: formY }
-              ]}
-            >
-              <View>
-                <AntDesign name="form" size={24} color="#FFF" />
-              </View>
-            </Animated.View>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <Animated.View
-              style={[
-                styles.secondaryButton,
-                { position: "absolute", left: cameraX, top: cameraY }
-              ]}
-            >
-              <TouchableNativeFeedback onPress={this.takePhoto}>
-                <View>
-                  <FontAwesome name="camera" size={24} color="#FFF" />
-                </View>
-              </TouchableNativeFeedback>
-            </Animated.View>
-            <Animated.View
-              style={[
-                styles.secondaryButton,
-                { position: "absolute", left: photosX, top: photosY }
-              ]}
-            >
-              <TouchableNativeFeedback onPress={this.pickImage}>
-                <View>
-                  <FontAwesome name="file-photo-o" size={24} color="#FFF" />
-                </View>
-              </TouchableNativeFeedback>
-            </Animated.View>
-            <Animated.View
-              style={[
-                styles.secondaryButton,
-                { position: "absolute", left: formX, top: formY }
-              ]}
-            >
-              <View>
-                <AntDesign name="form" size={24} color="#FFF" />
-              </View>
-            </Animated.View>
-            )
-          </React.Fragment>
-        )}
+        <Animated.View
+          style={[
+            styles.secondaryButton,
+            { position: "absolute", left: formX, top: formY }
+          ]}
+        >
+          <View>
+            <AntDesign name="form" size={24} color="#FFF" />
+          </View>
+        </Animated.View>
 
         <Animated.View style={[styles.button, sizeStyle]}>
-          <TouchableNativeFeedback
+          <TouchableHighlight
             onPress={this.handlePress}
             underlayColor="#7F58FF"
           >
             <Animated.View style={{ transform: [{ rotate: rotation }] }}>
               <FontAwesome5 name="plus" size={24} color="#FFF" />
             </Animated.View>
-          </TouchableNativeFeedback>
+          </TouchableHighlight>
         </Animated.View>
       </View>
     );
