@@ -14,6 +14,7 @@ import SignUpScreen from '../screens/SignUpScreen';
 import LoginScreen from '../screens/LoginScreen';
 import UserHomeScreen from '../screens/UserHomeScreen';
 import FoodScreen from '../screens/FoodScreen'
+import AddButton from '../components/AddButton';
 
 const AuthStack = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -32,8 +33,8 @@ UserHomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? `ios-home`
+          : 'md-home'
       }
     />
   ),
@@ -57,36 +58,48 @@ FoodStack.navigationOptions = {
   ),
 };
 
-const AddItemStack = createStackNavigator({
-  AddItem: AddItem,
-  // UserHome: UserHomeScreen
-})
+// const AddItemStack = createStackNavigator({
+//   AddItem: AddItem,
+//   // UserHome: UserHomeScreen
+// })
 
 
-AddItemStack.navigationOptions = {
-  tabBarLabel: 'Add Item',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? 'ios-add-circle-outline'
-          : 'md-add-circle-outline'
-      }
-    />
-  ),
-  // tabBarOnPress: ({ navigation, defaultHandler }) => {
-  //   console.log('this will be fired just before nagivation happens')
-  //   showActionSheet
-  //   // defaultHandler({showActionSheet()}) // if you omit this, navigation will not happen
-  // }
-};
+// AddItemStack.navigationOptions = {
+//   tabBarLabel: 'Add Item',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={
+//         Platform.OS === 'ios'
+//           ? 'ios-add-circle-outline'
+//           : 'md-add-circle-outline'
+//       }
+//     />
+//   ),
+//   // tabBarOnPress: ({ navigation, defaultHandler }) => {
+//   //   console.log('this will be fired just before nagivation happens')
+//   //   showActionSheet
+//   //   // defaultHandler({showActionSheet()}) // if you omit this, navigation will not happen
+//   // }
+// };
 
-const TabNavigator = createBottomTabNavigator({
-  UserHomeStack,
-  AddItemStack,
-  FoodStack,
-});
+const TabNavigator = createBottomTabNavigator(
+  {
+    UserHomeStack,
+    Add : {
+      screen: () => null,
+      navigationOptions: {
+        tabBarIcon: <AddButton />,
+      },
+    },
+    FoodStack,
+  },
+  {
+    tabBarOptions: {
+      showLabel: false
+    }
+  }
+);
 
 const App = createAppContainer(
   createSwitchNavigator(
