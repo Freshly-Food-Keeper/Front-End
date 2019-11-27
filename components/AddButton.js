@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Text,
-  Image
+  Image,
+  Button
 } from "react-native";
 import { FontAwesome5, FontAwesome, AntDesign } from "@expo/vector-icons";
 import Constants from "expo-constants";
@@ -16,7 +17,6 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { GOOGLE_CLOUD_VISION_API_KEY } from "../config/secrets";
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
-import { classes } from "istanbul-lib-coverage"
 
 export default class AddButton extends React.Component {
   constructor(props) {
@@ -188,12 +188,22 @@ export default class AddButton extends React.Component {
           }}
         >
           <DialogContent style={styles.dialogContent}>
-            <View className={classes.imageConatiner}>
+            <View styles={styles.imageConatiner}>
               <Image
-                style={styles.logo}
+                style={styles.image}
                 source={image}
               />
             </View>
+            {this.state.googleResponse && (
+              <View>
+                  {
+                    this.state.googleResponse['responses']
+                    .map((response) => (<Text>{
+                      console.log("response", response) ||
+                      response['labelAnnotations'][0]["description"]}</Text>))
+                  }
+              </View>
+            )}
           </DialogContent>
         </Dialog>
         <Animated.View
@@ -276,5 +286,25 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     backgroundColor: "#035640"
-  }
+  },
+  image: {
+    marginTop: 20,
+    height: '25%',
+    width: '25%'
+  },
+  dialogContent: {
+    minWidth: '75%',
+    height: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageConatiner: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
 });

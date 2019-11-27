@@ -54,6 +54,7 @@ export default class WelcomeScreen extends React.Component {
                   title="SIGN UP"
                   buttonStyle={styles.buttons}
                   onPress={() => {
+                    console.log('signup pressed!')
                     this.props.navigation.navigate('SignUp');
                   }}
                 />
