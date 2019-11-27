@@ -1,34 +1,38 @@
 import * as React from 'react';
 import { Button, Image, View, ActionSheetIOS } from 'react-native';
+import { withNavigationFocus } from 'react-navigation';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { GOOGLE_CLOUD_VISION_API_KEY } from '../config/secrets';
 
 
-const showActionSheet = () => {
-  ActionSheetIOS.showActionSheetWithOptions({
-    options: ['Take Photo', 'Choose From Camera Roll'],
-    destructiveButtonIndex: 1,
-    cancelButtonIndex: 0,
-  },
-    (buttonIndex) => {
-      if (buttonIndex === 1) {
-        this.setState({ clicked: BUTTONS[buttonIndex] });
-      }
-    })
-}
+// const showActionSheet = () => {
+//   ActionSheetIOS.showActionSheetWithOptions({
+//     options: ['Take Photo', 'Choose From Camera Roll'],
+//     destructiveButtonIndex: 1,
+//     cancelButtonIndex: 0,
+//   },
+//     (buttonIndex) => {
+//       if (buttonIndex === 1) {
+//         this.setState({ clicked: BUTTONS[buttonIndex] });
+//       }
+//     })
+// }
 
-export default class AddItem extends React.Component {
+class AddItem extends React.Component {
   constructor(props){
     super(props)
       this.state = {
         image: null,
         uploading: false,
         googleResponse: null,
+        hasMounted: false, 
       }
       this.showActionSheet = this.showActionSheet.bind(this)
   }
+
+
   showActionSheet(){
     ActionSheetIOS.showActionSheetWithOptions({
       options: ['Take Photo', 'Choose From Camera Roll'],
@@ -41,16 +45,40 @@ export default class AddItem extends React.Component {
         }
       })
   }
-  componentDidMount(){
-    this.props.navigation.addListener(
-      'didFocus',
-      payload => {
-        this.showActionSheet()
-      }
-    )
+
+  componentDidMount() {
+    console.log('in component did mount')
+    this.setState({hasMounted: true})
   }
+
   render() {
-    let { image } = this.state;
+    let { image, hasMounted } = this.state;
+
+    console.log(hasMounted)
+
+    if(hasMounted) {
+      ActionSheetIOS.showActionSheetWithOptions({
+        options: ['Take Photo', 'Choose From Camera Roll', 'Cancel'],
+
+      },
+        (buttonIndex) => {
+          this.setState({actionSheetOpen: true})
+          if (buttonIndex === 2) {
+            this.props.navigation.navigate('Food')
+          }
+      })
+    } else if(this.props.navigation.isFocused()){
+      ActionSheetIOS.showActionSheetWithOptions({
+        options: ['Take Photo', 'Choose From Camera Roll', 'Cancel'],
+
+      },
+        (buttonIndex) => {
+          this.setState({actionSheetOpen: true})
+          if (buttonIndex === 2) {
+            this.props.navigation.navigate('Food')
+          }
+      })
+    }
 
     return (
     <View></View>
@@ -159,3 +187,5 @@ export default class AddItem extends React.Component {
     }
   };
 }
+
+export default withNavigationFocus(AddItem)
