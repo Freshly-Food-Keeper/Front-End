@@ -36,40 +36,9 @@ export const me = () => async dispatch => {
   }
 };
 
-// export const auth = (
-//   firstName,
-//   lastName,
-//   email,
-//   password,
-//   method
-// ) => async dispatch => {
-//   let res;
-//   try {
-//     console.log('yoyo');
-//     res = await axios.post(
-//       `http:/172.16.26.110:8080/auth/login`,
-//       // `https://freshly-back-end.herokuapp.com/auth/${method}`,
-//       {
-//         firstName,
-//         lastName,
-//         email,
-//         password,
-//       }
-//     );
-//   } catch (authError) {
-//     return dispatch(getUser({ error: authError }));
-//   }
-
-//   try {
-//     dispatch(getUser({ ...res.data, isLoggedIn: true }));
-//   } catch (dispatchOrHistoryErr) {
-//     console.error(dispatchOrHistoryErr);
-//   }
-// };
-
 export const logout = () => async dispatch => {
   try {
-    await axios.post('/auth/logout');
+    await AsyncStorage.clear()
     dispatch(removedUser());
   } catch (err) {
     console.error(err);
@@ -89,18 +58,12 @@ export const loginUser = user => async dispatch => {
   let res
   try {
     res = await axios.post(`https://freshly-back-end.herokuapp.com/auth/login`, user);
-    // dispatch(gotUser(user));
-    console.log('user logged in:', user);
   } catch (authError) {
     return dispatch(gotUser({error: authError}))
   }
 
   try {
-<<<<<<< HEAD
-    await AsyncStorage.setItem('userId', `${user.id}`);
-=======
     await AsyncStorage.setItem('userId', `${res.data.id}`);
->>>>>>> 6b78cace5d99a603639fe451d705fe1fbe77b74b
     dispatch(gotUser(res.data))
   } catch (dispatchError) {
     console.error(dispatchError)
@@ -111,8 +74,6 @@ export const createUser = user => async dispatch => {
   let res
   try {
     res = await axios.post(`https://freshly-back-end.herokuapp.com/auth/signup`, user);
-    // dispatch(gotUser(user));
-    console.log('user signed in:', user);
   } catch (authError) {
     return dispatch(gotUser({ error: authError }))
   }

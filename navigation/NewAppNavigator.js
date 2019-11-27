@@ -9,13 +9,13 @@ import {
 
 import TabBarIcon from '../components/TabBarIcon';
 import WelcomeScreen from '../screens/WelcomeScreen';
-import AddItem from '../components/AddItem';
 import SignUpScreen from '../screens/SignUpScreen';
 import LoginScreen from '../screens/LoginScreen';
 import UserHomeScreen from '../screens/UserHomeScreen';
 import SingleFoodScreen from '../screens/SingleFoodScreen';
 import FoodScreen from '../screens/FoodScreen'
 import AddButton from '../components/AddButton';
+import SettingsScreen from '../screens/SettingsScreen'
 
 const AuthStack = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -60,6 +60,20 @@ FoodStack.navigationOptions = {
   ),
 };
 
+const SettingsStack = createStackNavigator({
+  SettingsScreen: SettingsScreen
+})
+
+SettingsStack.navigationOptions = {
+  tabBarLabel: 'Settings',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  )
+}
+
 // const AddItemStack = createStackNavigator({
 //   AddItem: AddItem,
 //   // UserHome: UserHomeScreen
@@ -87,20 +101,21 @@ FoodStack.navigationOptions = {
 const TabNavigator = createBottomTabNavigator(
   {
     UserHomeStack,
-    Add : {
+    Add: {
       screen: () => null,
       navigationOptions: {
-        tabBarIcon: <AddButton />,
-      },
+        tabBarIcon: <AddButton />
+      }
     },
     FoodStack,
+    SettingsStack,
   },
   {
     tabBarOptions: {
       showLabel: false
     }
   }
-);
+)
 
 const App = createAppContainer(
   createSwitchNavigator(
