@@ -101,21 +101,21 @@ SettingsStack.navigationOptions = {
 const TabNavigator = createBottomTabNavigator(
   {
     UserHomeStack,
-    SettingsStack,
     Add: {
       screen: () => null,
       navigationOptions: {
-        tabBarIcon: <AddButton />,
-      },
+        tabBarIcon: <AddButton />
+      }
     },
     FoodStack,
+    SettingsStack,
   },
   {
     tabBarOptions: {
       showLabel: false
     }
   }
-);
+)
 
 const App = createAppContainer(
   createSwitchNavigator(
