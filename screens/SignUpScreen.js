@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Input } from 'react-native-elements';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { createUser } from '../store';
@@ -16,9 +16,12 @@ class SignUp extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit() {
-    this.props.createUser(this.state);
-    this.props.navigation.navigate('UserHome');
+  
+  async handleSubmit() {
+    await this.props.createUser(this.state);
+    if (!this.props.error){
+      this.props.navigation.navigate('App');
+    }
   }
 
   render() {
@@ -73,7 +76,43 @@ class SignUp extends React.Component {
       </View>
     );
   }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: 'Sign Up for Freshly',
+      headerRight: <Button
+        onPress={() => {
+          navigation.navigate('Login')
+        }}
+        title="Login"
+        color="#fff" 
+      />,
+      headerStyle: {
+        backgroundColor: '#035640',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }
+  };
 }
+
+// SignUp.navigationOptions = {
+//   headerTitle: 'Sign Up for Freshly',
+//   headerRight: <Button
+//     onPress={() => this.props.navigation.navigate('Login')}
+//     title="Login"
+//     color="#fff" 
+//   />,
+//   headerStyle: {
+//     backgroundColor: '#035640',
+//   },
+//   headerTintColor: '#fff',
+//   headerTitleStyle: {
+//     fontWeight: 'bold',
+//   },
+// };
 
 const mapState = state => {
   return {

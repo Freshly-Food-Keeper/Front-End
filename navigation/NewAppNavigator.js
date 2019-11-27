@@ -109,6 +109,15 @@ const App = createAppContainer(
     },
     {
       initialRouteName: 'Auth',
+      defaultNavigationOptions: {
+        headerStyle: {
+          backgroundColor: '#035640',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      },
     }
   )
 );
