@@ -14,12 +14,18 @@ import SignUpScreen from '../screens/SignUpScreen';
 import LoginScreen from '../screens/LoginScreen';
 import UserHomeScreen from '../screens/UserHomeScreen';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import FoodScreen from '../screens/FoodScreen';
 import SingleFoodScreen from '../screens/SingleFoodScreen';
 =======
 import FoodScreen from '../screens/FoodScreen'
 import AddButton from '../components/AddButton';
 >>>>>>> 657d31514f5bd6add0b7ec8fbfcb3628d4482307
+=======
+import SingleFoodScreen from '../screens/SingleFoodScreen';
+import FoodScreen from '../screens/FoodScreen'
+import AddButton from '../components/AddButton';
+>>>>>>> bf033cda3d1823ec1f625345741d6e60d3c30566
 
 const AuthStack = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -69,7 +75,6 @@ FoodStack.navigationOptions = {
 //   // UserHome: UserHomeScreen
 // })
 
-
 // AddItemStack.navigationOptions = {
 //   tabBarLabel: 'Add Item',
 //   tabBarIcon: ({ focused }) => (
@@ -90,6 +95,7 @@ FoodStack.navigationOptions = {
 // };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 const TabNavigator = createBottomTabNavigator({
   UserHomeStack,
@@ -97,6 +103,8 @@ const TabNavigator = createBottomTabNavigator({
   FoodStack
 });
 =======
+=======
+>>>>>>> bf033cda3d1823ec1f625345741d6e60d3c30566
 const TabNavigator = createBottomTabNavigator(
   {
     UserHomeStack,
@@ -114,7 +122,10 @@ const TabNavigator = createBottomTabNavigator(
     }
   }
 );
+<<<<<<< HEAD
 >>>>>>> 657d31514f5bd6add0b7ec8fbfcb3628d4482307
+=======
+>>>>>>> bf033cda3d1823ec1f625345741d6e60d3c30566
 
 const App = createAppContainer(
   createSwitchNavigator(

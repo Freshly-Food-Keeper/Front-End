@@ -96,7 +96,15 @@ export const loginUser = user => async dispatch => {
   }
 
   try {
+<<<<<<< HEAD
     await AsyncStorage.setItem('userId', `${res.data.id}`);
+=======
+<<<<<<< HEAD
+    await AsyncStorage.setItem('userId', `${user.id}`);
+=======
+    await AsyncStorage.setItem('userId', `${res.data.id}`);
+>>>>>>> 6b78cace5d99a603639fe451d705fe1fbe77b74b
+>>>>>>> bf033cda3d1823ec1f625345741d6e60d3c30566
     dispatch(gotUser(res.data))
   } catch (dispatchError) {
     console.error(dispatchError)
