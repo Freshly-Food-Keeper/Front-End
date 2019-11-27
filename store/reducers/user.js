@@ -36,6 +36,7 @@ export const me = () => async dispatch => {
   }
 };
 
+// LogOut User
 export const logout = () => async dispatch => {
   try {
     await AsyncStorage.clear()
@@ -44,6 +45,7 @@ export const logout = () => async dispatch => {
     console.error(err);
   }
 };
+
 
 export const updateUser = user => async dispatch => {
   try {
@@ -54,6 +56,7 @@ export const updateUser = user => async dispatch => {
   }
 };
 
+// Login User
 export const loginUser = user => async dispatch => {
   let res
   try {
