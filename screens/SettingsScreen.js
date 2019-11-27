@@ -1,6 +1,6 @@
 import React from 'react'
 import SettingsList from 'react-native-settings-list'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, Text } from 'react-native'
 import { logout } from '../store/reducers/user'
 import { connect } from 'react-redux'
 
@@ -17,13 +17,7 @@ class SettingsScreen extends React.Component {
             <SettingsList.Header headerStyle={{ marginTop: 15 }} headerText='User Settings' />
             <SettingsList.Item
               hasNavArrow={false}
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  source={require('../assets/images/food-placeholder.jpg')}
-                />
-              }
-              title='Log out'
+              title='Log Out'
               onPress={() => this.logOut()}
             />
           </SettingsList>
