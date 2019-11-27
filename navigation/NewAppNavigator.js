@@ -12,8 +12,8 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import LoginScreen from '../screens/LoginScreen';
 import UserHomeScreen from '../screens/UserHomeScreen';
+import FoodScreen from '../screens/FoodScreen';
 import SingleFoodScreen from '../screens/SingleFoodScreen';
-import FoodScreen from '../screens/FoodScreen'
 import AddButton from '../components/AddButton';
 import SettingsScreen from '../screens/SettingsScreen'
 
@@ -97,6 +97,7 @@ SettingsStack.navigationOptions = {
 //   //   // defaultHandler({showActionSheet()}) // if you omit this, navigation will not happen
 //   // }
 // };
+
 
 const TabNavigator = createBottomTabNavigator(
   {
