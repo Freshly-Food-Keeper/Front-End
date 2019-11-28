@@ -9,7 +9,6 @@ import {
   TouchableNativeFeedback,
   Text,
   Image,
-  Button
 } from "react-native";
 import { FontAwesome5, FontAwesome, AntDesign } from "@expo/vector-icons";
 import Constants from "expo-constants";
@@ -17,6 +16,7 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { GOOGLE_CLOUD_VISION_API_KEY } from "../config/secrets";
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { ButtonGroup } from 'react-native-elements'
 
 export default class AddButton extends React.Component {
   constructor(props) {
@@ -25,7 +25,8 @@ export default class AddButton extends React.Component {
       image: null,
       uploading: false,
       googleResponse: null,
-      setModalVisible: false
+      setModalVisible: false,
+      selectedButtonIndex: 0,
     };
     this.handlePress = this.handlePress.bind(this);
     this.pickImage = this.pickImage.bind(this);
@@ -65,7 +66,6 @@ export default class AddButton extends React.Component {
   };
 
   pickImage = async () => {
-    console.log("in pick image");
     let image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -122,7 +122,6 @@ export default class AddButton extends React.Component {
         }
       );
       let responseJson = await response.json();
-      console.log(responseJson);
       this.setState({
         googleResponse: responseJson,
         uploading: false
@@ -177,6 +176,7 @@ export default class AddButton extends React.Component {
     });
 
     let { image } = this.state
+    const buttons = this.state.googleResponse ? this.state.googleResponse['responses'][0]['labelAnnotations'].slice(0, 3).map(button => button["description"]) : []
 
     return (
       <View style={{ position: "absolute", alignItems: "center" }}>
@@ -195,13 +195,13 @@ export default class AddButton extends React.Component {
               />
             </View>
             {this.state.googleResponse && (
-              <View>
-                  {
-                    this.state.googleResponse['responses']
-                    .map((response) => (<Text>{
-                      console.log("response", response) ||
-                      response['labelAnnotations'][0]["description"]}</Text>))
-                  }
+              <View styles={styles.listContainer}>
+                <ButtonGroup
+                  onPress={(selectedButtonIndex) => this.setState({ selectedButtonIndex })}
+                  selectedIndex={this.state.selectedButtonIndex}
+                  buttons={buttons}
+                  containerStyle={{ height: 25, width:'100%' }}
+                />
               </View>
             )}
           </DialogContent>
@@ -307,4 +307,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
   },
+  buttonGroup: {
+    width: 20,
+    height: 20,
+  }
 });
