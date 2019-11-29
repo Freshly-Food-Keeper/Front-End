@@ -8,6 +8,7 @@ import { BACK_END_SERVER } from '../../config/secrets';
 const GOT_USER = 'GOT_USER';
 const REMOVED_USER = 'REMOVED_USER';
 const UPDATED_USER = 'UPDATED_USER';
+const REMOVED_ERROR = 'REMOVED_ERROR';
 
 /**
  * INITIAL STATE
@@ -20,6 +21,7 @@ const defaultUser = {};
 const gotUser = user => ({ type: GOT_USER, user });
 const removedUser = () => ({ type: REMOVED_USER });
 const updatedUser = user => ({ type: UPDATED_USER, user });
+const removedError = () => ({ type: REMOVED_ERROR });
 
 /**
  * THUNK CREATORS
@@ -57,7 +59,7 @@ export const loginUser = user => async dispatch => {
   try {
     res = await axios.post(`${BACK_END_SERVER}/auth/login`, user);
   } catch (authError) {
-    return dispatch(gotUser({ error: authError }));
+    return dispatch(gotUser({ loginError: authError }));
   }
 
   try {
@@ -73,7 +75,7 @@ export const createUser = user => async dispatch => {
   try {
     res = await axios.post(`${BACK_END_SERVER}/auth/signup`, user);
   } catch (authError) {
-    return dispatch(gotUser({ error: authError }));
+    return dispatch(gotUser({ signUpError: authError }));
   }
 
   try {
@@ -83,6 +85,11 @@ export const createUser = user => async dispatch => {
     console.error(dispatchError);
   }
 };
+
+export const removeError = () => async dispatch => {
+  dispatch(removedError())
+}
+
 /**
  * REDUCER
  */
@@ -94,6 +101,8 @@ export default function(state = defaultUser, action) {
       return defaultUser;
     case UPDATED_USER:
       return { ...state, ...action.user };
+    case REMOVED_ERROR:
+      return defaultUser;
     default:
       return state;
   }

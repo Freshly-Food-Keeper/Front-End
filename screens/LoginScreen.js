@@ -1,147 +1,188 @@
-import * as React from 'react';
-import { Input } from 'react-native-elements';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { loginUser } from '../store';
+import * as React from "react";
+import { View, Text, StyleSheet, Button, TouchableOpacity, Alert } from "react-native";
+import { Input } from "react-native-elements";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { loginUser, removeError } from "../store";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 class Login extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  async handleSubmit() {
-    console.log('submitted');
-    await this.props.loginUser(this.state);
-    if (!this.props.error){
-      this.props.navigation.navigate('App');
+  async handleSubmit(values) {
+    const email = values.email.toLowerCase();
+
+    await this.props.loginUser({ ...values, email });
+
+    if (!this.props.error) {
+      this.props.navigation.navigate("App");
     }
   }
 
   render() {
     const { error } = this.props;
+
+    if(error) {
+      Alert.alert(
+        'Oops!',
+        error.response.data,
+        [
+          {text: 'OK', onPress: this.props.removeError,}
+        ],
+        {cancelable: false},
+      );
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.form}>
-          <View style={styles.input}>
-            <Input
-              name="email"
-              placeholder="Email"
-              onChangeText={email => this.setState({ email })}
-              value={this.state.email}
-              errorMessage="This field is required"
-            />
-          </View>
-          <View style={styles.input}>
-            <Input
-              name="password"
-              placeholder="Password"
-              onChangeText={password => this.setState({ password })}
-              value={this.state.password}
-              errorMessage="This field is required"
-            />
-          </View>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={Yup.object({
+              email: Yup.string()
+                .email("Please enter a valid email address")
+                .required("Please enter your email address"),
+              password: Yup.string().required("Please enter your password")
+            })}
+            onSubmit={this.handleSubmit}
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              isValid
+            }) => (
+              <React.Fragment>
+                <View style={styles.input}>
+                  <Input
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    placeholder="Email"
+                  />
+                  {touched.email && errors.email ? (
+                    <Text style={styles.errorText}>{errors.email}</Text>
+                  ) : null}
+                </View>
 
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
-              <Text style={styles.buttonText}>LOGIN</Text>
-            </TouchableOpacity>
-            {error && error.response && <Text> {error.response.data} </Text>}
-          </View>
+                <View style={styles.input}>
+                  <Input
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    placeholder="Password"
+                    secureTextEntry={true}
+                  />
+                  {touched.password && errors.password ? (
+                    <Text style={styles.errorText}>{errors.password}</Text>
+                  ) : null}
+                </View>
+
+                <View>
+                  <TouchableOpacity
+                    style={[styles.button, !isValid && { opacity: 0.7 }]}
+                    disabled={!isValid}
+                    onPress={handleSubmit}
+                  >
+                    <Text style={styles.buttonText}>LOGIN</Text>
+                  </TouchableOpacity>
+                </View>
+              </React.Fragment>
+            )}
+          </Formik>
         </View>
       </View>
     );
   }
+}
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: 'Log In to Freshly',
-      headerRight: <Button
+Login.navigationOptions = ({ navigation }) => {
+  return {
+    headerTitle: "Welcome Back",
+    headerRight: (
+      <Button
         onPress={() => {
-          navigation.navigate('SignUp')
+          navigation.navigate("SignUp");
         }}
         title="Sign Up"
-        color="#fff" 
-      />,
-      headerStyle: {
-        backgroundColor: '#035640',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
+        color="#fff"
+      />
+    ),
+    headerStyle: {
+      backgroundColor: "#035640"
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+      fontWeight: "bold"
     }
   };
-}
+};
 
 const mapState = state => {
   return {
-    error: state.user.error,
+    error: state.user.loginError
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     loginUser: user => dispatch(loginUser(user)),
+    removeError: () => dispatch(removeError())
   };
 };
 
 export default connect(mapState, mapDispatch)(Login);
 
 Login.propTypes = {
-  error: PropTypes.object,
+  error: PropTypes.object
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#035640',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    padding: 0,
-    margin: 0,
-    fontSize: 30,
-    color: 'white',
+    backgroundColor: "#035640",
+    alignItems: "center"
   },
   form: {
-    backgroundColor: 'white',
-    width: '80%',
-    padding: 15,
-    margin: 15,
-    borderRadius: 5,
+    backgroundColor: "white",
+    width: "90%",
+    padding: 10,
+    marginTop: 50,
+    borderRadius: 8
   },
   input: {
     padding: 3,
-    margin: 3,
+    margin: 10,
     fontSize: 20,
-    width: 300,
-    borderRadius: 5,
+    borderRadius: 5
   },
   image: {
     flex: 1,
     height: null,
-    width: null,
-  },
-  buttonContainer: {
-    alignItems: 'center',
+    width: null
   },
   button: {
-    backgroundColor: '#035640',
-    width: 300,
+    backgroundColor: "#035640",
     padding: 15,
     margin: 15,
-    borderRadius: 5,
+    borderRadius: 5
   },
   buttonText: {
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 20,
+    textAlign: "center",
+    color: "white",
+    fontSize: 20
   },
+  errorText: {
+    color: "#f44336",
+    fontSize: 12,
+    marginLeft: 10,
+    marginTop: 2
+  }
 });
