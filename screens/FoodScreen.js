@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Platform, StatusBar } from 'react-native'
-import { ListItem, Badge, withBadge, Avatar } from 'react-native-elements'
+import { View, StyleSheet } from 'react-native'
+import { ListItem, Badge, Avatar } from 'react-native-elements'
 import TouchableScale from 'react-native-touchable-scale' // https://github.com/kohver/react-native-touchable-scale
 import { connect } from 'react-redux'
 import { getAllInventory } from '../store/reducers/food'
-import user from '../store/reducers/user'
-import SingleFood from './SingleFoodScreen'
 
 const titleCase = title => {
   return title
@@ -70,6 +68,8 @@ class FoodScreen extends Component {
     this.props.getInventory()
   }
   render() {
+        // console.log('props in foodscreen', this.props.navigation)
+
     // TODO: WHEN ROUTES GETS WORKED OUT, WE NEED TO SORT FOODS FOR HOMESCREEN VS. FOODSCREEN
     // DO SORTING HERE NOT IN BACKEND
     // console.log(this.props.navigation)
@@ -77,30 +77,38 @@ class FoodScreen extends Component {
     // } else {
     // }
     const foods = this.props.allFoods
-    return (
-      (foods) ?
+    return foods ? (
       <View style={styles.container}>
-        {foods.map(food => (
-          <ListItem
-            key={food.id}
+        {foods.map(food => {
+          // Creating a new object here so that the calculations we do can also easily be sent to the Single Food View
+          const singleFood = {
+            id: food.id,
+            name: titleCase(food.name),
+            expiresIn: dayCalculator(food.expiresIn),
+            imageUrl: food.imageUrl
+          }
+
+          return (<ListItem
+            key={singleFood.id}
             Component={TouchableScale}
-            friction={90} //
-            tension={100} // These props are passed to the parent component (here TouchableScale)
-            activeScale={0.95} //
-            leftAvatar={
-              <AvatarComponent food={food} showBadge={food.expiresIn < 7} />
-            }
-            title={titleCase(food.name)}
+            friction={90}
+            tension={100}
+            activeScale={0.95}
+            leftAvatar={<AvatarComponent food={food} showBadge={food.expiresIn < 7} />}
+            title={singleFood.name}
             titleStyle={{ color: '#262626', fontWeight: 'bold' }}
-            subtitle={dayCalculator(food.expiresIn)}
+            subtitle={singleFood.expiresIn}
             subtitleStyle={{ color: '#262626' }}
             chevron={{ color: '#262626' }}
-            onPress={() => this.props.navigation.navigate('SingleFood', {food: food})}
+            onPress={() =>
+              this.props.navigation.navigate('SingleFood', singleFood)
+            }
             bottomDivider
-          />
-        ))}
+          />)
+        })}
       </View>
-      : <View />
+    ) : (
+      <View />
     )
   }
 }

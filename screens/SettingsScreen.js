@@ -1,40 +1,23 @@
 import React from 'react'
 import SettingsList from 'react-native-settings-list'
-import { View, Alert, Image, Text, StyleSheet, AsyncStorage } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { logout } from '../store/reducers/user'
 import { connect } from 'react-redux'
 
 class SettingsScreen extends React.Component {
   constructor() {
     super()
-    this.onValueChange = this.onValueChange.bind(this)
     this.logOut = this.logOut.bind(this)
-    this.state = { switchValue: false }
   }
   render() {
-    var bgColor = '#DCE3F4'
     return (
-      <View style={{ backgroundColor: '#EFEFF4', flex: 1 }}>
-        <View
-          style={{
-            borderBottomWidth: 1,
-            backgroundColor: '#f7f7f8',
-            borderColor: '#c8c7cc'
-          }}
-        >
-        </View>
-        <View style={{ backgroundColor: '#EFEFF4', flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.container}>
           <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
-            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
+            <SettingsList.Header headerStyle={{ marginTop: 15 }} headerText='User Settings' />
             <SettingsList.Item
               hasNavArrow={false}
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  source={require('../assets/images/food-placeholder.jpg')}
-                />
-              }
-              title='Log out'
+              title='Log Out'
               onPress={() => this.logOut()}
             />
           </SettingsList>
@@ -42,17 +25,18 @@ class SettingsScreen extends React.Component {
       </View>
     )
   }
-  onValueChange(value) {
-    this.setState({ switchValue: value })
-  }
-
   logOut = () => {
     this.props.logUserOut()
     this.props.navigation.navigate('Auth')
   }
 }
 
+SettingsScreen.navigationOptions = {
+  title: 'Settings'
+}
+
 const styles = StyleSheet.create({
+  container: { backgroundColor: '#EFEFF4', flex: 1 },
   imageStyle: {
     marginLeft: 15,
     marginRight: 20,
