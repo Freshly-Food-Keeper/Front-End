@@ -8,15 +8,18 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Text,
-  Image
+  Image,
 } from "react-native";
 import { FontAwesome5, FontAwesome, AntDesign } from "@expo/vector-icons";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import { GOOGLE_CLOUD_VISION_API_KEY } from "../config/secrets";
+import { GOOGLE_CLOUD_VISION_API_KEY, BACK_END_SERVER } from "../config/secrets";
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
-import { classes } from "istanbul-lib-coverage"
+import { ButtonGroup, Input, Button } from 'react-native-elements'
+import { connect } from 'react-redux'
+import expirationDate, { getExpirationDate } from '../store/reducers/expirationDate'
+import axios from 'axios'
 
 export default class AddButton extends React.Component {
   constructor(props) {
@@ -25,7 +28,9 @@ export default class AddButton extends React.Component {
       image: null,
       uploading: false,
       googleResponse: null,
-      setModalVisible: false
+      setModalVisible: false,
+      selectedButtonIndex: 0,
+      life: ''
     };
     this.handlePress = this.handlePress.bind(this);
     this.pickImage = this.pickImage.bind(this);
@@ -65,7 +70,6 @@ export default class AddButton extends React.Component {
   };
 
   pickImage = async () => {
-    console.log("in pick image");
     let image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -121,17 +125,20 @@ export default class AddButton extends React.Component {
           body: body
         }
       );
-      let responseJson = await response.json();
-      console.log(responseJson);
+      let googleResponseJson = await response.json();
+      let foodName = googleResponseJson['responses'][0]['labelAnnotations'][0]['description']
+      // console.log(foodName)
+      // let life = await axios.get(`${BACK_END_SERVER}/api/expiration/${foodName}`)
+      // console.log(life, 'life')
       this.setState({
-        googleResponse: responseJson,
-        uploading: false
+        googleResponse: googleResponseJson,
+        uploading: false,
+        // life: life
       });
     } catch (error) {
       console.log(error);
     }
   };
-
   componentDidMount() {
     this.getPermissionAsync();
   }
@@ -176,8 +183,8 @@ export default class AddButton extends React.Component {
       outputRange: [-50, -100]
     });
 
-    let { image } = this.state
-
+    let { image, googleResponse } = this.state
+    const buttons = googleResponse ? googleResponse['responses'][0]['labelAnnotations'].slice(0, 3).map(button => button["description"]) : []
     return (
       <View style={{ position: "absolute", alignItems: "center" }}>
         <Dialog
@@ -188,12 +195,43 @@ export default class AddButton extends React.Component {
           }}
         >
           <DialogContent style={styles.dialogContent}>
-            <View className={classes.imageConatiner}>
+            <View styles={styles.imageConatiner}>
               <Image
-                style={styles.logo}
+                style={styles.image}
                 source={image}
               />
             </View>
+            {googleResponse && (
+             <View>
+              <View styles={styles.listContainer}>
+                  <ButtonGroup
+                    onPress={(selectedButtonIndex) => this.setState({ selectedButtonIndex })}
+                    selectedIndex={this.state.selectedButtonIndex}
+                    buttons={buttons}
+                    containerStyle={styles.buttonGroup}
+                  />
+                </View>
+                <View>
+                  <Input
+                    label='CHANGE FOOD NAME'
+                    placeholder={buttons[this.state.selectedButtonIndex]}
+                  />
+                  <Input
+                    label="CHANGE SHELF LIFE"
+                    placeholder={this.state.life}
+                  />
+                </View>
+                <View style={styles.buttonContainer}>
+                  <Button
+                    title="SUBMIT"
+                    buttonStyle={styles.buttons}
+                    onPress={() => {
+                      this.props.navigation.navigate('Foods');
+                    }}
+                  />
+                  </View>
+              </View>
+            )}
           </DialogContent>
         </Dialog>
         <Animated.View
@@ -276,5 +314,45 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     backgroundColor: "#035640"
-  }
+  },
+  image: {
+    marginTop: 70,
+    height: 75,
+    width: 75
+  },
+  dialogContent: {
+    marginTop: 50,
+    minWidth: '75%',
+    height: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  imageConatiner: {
+    marginTop: 75,
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  buttonGroup: {
+    height: 25, 
+    width: '100%', 
+    shadowColor: '#262626'
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  buttons: {
+    backgroundColor: '#035640',
+    width: '100%',
+    height: 40,
+    marginTop: 10,
+  },
 });
+
