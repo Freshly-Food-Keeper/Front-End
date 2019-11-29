@@ -127,13 +127,13 @@ export default class AddButton extends React.Component {
       );
       let googleResponseJson = await response.json();
       let foodName = googleResponseJson['responses'][0]['labelAnnotations'][0]['description']
-      // console.log(foodName)
-      // let life = await axios.get(`${BACK_END_SERVER}/api/expiration/${foodName}`)
-      // console.log(life, 'life')
+
+      let life = await axios.get(`${BACK_END_SERVER}/api/expiration/${foodName}`)
+
       this.setState({
         googleResponse: googleResponseJson,
         uploading: false,
-        // life: life
+        life: life.data
       });
     } catch (error) {
       console.log(error);
@@ -185,6 +185,7 @@ export default class AddButton extends React.Component {
 
     let { image, googleResponse } = this.state
     const buttons = googleResponse ? googleResponse['responses'][0]['labelAnnotations'].slice(0, 3).map(button => button["description"]) : []
+
     return (
       <View style={{ position: "absolute", alignItems: "center" }}>
         <Dialog
@@ -214,11 +215,11 @@ export default class AddButton extends React.Component {
                 <View>
                   <Input
                     label='CHANGE FOOD NAME'
-                    placeholder={buttons[this.state.selectedButtonIndex]}
+                    defaultValue={buttons[this.state.selectedButtonIndex]}
                   />
                   <Input
                     label="CHANGE SHELF LIFE"
-                    placeholder={this.state.life}
+                    defaultValue={this.state.life}
                   />
                 </View>
                 <View style={styles.buttonContainer}>
@@ -226,7 +227,7 @@ export default class AddButton extends React.Component {
                     title="SUBMIT"
                     buttonStyle={styles.buttons}
                     onPress={() => {
-                      this.props.navigation.navigate('Foods');
+                      // this.props.navigation.navigate('Foods');
                     }}
                   />
                   </View>
