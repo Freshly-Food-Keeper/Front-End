@@ -4,8 +4,9 @@ import user from './reducers/user';
 import food from './reducers/food';
 import data from './reducers/dataVisuals';
 import googleVision from './reducers/googleVision';
+import expirationDate from './reducers/expirationDate';
 
-const reducer = combineReducers({ user, food, data, googleVision });
+const reducer = combineReducers({ user, food, data, googleVision, expirationDate });
 const middleware = applyMiddleware(thunkMiddleware);
 const store = createStore(reducer, middleware);
 
@@ -14,3 +15,4 @@ export * from './reducers/user';
 export * from './reducers/food';
 export * from './reducers/dataVisuals';
 export * from './reducers/googleVision';
+export * from './reducers/expirationDate';

@@ -15,7 +15,7 @@ const titleCase = title => {
     .join(' ')
 }
 
-const dayCalculator = days => {
+export const dayCalculator = days => {
   if (days <= 0) {
     return 'Expired'
   }

@@ -11,6 +11,11 @@ const gotAllInventory = allFoods => ({
   allFoods
 })
 
+const gotExpirationDate = life => ({
+  type: GOT_EXPIRATION_DATE,
+  life
+})
+
 export const getAllInventory = () => {
   return async dispatch => {
     try {
@@ -26,6 +31,7 @@ export const getAllInventory = () => {
     }
   }
 }
+
 
 export default function(state = foods, action) {
   switch (action.type) {
