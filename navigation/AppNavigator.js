@@ -1,21 +1,22 @@
 import React from 'react';
-import { Platform, ActionSheetIOS } from 'react-native';
+import { Platform } from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
   createAppContainer,
   createSwitchNavigator,
 } from 'react-navigation';
-
+import {
+  WelcomeScreen,
+  SignUpScreen,
+  LoginScreen,
+  UserHomeScreen,
+  FoodScreen,
+  SingleFoodScreen,
+  SettingsScreen
+} from '../screens'
 import TabBarIcon from '../components/TabBarIcon';
-import WelcomeScreen from '../screens/WelcomeScreen';
-import SignUpScreen from '../screens/SignUpScreen';
-import LoginScreen from '../screens/LoginScreen';
-import UserHomeScreen from '../screens/UserHomeScreen';
-import FoodScreen from '../screens/FoodScreen';
-import SingleFoodScreen from '../screens/SingleFoodScreen';
 import AddButton from '../components/AddButton';
-import SettingsScreen from '../screens/SettingsScreen'
 
 const AuthStack = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -73,31 +74,6 @@ SettingsStack.navigationOptions = {
     />
   )
 }
-
-// const AddItemStack = createStackNavigator({
-//   AddItem: AddItem,
-//   // UserHome: UserHomeScreen
-// })
-
-// AddItemStack.navigationOptions = {
-//   tabBarLabel: 'Add Item',
-//   tabBarIcon: ({ focused }) => (
-//     <TabBarIcon
-//       focused={focused}
-//       name={
-//         Platform.OS === 'ios'
-//           ? 'ios-add-circle-outline'
-//           : 'md-add-circle-outline'
-//       }
-//     />
-//   ),
-//   // tabBarOnPress: ({ navigation, defaultHandler }) => {
-//   //   console.log('this will be fired just before nagivation happens')
-//   //   showActionSheet
-//   //   // defaultHandler({showActionSheet()}) // if you omit this, navigation will not happen
-//   // }
-// };
-
 
 const TabNavigator = createBottomTabNavigator(
   {

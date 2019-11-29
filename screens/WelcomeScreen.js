@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, View, AsyncStorage } from 'react-native';
-import { Button, ThemeProvider } from 'react-native-elements';
+import React, { useState } from "react";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  AsyncStorage,
+  TouchableOpacity
+} from "react-native";
+import { Button, ThemeProvider } from "react-native-elements";
 
 const theme = {
   Button: {
     titleStyle: {
-      color: '#262626',
-    },
-  },
+      color: "#262626"
+    }
+  }
 };
 
 export default class WelcomeScreen extends React.Component {
@@ -15,113 +22,87 @@ export default class WelcomeScreen extends React.Component {
     super();
     this.bootstrapAsync();
   }
-  bootstrapAsync = async () => {
-    const userId = await AsyncStorage.getItem('userId');
-    this.props.navigation.navigate(userId ? 'App' : 'Auth');
-  };
-  render() {
-  //   const [isLoadingComplete, setLoadingComplete] = useState(false)
-  //   if (!isLoadingComplete && !props.skipLoadingScreen) {
-  //     return (
-  //       <AppLoading
-  //         startAsync={loadResourcesAsync}
-  //         onError={handleLoadingError}
-  //         onFinish={() => handleFinishLoading(setLoadingComplete)}
-  //       />
-  //     );
-  //   } else {
-      // const userId = await AsyncStorage.getItem('userId')
-      // this.props.navigation.navigate(userId ? 'App' : 'Auth')
-      return (
-        <ThemeProvider theme={theme}>
-          <View style={styles.container}>
-            <View style={styles.contentContainer}>
-              <Image
-                style={styles.logo}
-                source={require('../assets/logos/circle.png')}
-              />
-              <Text style={styles.freshly}>freshly</Text>
 
-              <View style={styles.buttonContainer}>
-                <Button
-                  title="LOGIN"
-                  buttonStyle={styles.buttons}
+  bootstrapAsync = async () => {
+    const userId = await AsyncStorage.getItem("userId");
+    this.props.navigation.navigate(userId ? "App" : "Auth");
+  };
+  
+  render() {
+    return (
+      <ThemeProvider theme={theme}>
+        <View style={styles.container}>
+          <View style={styles.contentContainer}>
+            <Image
+              style={styles.logo}
+              source={require("../assets/logos/circle.png")}
+            />
+
+            <Text style={styles.freshly}>freshly</Text>
+
+            <View style={styles.buttonContainer}>
+              <View>
+                <TouchableOpacity
+                  style={styles.buttons}
                   onPress={() => {
-                    this.props.navigation.navigate('Login');
+                    this.props.navigation.navigate("Login");
                   }}
-                />
-                <Button
-                  title="SIGN UP"
-                  buttonStyle={styles.buttons}
+                >
+                  <Text style={styles.buttonText}>LOG IN</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity
+                  style={styles.buttons}
                   onPress={() => {
-                    console.log('signup pressed!')
                     this.props.navigation.navigate('SignUp');
                   }}
-                />
+                >
+                  <Text style={styles.buttonText}>SIGN UP</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
-        </ThemeProvider>
-      );
-    }
+        </View>
+      </ThemeProvider>
+    );
+  }
 }
 
-WelcomeScreen.navigationOptions = {	
-  header: null,	
+WelcomeScreen.navigationOptions = {
+  header: null
 };
-
-async function loadResourcesAsync() {
-  await Promise.all([
-    Asset.loadAsync([
-      require('../assets/logos/circle.png'),
-      require('../assets/logos/logo.png'),
-    ]),
-    Font.loadAsync({
-      ...Ionicons.font,
-      avenir: require('../assets/fonts/Avenir.otf'),
-    }),
-  ]);
-}
-
-function handleLoadingError(error) {
-  console.warn(error);
-}
-
-function handleFinishLoading(setLoadingComplete) {
-  setLoadingComplete(true);
-}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#035640',
+    backgroundColor: "#035640"
   },
   contentContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center"
   },
   freshly: {
     padding: 0,
-    margin: 0,
-    fontSize: 30,
-    color: 'white',
+    marginBottom: 50,
+    fontSize: 45,
+    color: "white"
   },
   logo: {
-    alignSelf: 'center',
-    width: '30%',
-    resizeMode: 'contain',
-    marginTop: 50,
-    marginBottom: 0,
-  },
-  buttonContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 50,
+    alignSelf: "center",
+    width: "30%",
+    resizeMode: "contain",
+    marginTop: 100
   },
   buttons: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: 300,
     padding: 15,
-    margin: 15,
+    margin: 10,
+    borderRadius: 5
   },
+  buttonText: {
+    textAlign: "center",
+    color: "#262626",
+    fontSize: 20
+  }
 });
