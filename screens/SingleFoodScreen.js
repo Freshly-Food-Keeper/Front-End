@@ -17,6 +17,7 @@ export default class SingleItemScreen extends React.Component {
     this.setState({ selectedIndex: index });
   }
   render() {
+    const navigation = this.props.navigation;
     const food = {
       id: this.props.navigation.getParam('id'),
       expiresIn: this.props.navigation.getParam('expiresIn'),
@@ -51,7 +52,7 @@ export default class SingleItemScreen extends React.Component {
           {this.state.selectedIndex === 0 ? (
             <NutritionInfo food={food} />
           ) : (
-            <RecipeComponent food={food} />
+            <RecipeComponent food={food} navigation={navigation} />
           )}
         </View>
       </View>

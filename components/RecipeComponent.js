@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { getRecipesWithIngredient } from '../store';
 
@@ -8,14 +8,14 @@ import TouchableScale from 'react-native-touchable-scale';
 
 class RecipeComponent extends Component {
   async componentDidMount() {
-    await this.props.getRecipes('apple');
+    const food = this.props.food;
+    await this.props.getRecipes(food.name);
   }
   render() {
-    const recipes = this.props.allRecipes;
-    // console.log('recipes', recipes);
-
+    const recipes = this.props.allRecipes || [];
+    const navigation = this.props.navigation;
     return recipes ? (
-      <ScrollView style={styles.container}>
+      <ScrollView>
         {recipes.map(recipe => {
           return (
             <Card
@@ -40,19 +40,20 @@ class RecipeComponent extends Component {
                 }}
                 title="View Recipe"
                 titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                onPress={() =>
+                  navigation.navigate('SingleRecipe', { recipe: { recipe } })
+                }
               />
             </Card>
           );
         })}
       </ScrollView>
-    ) : (
-      <Text>Loading</Text>
-    );
+    ) : null;
   }
 }
 
 const mapStateToProps = state => ({
-  allRecipes: state.recipe,
+  allRecipes: state.recipe.recipes,
 });
 
 const mapDispatchToProps = dispatch => ({
