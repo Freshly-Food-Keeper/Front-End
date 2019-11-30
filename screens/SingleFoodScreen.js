@@ -5,14 +5,6 @@ import NutritionInfo from '../components/NutritionInfo';
 import RecipeScreen from './RecipeScreen';
 import RecipeComponent from '../components/RecipeComponent';
 
-function Nutrition() {
-  return (
-    <View>
-      <Text>Hi! I'm the nutrition component</Text>
-    </View>
-  );
-}
-
 export default class SingleItemScreen extends React.Component {
   constructor() {
     super();
@@ -25,10 +17,12 @@ export default class SingleItemScreen extends React.Component {
     this.setState({ selectedIndex: index });
   }
   render() {
-    const expiresIn = this.props.navigation.getParam('expiresIn');
-    const id = this.props.navigation.getParam('id');
-    const imageUrl = this.props.navigation.getParam('imageUrl');
-    const name = this.props.navigation.getParam('name');
+    const food = {
+      id: this.props.navigation.getParam('id'),
+      expiresIn: this.props.navigation.getParam('expiresIn'),
+      imageUrl: this.props.navigation.getParam('imageUrl'),
+      name: this.props.navigation.getParam('name'),
+    };
     const buttons = ['Nutrition', 'Recipes'];
     return (
       <View style={styles.container}>
@@ -37,13 +31,13 @@ export default class SingleItemScreen extends React.Component {
             size="xlarge"
             rounded
             source={
-              imageUrl === null
+              food.imageUrl === null
                 ? require('../assets/images/food-placeholder.jpg')
                 : { uri: food.imageUrl }
             }
           />
-          <Text style={styles.title}>{name}</Text>
-          <Text style={styles.subTitle}>{expiresIn}</Text>
+          <Text style={styles.title}>{food.name}</Text>
+          <Text style={styles.subTitle}>{food.expiresIn}</Text>
         </View>
         <View>
           <ButtonGroup
@@ -54,7 +48,11 @@ export default class SingleItemScreen extends React.Component {
             buttons={buttons}
             containerStyle={{ height: 25 }}
           />
-          {this.state.selectedIndex === 0 ? <Nutrition /> : <RecipeComponent />}
+          {this.state.selectedIndex === 0 ? (
+            <NutritionInfo food={food} />
+          ) : (
+            <RecipeComponent food={food} />
+          )}
         </View>
       </View>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text, Image } from 'react-native'
 import { ListItem, Badge, Avatar } from 'react-native-elements'
 import TouchableScale from 'react-native-touchable-scale' // https://github.com/kohver/react-native-touchable-scale
 import { connect } from 'react-redux'
@@ -45,6 +45,21 @@ export const dayCalculator = days => {
   }
 }
 
+// If a user has no food to display, show them a friendly message!
+function NoFoodComponent() {
+  return (
+    <View style={styles.noFoodContainer}>
+      <Text style={styles.title}>Hi! Welcome to Freshly!</Text>
+      <Text style={styles.subTitle}>Why don't you add some food?</Text>
+      <Image style={{ width: 90, height: 300, marginTop:40 }}
+      source={require('../assets/images/arrow.png')}
+      />
+    </View>
+  )
+}
+
+/* Add style and logic to avatar (left image). If no image, use default. If expiration date
+is less than 7 days, add red badge */
 function AvatarComponent({ food, showBadge }) {
   return (
     <View>
@@ -68,17 +83,16 @@ class FoodScreen extends Component {
     this.props.getInventory()
   }
   render() {
-        // console.log('props in foodscreen', this.props.navigation)
+    let foods = this.props.allFoods
+    // Sort by Expiration Date if we're on the UserHomeScreen. Doing in front end so we don't have to query the database every time a user switches screens
+    if (this.props.navigation === undefined) {
+      foods.sort((a, b) => (a.expiresIn > b.expiresIn ? 1 : -1))
+    } else {
+      foods.sort((a, b) => (a.name > b.name ? 1 : -1))
+    }
 
-    // TODO: WHEN ROUTES GETS WORKED OUT, WE NEED TO SORT FOODS FOR HOMESCREEN VS. FOODSCREEN
-    // DO SORTING HERE NOT IN BACKEND
-    // console.log(this.props.navigation)
-    // if (this.props.navigation.state.routeName === 'Links') {
-    // } else {
-    // }
-    const foods = this.props.allFoods
-    return foods ? (
-      <View style={styles.container}>
+    return foods.length > 0 ? (
+      <View style={styles.foodContainer}>
         {foods.map(food => {
           // Creating a new object here so that the calculations we do can also easily be sent to the Single Food View
           const singleFood = {
@@ -87,29 +101,30 @@ class FoodScreen extends Component {
             expiresIn: dayCalculator(food.expiresIn),
             imageUrl: food.imageUrl
           }
-
-          return (<ListItem
-            key={singleFood.id}
-            Component={TouchableScale}
-            friction={90}
-            tension={100}
-            activeScale={0.95}
-            leftAvatar={<AvatarComponent food={food} showBadge={food.expiresIn < 7} />}
-            title={singleFood.name}
-            titleStyle={{ color: '#262626', fontWeight: 'bold' }}
-            subtitle={singleFood.expiresIn}
-            subtitleStyle={{ color: '#262626' }}
-            chevron={{ color: '#262626' }}
-            onPress={() =>
-              this.props.navigation.navigate('SingleFood', singleFood)
-            }
-            bottomDivider
-          />)
+          return (
+            <ListItem
+              key={singleFood.id}
+              Component={TouchableScale}
+              friction={90}
+              tension={100}
+              activeScale={0.95}
+              leftAvatar={
+                <AvatarComponent food={food} showBadge={food.expiresIn < 7} />
+              }
+              title={singleFood.name}
+              titleStyle={{ color: '#262626', fontWeight: 'bold' }}
+              subtitle={singleFood.expiresIn}
+              subtitleStyle={{ color: '#262626' }}
+              chevron={{ color: '#262626' }}
+              onPress={() =>
+                this.props.navigation.navigate('SingleFood', singleFood)
+              }
+              bottomDivider
+            />
+          )
         })}
       </View>
-    ) : (
-      <View />
-    )
+    ) : <NoFoodComponent />
   }
 }
 
@@ -118,9 +133,26 @@ FoodScreen.navigationOptions = {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  foodContainer: {
     flex: 1,
-    backgroundColor: '#fff'
+  },
+  noFoodContainer: {
+    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  title: {
+    paddingTop: 5,
+    margin: 0,
+    fontSize: 30,
+    color: 'black'
+  },
+  subTitle: {
+    paddingTop: 5,
+    margin: 0,
+    fontSize: 20,
+    color: 'gray'
   }
 })
 
