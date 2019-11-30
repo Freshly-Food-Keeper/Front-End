@@ -13,19 +13,20 @@ import {
   UserHomeScreen,
   FoodScreen,
   SingleFoodScreen,
-  SettingsScreen
-} from '../screens'
+  SettingsScreen,
+} from '../screens';
 import TabBarIcon from '../components/TabBarIcon';
 import AddButton from '../components/AddButton';
+import RecipeScreen from '../screens/RecipeScreen';
 
 const AuthStack = createStackNavigator({
   Welcome: WelcomeScreen,
   SignUp: SignUpScreen,
-  Login: LoginScreen
+  Login: LoginScreen,
 });
 
 const UserHomeStack = createStackNavigator({
-  UserHome: UserHomeScreen
+  UserHome: UserHomeScreen,
 });
 
 UserHomeStack.navigationOptions = {
@@ -33,18 +34,14 @@ UserHomeStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-home`
-          : 'md-home'
-      }
+      name={Platform.OS === 'ios' ? `ios-home` : 'md-home'}
     />
   ),
 };
 
 const FoodStack = createStackNavigator({
   Food: FoodScreen,
-  SingleFood: SingleFoodScreen
+  SingleFood: SingleFoodScreen,
 });
 
 FoodStack.navigationOptions = {
@@ -52,47 +49,58 @@ FoodStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? 'ios-leaf'
-          : 'md-leaf'
-      }
+      name={Platform.OS === 'ios' ? 'ios-leaf' : 'md-leaf'}
+    />
+  ),
+};
+
+const RecipeStack = createStackNavigator({
+  Recipe: RecipeScreen,
+});
+
+RecipeStack.navigationOptions = {
+  tabBarLabel: 'My Food',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-list' : 'md-list'}
     />
   ),
 };
 
 const SettingsStack = createStackNavigator({
-  SettingsScreen: SettingsScreen
-})
+  SettingsScreen: SettingsScreen,
+});
 
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
     />
-  )
-}
+  ),
+};
 
 const TabNavigator = createBottomTabNavigator(
   {
     UserHomeStack,
+    FoodStack,
     Add: {
       screen: () => null,
       navigationOptions: {
-        tabBarIcon: <AddButton />
-      }
+        tabBarIcon: <AddButton />,
+      },
     },
-    FoodStack,
+    RecipeStack,
     SettingsStack,
   },
   {
     tabBarOptions: {
-      showLabel: false
-    }
+      showLabel: false,
+    },
   }
-)
+);
 
 const App = createAppContainer(
   createSwitchNavigator(
