@@ -28,7 +28,9 @@ const AuthStack = createStackNavigator({
 
 const UserHomeStack = createStackNavigator({
   UserHome: UserHomeScreen,
-});
+  Food: FoodScreen,
+  SingleFood: SingleFoodScreen
+})
 
 UserHomeStack.navigationOptions = {
   tabBarLabel: 'Home',
