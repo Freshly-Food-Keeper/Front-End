@@ -1,93 +1,104 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, ButtonGroup } from 'react-native-elements';
-import NutritionInfo from '../components/NutritionInfo'
+import NutritionInfo from '../components/NutritionInfo';
 
 function Nutrition() {
   return (
     <View>
       <Text>Hi! I'm the nutrition component</Text>
     </View>
-  )
+  );
 }
 
-function Receipes() {
+function Recipes() {
   return (
     <View>
       <Text>Hi! I'm the receipes component</Text>
     </View>
-  )
+  );
 }
 
 export default class SingleItemScreen extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
-      selectedIndex: 0
-    }
-    this.updateSelectedIndex = this.updateSelectedIndex.bind(this)
+      selectedIndex: 0,
+    };
+    this.updateSelectedIndex = this.updateSelectedIndex.bind(this);
   }
   updateSelectedIndex(index) {
-    this.setState({selectedIndex: index})
+    this.setState({ selectedIndex: index });
   }
   render() {
-    const expiresIn = this.props.navigation.getParam('expiresIn')
-    const id = this.props.navigation.getParam('id')
-    const imageUrl = this.props.navigation.getParam('imageUrl')
-    const name = this.props.navigation.getParam('name')
+    const food = {
+      id: this.props.navigation.getParam('id'),
+      expiresIn: this.props.navigation.getParam('expiresIn'),
+      imageUrl: this.props.navigation.getParam('imageUrl'),
+      name: this.props.navigation.getParam('name')
+    }
     const buttons = ['Nutrition', 'Recipes']
     return (
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
           <Avatar
-            size='xlarge'
+            size="xlarge"
             rounded
             source={
-              imageUrl === null
+              food.imageUrl === null
                 ? require('../assets/images/food-placeholder.jpg')
                 : { uri: food.imageUrl }
             }
           />
-          <Text style={styles.title}>{name}</Text>
-          <Text style={styles.subTitle}>{expiresIn}</Text>
+          <Text style={styles.title}>{food.name}</Text>
+          <Text style={styles.subTitle}>{food.expiresIn}</Text>
         </View>
         <View>
           <ButtonGroup
+            style={styles.buttonGroup}
             onPress={this.updateSelectedIndex}
             selectedButtonStyle={{ backgroundColor: '#ED6A5A' }}
             selectedIndex={this.state.selectedIndex}
             buttons={buttons}
             containerStyle={{ height: 25 }}
           />
-          {(this.state.selectedIndex === 0) ? <Nutrition /> : <Receipes />}
+          {this.state.selectedIndex === 0 ? <NutritionInfo food={food} /> : <Recipes />}
         </View>
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   avatarContainer: {
     paddingTop: 15,
     paddingBottom: 15,
     alignContent: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     paddingTop: 5,
     margin: 0,
     fontSize: 30,
-    color: 'black'
+    color: 'black',
   },
   subTitle: {
     paddingTop: 5,
     margin: 0,
     fontSize: 20,
-    color: 'gray'
-  }
-})
+    color: 'gray',
+  },
+  buttonGroup: {
+    borderRadius: 5,
+    margin: 15,
+    width: '50%',
+    backgroundColor: '#035640',
+    alignSelf: 'center',
+    fontSize: 20,
+  },
+});

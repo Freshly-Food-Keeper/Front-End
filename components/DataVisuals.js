@@ -25,10 +25,12 @@ class DataVisuals extends React.PureComponent {
       key: 'eaten'
     }
     return (
-      <View style={styles.container}>
-        <PieChart style={{ height: 200 }} data={[wastedFood, eatenFood]} />
-        <Text style={styles.consumedText}>{userData.consumed}% Consumed</Text>
-      </View>
+      (this.props.percentages.consumed === null && this.props.percentages.wasted === null)
+      ? <View />
+      : <View style={styles.container}>
+          <PieChart style={{ height: 200 }} data={[wastedFood, eatenFood]} />
+          <Text style={styles.consumedText}>{userData.consumed}% Consumed</Text>
+        </View>
     )
   }
 }
