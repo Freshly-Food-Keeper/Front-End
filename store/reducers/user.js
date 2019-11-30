@@ -29,7 +29,7 @@ const removedError = () => ({ type: REMOVED_ERROR });
 
 export const me = () => async dispatch => {
   try {
-    const res = await axios.get('/auth/me');
+    const res = await axios.get(`${BACK_END_SERVER}/auth/me`);
     dispatch(gotUser(res.data || defaultUser));
   } catch (err) {
     console.error(err);
@@ -59,6 +59,7 @@ export const updateUser = user => async dispatch => {
 // Login User
 export const loginUser = user => async dispatch => {
   let res;
+
   try {
     res = await axios.post(`${BACK_END_SERVER}/auth/login`, user);
   } catch (authError) {
