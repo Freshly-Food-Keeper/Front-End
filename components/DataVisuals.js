@@ -24,6 +24,7 @@ class DataVisuals extends React.PureComponent {
       },
       key: 'eaten'
     }
+
     return (
       (this.props.percentages.consumed === null && this.props.percentages.wasted === null)
       ? <View />

@@ -18,7 +18,7 @@ export default class UserHomeScreen extends React.Component {
       <ThemeProvider theme={theme}>
         <View style={styles.container}>
           <DataVisuals />
-          <FoodScreen />
+          <FoodScreen navigation={this.props.navigation} />
         </View>
       </ThemeProvider>
     );
