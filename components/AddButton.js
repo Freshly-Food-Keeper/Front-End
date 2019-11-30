@@ -16,12 +16,14 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { GOOGLE_CLOUD_VISION_API_KEY, BACK_END_SERVER } from "../config/secrets";
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
-import { ButtonGroup, Input, Button } from 'react-native-elements'
+import { ButtonGroup, Button, Input } from 'react-native-elements'
 import { connect } from 'react-redux'
 import expirationDate, { getExpirationDate } from '../store/reducers/expirationDate'
 import axios from 'axios'
+import { withNavigation } from 'react-navigation'
+import { addFood } from '../store/reducers/food'
 
-export default class AddButton extends React.Component {
+export class AddButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +32,9 @@ export default class AddButton extends React.Component {
       googleResponse: null,
       setModalVisible: false,
       selectedButtonIndex: 0,
-      life: ''
+      lifeInputValue: '',
+      foodInputValue: '',
+      formPopUp: false,
     };
     this.handlePress = this.handlePress.bind(this);
     this.pickImage = this.pickImage.bind(this);
@@ -133,7 +137,7 @@ export default class AddButton extends React.Component {
       this.setState({
         googleResponse: googleResponseJson,
         uploading: false,
-        life: life.data
+        lifeInputValue: life.data
       });
     } catch (error) {
       console.log(error);
@@ -182,9 +186,8 @@ export default class AddButton extends React.Component {
       inputRange: [0, 1],
       outputRange: [-50, -100]
     });
-
     let { image, googleResponse } = this.state
-    const buttons = googleResponse ? googleResponse['responses'][0]['labelAnnotations'].slice(0, 3).map(button => button["description"]) : []
+    let buttons = googleResponse ? googleResponse['responses'][0]['labelAnnotations'].slice(0, 3).map(button => button["description"]) : []
 
     return (
       <View style={{ position: "absolute", alignItems: "center" }}>
@@ -199,7 +202,7 @@ export default class AddButton extends React.Component {
             <View styles={styles.imageConatiner}>
               <Image
                 style={styles.image}
-                source={image}
+                source={require('../assets/images/arrow.png')}
               />
             </View>
             {googleResponse && (
@@ -216,10 +219,13 @@ export default class AddButton extends React.Component {
                   <Input
                     label='CHANGE FOOD NAME'
                     defaultValue={buttons[this.state.selectedButtonIndex]}
+                    onChangeText={(text) => this.setState({ foodInputValue: text})}
                   />
                   <Input
                     label="CHANGE SHELF LIFE"
-                    defaultValue={this.state.life}
+                    defaultValue={this.state.lifeInputValue}
+                    value={this.state.lifeInputValue}
+                    onChangeText={(text) => this.setState({ lifeInputValue: text })}
                   />
                 </View>
                 <View style={styles.buttonContainer}>
@@ -227,12 +233,55 @@ export default class AddButton extends React.Component {
                     title="SUBMIT"
                     buttonStyle={styles.buttons}
                     onPress={() => {
-                      // this.props.navigation.navigate('Foods');
+                      this.props.addFood(this.state.foodInputValue);
+                      this.props.navigation.navigate("Food")
                     }}
                   />
                   </View>
               </View>
             )}
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          containerStyle={styles.dialogContainer}
+          visible={this.state.formPopUp}
+          onTouchOutside={() => {
+            this.setState({ formPopUp: false });
+          }}
+        >
+          <DialogContent style={styles.dialogContent}>
+              <View>
+                <View>
+                <View styles={styles.imageConatiner}>
+                  <Image
+                    style={styles.image}
+                    source={image}
+                  />
+                </View>
+                  <Input
+                    label='FOOD NAME'
+                    placeholder='ex: Apple'
+                    onChangeText={(text) => this.setState({ foodInputValue: text })}
+                  />
+                  <Input
+                    label="*optional: SHELF LIFE (days)"
+                    defaultValue={this.state.lifeInputValue}
+                    placeholder='ex: 10'
+                    value={this.state.lifeInputValue}
+                    onChangeText={(text) => this.setState({ lifeInputValue: text })}
+                  />
+                </View>
+                <View style={styles.buttonContainer}>
+                  <Button
+                    title="SUBMIT"
+                    buttonStyle={styles.buttons}
+                    onPress={() => {
+                      this.props.addFood(this.state.foodInputValue);
+                      this.props.navigation.navigate("Food")
+                    }}
+                  />
+                </View>
+              </View>
           </DialogContent>
         </Dialog>
         <Animated.View
@@ -270,9 +319,12 @@ export default class AddButton extends React.Component {
             { position: "absolute", left: formX, top: formY }
           ]}
         >
-          <View>
+          <TouchableHighlight
+            onPress={() =>  this.setState({formPopUp: true})}
+            underlayColor="#7F58FF"
+          >
             <AntDesign name="form" size={24} color="#FFF" />
-          </View>
+          </TouchableHighlight>
         </Animated.View>
 
         <Animated.View style={[styles.button, sizeStyle]}>
@@ -319,7 +371,7 @@ const styles = StyleSheet.create({
   image: {
     marginTop: 70,
     height: 75,
-    width: 75
+    width: 75,
   },
   dialogContent: {
     marginTop: 50,
@@ -357,3 +409,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapDispatchToProps = dispatch => ({
+  addFood: (food) => dispatch(addFood(food))
+});
+
+export default withNavigation(connect(null, mapDispatchToProps )(AddButton))

@@ -82,8 +82,10 @@ class FoodScreen extends Component {
   componentDidMount() {
     this.props.getInventory()
   }
+
   render() {
-    let foods = this.props.allFoods
+    let foods = this.props.allFoods || []
+    console.log(foods)
     // Sort by Expiration Date if we're on the UserHomeScreen. Doing in front end so we don't have to query the database every time a user switches screens
     if (this.props.navigation === undefined) {
       foods.sort((a, b) => (a.expiresIn > b.expiresIn ? 1 : -1))
