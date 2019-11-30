@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { getRecipesWithIngredient } from '../store';
-
+import { getFavoriteRecipes } from '../store';
 import RecipeCards from '../components/RecipeCards';
 
 class RecipeScreen extends Component {
   async componentDidMount() {
-    await this.props.getRecipes('apple');
+    await this.props.getFavoriteRecipes();
+    console.log(this.props.getFavoriteRecipes());
   }
   render() {
-    const recipes = this.props.allRecipes;
-
-    return recipes ? <RecipeCards recipes={recipes} /> : <View />;
+    console.log('recipes', this.props.recipes);
+    // const navigation = this.props.navigation;
+    // const recipes = this.props.recipe.favoriteRecipes;
+    return <Text>Fav recipes</Text>;
+    // return recipes ? (
+    //   <RecipeCards recipes={recipes} navigation={navigation} />
+    // ) : (
+    //   <View />
+    // );
   }
 }
 
@@ -21,11 +27,11 @@ RecipeScreen.navigationOptions = {
 };
 
 const mapStateToProps = state => ({
-  allRecipes: state.recipe,
+  recipes: state.recipe,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getRecipes: ingredient => dispatch(getRecipesWithIngredient(ingredient)),
+  getFavoriteRecipes: () => dispatch(getFavoriteRecipes),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeScreen);

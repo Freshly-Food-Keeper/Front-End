@@ -37,9 +37,6 @@ class SingleRecipe extends Component {
           }}
           title="View Recipe"
           titleStyle={{ color: 'white', fontWeight: 'bold' }}
-          // onPress={() =>
-          //   this.props.navigation.navigate('SingleFood', singleFood)
-          // }
         />
       </Card>
     );

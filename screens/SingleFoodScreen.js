@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, ButtonGroup } from 'react-native-elements';
 import NutritionInfo from '../components/NutritionInfo';
-import RecipeScreen from './RecipeScreen';
+
 import RecipeComponent from '../components/RecipeComponent';
 
 export default class SingleItemScreen extends React.Component {

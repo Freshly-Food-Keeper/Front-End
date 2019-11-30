@@ -3,11 +3,14 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import RecipeCard from './RecipeCard';
 
 const RecipeCards = props => {
-  const recipes = props.recipes;
+  const recipes = props.recipes.recipes;
+  const navigation = props.navigation;
   return (
     <ScrollView style={styles.container}>
       {recipes.map(recipe => {
-        return <RecipeCard key={recipe.id} recipe={recipe} />;
+        return (
+          <RecipeCard key={recipe.id} recipe={recipe} navigation={navigation} />
+        );
       })}
     </ScrollView>
   );

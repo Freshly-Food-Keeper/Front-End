@@ -2,7 +2,11 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import { BACK_END_SERVER, SPOONACULAR_API_KEY } from '../../config/secrets.js';
 
-const recipes = [];
+const initialState = {
+  recipes: [],
+  favoriteRecipes: [],
+  instructions: [],
+};
 
 const GOT_RECIPES_WITH_INGREDIENT = 'GOT_RECIPES_WITH_INGREDIENT';
 const GOT_FAVORITE_RECIPES = 'GOT_FAVORITE_RECIPES';
@@ -13,14 +17,14 @@ const gotRecipesWithIngredient = allRecipes => ({
   allRecipes,
 });
 
-const gotFavoriteRecipes = allRecipes => ({
+const gotFavoriteRecipes = favoriteRecipes => ({
   type: GOT_FAVORITE_RECIPES,
-  allRecipes,
+  favoriteRecipes,
 });
 
-const gotRecipeInstructions = recipe => ({
+const gotRecipeInstructions = instructions => ({
   type: GOT_RECIPE_INSTRUCTIONS,
-  recipe,
+  instructions,
 });
 
 export const getRecipesWithIngredient = ingredient => {
@@ -29,6 +33,7 @@ export const getRecipesWithIngredient = ingredient => {
       const { data } = await axios.get(
         `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=5&apiKey=${SPOONACULAR_API_KEY}`
       );
+
       dispatch(gotRecipesWithIngredient(data));
     } catch (error) {
       console.error(error);
@@ -40,10 +45,8 @@ export const getRecipeInstructions = id => {
   return async dispatch => {
     try {
       const { data } = await axios.get(
-        `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?stepBreakdown=true&apiKey=
-        ${SPOONACULAR_API_KEY}`
+        `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?stepBreakdown=true&apiKey=${SPOONACULAR_API_KEY}`
       );
-      console.log('instructions', data);
       dispatch(gotRecipeInstructions(data));
     } catch (error) {
       console.error(error);
@@ -51,14 +54,23 @@ export const getRecipeInstructions = id => {
   };
 };
 export const getFavoriteRecipes = () => {
+  console.log('bye');
+  console.log('userId', AsyncStorage.getItem('userId'));
   return async dispatch => {
     try {
-      const userId = await AsyncStorage.getItem('userId');
-      const { data } = await axios.get(`${BACK_END_SERVER}/api/recipe/`, {
-        params: {
-          userId,
-        },
-      });
+      console.log('hi');
+      // const userId = await AsyncStorage.getItem('userId');
+      const { data } = await axios.get(
+        `https://freshly-back-end.herokuapp.com/api/recipe?userId=1`
+      );
+      // const { data } = await axios.get(`${BACK_END_SERVER}/api/recipe`, {
+      //   params: {
+      //     userId: 2,
+      //   },
+      // });
+
+      console.log('my recipes', data);
+
       dispatch(gotFavoriteRecipes(data));
     } catch (error) {
       console.error(error);
@@ -66,14 +78,14 @@ export const getFavoriteRecipes = () => {
   };
 };
 
-export default function(state = recipes, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
-    case GOT_RECIPES_WITH_INGREDIENT:
-      return action.allRecipes;
-    case GOT_FAVORITE_RECIPES:
-      return action.allRecipes;
     case GOT_RECIPE_INSTRUCTIONS:
-      return action.recipe;
+      return { ...state, instructions: action.instructions };
+    case GOT_RECIPES_WITH_INGREDIENT:
+      return { ...state, recipes: action.allRecipes };
+    case GOT_FAVORITE_RECIPES:
+      return { ...state, favoriteRecipes: action.favoriteRecipes };
     default:
       return state;
   }

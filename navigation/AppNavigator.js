@@ -14,11 +14,11 @@ import {
   FoodScreen,
   SingleFoodScreen,
   SettingsScreen,
+  SingleRecipeScreen,
 } from '../screens';
 import TabBarIcon from '../components/TabBarIcon';
 import AddButton from '../components/AddButton';
 import RecipeScreen from '../screens/RecipeScreen';
-import SingleRecipe from '../components/SingleRecipe';
 
 const AuthStack = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -45,6 +45,8 @@ const FoodStack = createStackNavigator({
   SingleFood: SingleFoodScreen,
 });
 
+FoodStack.path = 'singleFood';
+
 FoodStack.navigationOptions = {
   tabBarLabel: 'My Food',
   tabBarIcon: ({ focused }) => (
@@ -57,7 +59,7 @@ FoodStack.navigationOptions = {
 
 const RecipeStack = createStackNavigator({
   Recipe: RecipeScreen,
-  SingleRecipe: SingleRecipe,
+  SingleRecipe: SingleRecipeScreen,
 });
 
 RecipeStack.navigationOptions = {
