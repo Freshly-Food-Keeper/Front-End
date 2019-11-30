@@ -14,7 +14,6 @@ const theme = {
 
 export default class UserHomeScreen extends React.Component {
   render() {
-    console.log('in user home screen');
     return (
       <ThemeProvider theme={theme}>
         <View style={styles.container}>
