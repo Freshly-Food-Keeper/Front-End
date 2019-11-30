@@ -48,7 +48,7 @@ export const dayCalculator = days => {
 // If a user has no food to display, show them a friendly message!
 function NoFoodComponent() {
   return (
-    <View style={styles.container}>
+    <View style={styles.noFoodContainer}>
       <Text style={styles.title}>Hi! Welcome to Freshly!</Text>
       <Text style={styles.subTitle}>Why don't you add some food?</Text>
       <Image style={{ width: 90, height: 300, marginTop:40 }}
@@ -83,7 +83,7 @@ class FoodScreen extends Component {
     this.props.getInventory()
   }
   render() {
-    const foods = this.props.allFoods
+    let foods = this.props.allFoods
     // Sort by Expiration Date if we're on the UserHomeScreen. Doing in front end so we don't have to query the database every time a user switches screens
     if (this.props.navigation === undefined) {
       foods.sort((a, b) => (a.expiresIn > b.expiresIn ? 1 : -1))
@@ -92,7 +92,7 @@ class FoodScreen extends Component {
     }
 
     return foods.length > 0 ? (
-      <View style={styles.container}>
+      <View style={styles.foodContainer}>
         {foods.map(food => {
           // Creating a new object here so that the calculations we do can also easily be sent to the Single Food View
           const singleFood = {
@@ -133,7 +133,10 @@ FoodScreen.navigationOptions = {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  foodContainer: {
+    flex: 1,
+  },
+  noFoodContainer: {
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
