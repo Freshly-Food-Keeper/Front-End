@@ -2,19 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, ButtonGroup } from 'react-native-elements';
 import NutritionInfo from '../components/NutritionInfo';
+import RecipeScreen from './RecipeScreen';
+import RecipeComponent from '../components/RecipeComponent';
 
 function Nutrition() {
   return (
     <View>
       <Text>Hi! I'm the nutrition component</Text>
-    </View>
-  );
-}
-
-function Receipes() {
-  return (
-    <View>
-      <Text>Hi! I'm the receipes component</Text>
     </View>
   );
 }
@@ -60,7 +54,7 @@ export default class SingleItemScreen extends React.Component {
             buttons={buttons}
             containerStyle={{ height: 25 }}
           />
-          {this.state.selectedIndex === 0 ? <Nutrition /> : <Receipes />}
+          {this.state.selectedIndex === 0 ? <Nutrition /> : <RecipeComponent />}
         </View>
       </View>
     );

@@ -6,6 +6,7 @@ import SignUpScreen from './SignUpScreen';
 import UserHomeScreen from './UserHomeScreen';
 import WelcomeScreen from './WelcomeScreen';
 import SingleFoodScreen from './SingleFoodScreen';
+import RecipeScreen from './RecipeScreen';
 
 export {
   FoodScreen,
@@ -15,5 +16,6 @@ export {
   SignUpScreen,
   UserHomeScreen,
   WelcomeScreen,
-  SingleFoodScreen
+  SingleFoodScreen,
+  RecipeScreen,
 };

@@ -18,6 +18,7 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import AddButton from '../components/AddButton';
 import RecipeScreen from '../screens/RecipeScreen';
+import SingleRecipe from '../components/SingleRecipe';
 
 const AuthStack = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -56,10 +57,11 @@ FoodStack.navigationOptions = {
 
 const RecipeStack = createStackNavigator({
   Recipe: RecipeScreen,
+  SingleRecipe: SingleRecipe,
 });
 
 RecipeStack.navigationOptions = {
-  tabBarLabel: 'My Food',
+  tabBarLabel: 'My Recipes',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}

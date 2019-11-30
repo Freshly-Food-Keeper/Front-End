@@ -6,6 +6,7 @@ const recipes = [];
 
 const GOT_RECIPES_WITH_INGREDIENT = 'GOT_RECIPES_WITH_INGREDIENT';
 const GOT_FAVORITE_RECIPES = 'GOT_FAVORITE_RECIPES';
+const GOT_RECIPE_INSTRUCTIONS = 'GOT_FAVORITE_RECIPES';
 
 const gotRecipesWithIngredient = allRecipes => ({
   type: GOT_RECIPES_WITH_INGREDIENT,
@@ -15,6 +16,11 @@ const gotRecipesWithIngredient = allRecipes => ({
 const gotFavoriteRecipes = allRecipes => ({
   type: GOT_FAVORITE_RECIPES,
   allRecipes,
+});
+
+const gotRecipeInstructions = recipe => ({
+  type: GOT_RECIPE_INSTRUCTIONS,
+  recipe,
 });
 
 export const getRecipesWithIngredient = ingredient => {
@@ -30,6 +36,20 @@ export const getRecipesWithIngredient = ingredient => {
   };
 };
 
+export const getRecipeInstructions = id => {
+  return async dispatch => {
+    try {
+      const { data } = await axios.get(
+        `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?stepBreakdown=true&apiKey=
+        ${SPOONACULAR_API_KEY}`
+      );
+      console.log('instructions', data);
+      dispatch(gotRecipeInstructions(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
 export const getFavoriteRecipes = () => {
   return async dispatch => {
     try {
@@ -49,10 +69,11 @@ export const getFavoriteRecipes = () => {
 export default function(state = recipes, action) {
   switch (action.type) {
     case GOT_RECIPES_WITH_INGREDIENT:
-      // console.log('action.allRecipes', action.allRecipes);
       return action.allRecipes;
     case GOT_FAVORITE_RECIPES:
       return action.allRecipes;
+    case GOT_RECIPE_INSTRUCTIONS:
+      return action.recipe;
     default:
       return state;
   }
