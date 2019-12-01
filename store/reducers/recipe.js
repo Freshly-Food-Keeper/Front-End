@@ -5,7 +5,7 @@ import { BACK_END_SERVER, SPOONACULAR_API_KEY } from '../../config/secrets.js';
 const initialState = {
   recipes: [],
   favoriteRecipes: [],
-  instructions: [],
+  // instructions: [],
 };
 
 const GOT_RECIPES_WITH_INGREDIENT = 'GOT_RECIPES_WITH_INGREDIENT';
@@ -31,7 +31,7 @@ export const getRecipesWithIngredient = ingredient => {
   return async dispatch => {
     try {
       const { data } = await axios.get(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=5&apiKey=${SPOONACULAR_API_KEY}`
+        `https://api.spoonacular.com/recipes/complexSearch?query=${ingredient}&includeIngredients=${ingredient}&instructionsRequired=true&addRecipeInformation=true&fillIngredients=true&limitLicense=true&number=5&apiKey=${SPOONACULAR_API_KEY}`
       );
 
       dispatch(gotRecipesWithIngredient(data));
@@ -41,24 +41,26 @@ export const getRecipesWithIngredient = ingredient => {
   };
 };
 
-export const getRecipeInstructions = id => {
-  return async dispatch => {
-    try {
-      const { data } = await axios.get(
-        `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?stepBreakdown=true&apiKey=${SPOONACULAR_API_KEY}`
-      );
-      dispatch(gotRecipeInstructions(data));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-};
+// export const getRecipeInstructions = id => {
+//   return async dispatch => {
+//     try {
+//       const { data } = await axios.get(
+//         `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?stepBreakdown=true&apiKey=${SPOONACULAR_API_KEY}`
+//       );
+
+//       const instructions = data[0].steps;
+//       if (instructions.length === 0) {
+//         console.error('Sorry, could not get recipe');
+//       }
+//       dispatch(gotRecipeInstructions(instructions));
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+// };
 export const getFavoriteRecipes = () => {
-  console.log('bye');
-  console.log('userId', AsyncStorage.getItem('userId'));
   return async dispatch => {
     try {
-      console.log('hi');
       // const userId = await AsyncStorage.getItem('userId');
       const { data } = await axios.get(
         `https://freshly-back-end.herokuapp.com/api/recipe?userId=1`
@@ -68,8 +70,6 @@ export const getFavoriteRecipes = () => {
       //     userId: 2,
       //   },
       // });
-
-      console.log('my recipes', data);
 
       dispatch(gotFavoriteRecipes(data));
     } catch (error) {

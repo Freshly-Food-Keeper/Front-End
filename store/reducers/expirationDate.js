@@ -11,8 +11,6 @@ const gotExpirationDate = life => ({
 });
 
 export const getExpirationDate = foodName => {
-  console.log('in expiration date thunk');
-  console.log(foodName);
   return async dispatch => {
     try {
       const { data } = await axios.get(

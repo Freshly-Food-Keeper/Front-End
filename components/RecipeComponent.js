@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Title, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { getRecipesWithIngredient } from '../store';
 
@@ -12,7 +12,8 @@ class RecipeComponent extends Component {
     await this.props.getRecipes(food.name);
   }
   render() {
-    const recipes = this.props.allRecipes || [];
+    const recipes = this.props.allRecipes.results;
+
     const navigation = this.props.navigation;
     return recipes ? (
       <ScrollView>
@@ -30,6 +31,8 @@ class RecipeComponent extends Component {
               chevron={{ color: '#262626' }}
               image={{ uri: recipe.image }}
             >
+              <Text>Ready In {recipe.readyInMinutes} Minutes </Text>
+              <Text>Servings: {recipe.servings} </Text>
               <Button
                 buttonStyle={{
                   borderRadius: 5,

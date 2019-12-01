@@ -1,44 +1,67 @@
 import React, { Component } from 'react';
-import { Text, Card, Button } from 'react-native-elements';
+import { Text, Card, Divider } from 'react-native-elements';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
-import { getRecipeInstructions } from '../store';
 
 class SingleRecipeScreen extends Component {
-  async componentDidMount() {
-    const _recipe = this.props.navigation.getParam('recipe');
-    const recipe = _recipe.recipe;
-    await this.props.getRecipe(recipe.id);
-    // console.log('instructions', instructions);
-  }
   render() {
+    const recipes = this.props.recipes;
     const _recipe = this.props.navigation.getParam('recipe');
-    const recipe = _recipe.recipe;
-    const instructions = this.props.instructions;
-    console.log('recipe', this.props.recipe);
-    console.log('instructions', instructions);
-    const steps = [];
-
-    instructions.forEach(instruction => steps.push(instruction));
-    console.log('steps');
+    const selectedRecipe = _recipe.recipe;
+    const filteredRecipe = recipes.filter(
+      result => result.id === selectedRecipe.id
+    );
+    const recipe = filteredRecipe[0];
+    const instructions = recipe.analyzedInstructions[0].steps;
+    const ingredients = [
+      ...recipe.usedIngredients,
+      ...recipe.missedIngredients,
+    ];
 
     return (
-      <Card
-        title={recipe.title}
-        titleStyle={{ color: '#262626', fontWeight: 'bold' }}
-        image={{ uri: recipe.image }}
-        divider
-      />
+      <ScrollView>
+        <Card
+          title={recipe.title}
+          titleStyle={{ color: '#262626', fontWeight: 'bold' }}
+          image={{ uri: recipe.image }}
+        >
+          <Text style={{ color: '#262626', fontWeight: 'bold' }}>
+            Ready in {recipe.readyInMinutes} minutes {'\n'}
+            Servings: {recipe.servings}
+            {'\n'}
+          </Text>
+
+          <Text style={{ color: '#262626', fontWeight: 'bold' }}>
+            Ingredients
+          </Text>
+
+          <Divider />
+
+          {ingredients.map(ingredient => {
+            return <Text key={ingredient.id}>{ingredient.original}</Text>;
+          })}
+
+          <Text style={{ color: '#262626', fontWeight: 'bold' }}>
+            {'\n'}Instructions
+          </Text>
+          <Divider />
+
+          {instructions.map(instruction => {
+            return (
+              <Text key={instruction.number}>
+                {instruction.number}: {instruction.step}
+                {'\n'}
+              </Text>
+            );
+          })}
+        </Card>
+      </ScrollView>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  recipe: state.recipe.recipe,
-  instructions: state.recipe.instructions,
+  recipes: state.recipe.recipes.results,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getRecipe: id => dispatch(getRecipeInstructions(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleRecipeScreen);
+export default connect(mapStateToProps)(SingleRecipeScreen);

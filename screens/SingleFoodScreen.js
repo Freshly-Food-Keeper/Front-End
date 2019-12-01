@@ -19,10 +19,10 @@ export default class SingleItemScreen extends React.Component {
   render() {
     const navigation = this.props.navigation;
     const food = {
-      id: this.props.navigation.getParam('id'),
-      expiresIn: this.props.navigation.getParam('expiresIn'),
-      imageUrl: this.props.navigation.getParam('imageUrl'),
-      name: this.props.navigation.getParam('name'),
+      id: navigation.getParam('id'),
+      expiresIn: navigation.getParam('expiresIn'),
+      imageUrl: navigation.getParam('imageUrl'),
+      name: navigation.getParam('name'),
     };
     const buttons = ['Nutrition', 'Recipes'];
     return (

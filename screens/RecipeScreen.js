@@ -7,10 +7,10 @@ import RecipeCards from '../components/RecipeCards';
 class RecipeScreen extends Component {
   async componentDidMount() {
     await this.props.getFavoriteRecipes();
-    console.log(this.props.getFavoriteRecipes());
+    // console.log(this.props.getFavoriteRecipes());
   }
   render() {
-    console.log('recipes', this.props.recipes);
+    // console.log('recipes', this.props.recipes);
     // const navigation = this.props.navigation;
     // const recipes = this.props.recipe.favoriteRecipes;
     return <Text>Fav recipes</Text>;
