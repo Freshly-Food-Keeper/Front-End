@@ -13,10 +13,10 @@ const RecipeCard = props => {
       friction={90}
       tension={100}
       activeScale={0.95}
-      title={recipe.title}
+      title={recipe.name}
       titleStyle={{ color: '#262626', fontWeight: 'bold' }}
       chevron={{ color: '#262626' }}
-      image={{ uri: recipe.image }}
+      image={{ uri: recipe.imgUrl }}
     >
       <Button
         buttonStyle={{

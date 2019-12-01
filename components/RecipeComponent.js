@@ -13,7 +13,6 @@ class RecipeComponent extends Component {
   }
   render() {
     const recipes = this.props.allRecipes.results;
-
     const navigation = this.props.navigation;
     return recipes ? (
       <ScrollView>
