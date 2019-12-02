@@ -32,16 +32,25 @@ export const getAllInventory = () => {
   };
 };
 
-export const addFood = food => {
+export const addFood = (food, shelfLife) => {
   return async dispatch => {
     try {
       const userId = await AsyncStorage.getItem('userId');
-      const { data } = await axios.post(`${BACK_END_SERVER}/api/food`, food, {
-        params: {
-          userId,
-        },
-      });
-      dispatch(addedFood(data));
+      const foodObj = {
+        userId,
+        food,
+        shelfLife,
+      };
+      const { data } = await axios.post(`${BACK_END_SERVER}/api/food`, foodObj);
+
+      const newFood = {
+        expiresIn: shelfLife,
+        id: data.foodId,
+        imageUrl: null,
+        name: food,
+      };
+
+      dispatch(addedFood(newFood));
     } catch (error) {
       console.error(error);
     }

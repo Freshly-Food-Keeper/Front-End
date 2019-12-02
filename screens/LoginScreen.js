@@ -1,16 +1,23 @@
-import * as React from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity, Alert } from "react-native";
-import { Input } from "react-native-elements";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { loginUser, removeError } from "../store";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import * as React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import { Input } from 'react-native-elements';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { loginUser, removeError } from '../store';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 class Login extends React.Component {
   constructor(props) {
-    super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async handleSubmit(values) {
@@ -19,21 +26,18 @@ class Login extends React.Component {
     await this.props.loginUser({ ...values, email });
 
     if (!this.props.error) {
-      this.props.navigation.navigate("App");
+      this.props.navigation.navigate('App');
     }
   }
 
   render() {
     const { error } = this.props;
-
     if(error) {
       Alert.alert(
         'Oops!',
         error.response.data,
-        [
-          {text: 'OK', onPress: this.props.removeError,}
-        ],
-        {cancelable: false},
+        [{ text: 'OK', onPress: this.props.removeError }],
+        { cancelable: false }
       );
     }
 
@@ -41,12 +45,12 @@ class Login extends React.Component {
       <View style={styles.container}>
         <View style={styles.form}>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ email: '', password: '' }}
             validationSchema={Yup.object({
               email: Yup.string()
-                .email("Please enter a valid email address")
-                .required("Please enter your email address"),
-              password: Yup.string().required("Please enter your password")
+                .email('Please enter a valid email address')
+                .required('Please enter your email address'),
+              password: Yup.string().required('Please enter your password'),
             })}
             onSubmit={this.handleSubmit}
           >
@@ -57,13 +61,13 @@ class Login extends React.Component {
               values,
               errors,
               touched,
-              isValid
+              isValid,
             }) => (
               <React.Fragment>
                 <View style={styles.input}>
                   <Input
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
                     value={values.email}
                     placeholder="Email"
                   />
@@ -74,8 +78,8 @@ class Login extends React.Component {
 
                 <View style={styles.input}>
                   <Input
-                    onChangeText={handleChange("password")}
-                    onBlur={handleBlur("password")}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
                     value={values.password}
                     placeholder="Password"
                     secureTextEntry={true}
@@ -105,84 +109,84 @@ class Login extends React.Component {
 
 Login.navigationOptions = ({ navigation }) => {
   return {
-    headerTitle: "Welcome Back",
+    headerTitle: 'Welcome Back',
     headerRight: (
       <Button
         onPress={() => {
-          navigation.navigate("SignUp");
+          navigation.navigate('SignUp');
         }}
         title="Sign Up"
         color="#fff"
       />
     ),
     headerStyle: {
-      backgroundColor: "#035640"
+      backgroundColor: '#035640',
     },
-    headerTintColor: "#fff",
+    headerTintColor: '#fff',
     headerTitleStyle: {
-      fontWeight: "bold"
-    }
+      fontWeight: 'bold',
+    },
   };
 };
 
 const mapState = state => {
   return {
-    error: state.user.loginError
+    error: state.user.loginError,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     loginUser: user => dispatch(loginUser(user)),
-    removeError: () => dispatch(removeError())
+    removeError: () => dispatch(removeError()),
   };
 };
 
 export default connect(mapState, mapDispatch)(Login);
 
 Login.propTypes = {
-  error: PropTypes.object
+  error: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#035640",
-    alignItems: "center"
+    backgroundColor: '#035640',
+    alignItems: 'center',
   },
   form: {
-    backgroundColor: "white",
-    width: "90%",
+    backgroundColor: 'white',
+    width: '90%',
     padding: 10,
     marginTop: 50,
-    borderRadius: 8
+    borderRadius: 8,
   },
   input: {
     padding: 3,
     margin: 10,
     fontSize: 20,
-    borderRadius: 5
+    borderRadius: 5,
   },
   image: {
     flex: 1,
     height: null,
-    width: null
+    width: null,
   },
   button: {
-    backgroundColor: "#035640",
+    backgroundColor: '#035640',
     padding: 15,
     margin: 15,
-    borderRadius: 5
+    borderRadius: 5,
   },
   buttonText: {
-    textAlign: "center",
-    color: "white",
-    fontSize: 20
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 20,
   },
   errorText: {
-    color: "#f44336",
+    color: '#f44336',
     fontSize: 12,
     marginLeft: 10,
-    marginTop: 2
-  }
+    marginTop: 2,
+  },
 });

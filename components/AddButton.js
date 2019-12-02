@@ -1,22 +1,23 @@
-import React from "react";
+import React from 'react';
+import { View, StyleSheet, TouchableHighlight, Animated } from 'react-native';
+import { FontAwesome5, FontAwesome, AntDesign } from '@expo/vector-icons';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 import {
-  View,
-  StyleSheet,
-  TouchableHighlight,
-  Animated
-} from "react-native";
-import { FontAwesome5, FontAwesome, AntDesign } from "@expo/vector-icons";
-import Constants from "expo-constants";
-import * as Permissions from "expo-permissions";
-import * as ImagePicker from "expo-image-picker";
-import { GOOGLE_CLOUD_VISION_API_KEY, BACK_END_SERVER } from "../config/secrets";
+  GOOGLE_CLOUD_VISION_API_KEY,
+  BACK_END_SERVER,
+} from '../config/secrets';
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { withNavigation } from 'react-navigation';
 import { ButtonGroup, Button, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
-import expirationDate, { getExpirationDate } from '../store/reducers/expirationDate';
+import expirationDate, {
+  getExpirationDate,
+} from '../store/reducers/expirationDate';
 import axios from 'axios';
 import { addFood } from '../store/reducers/food';
-import AddFoodForm from "./AddFoodForm";
+import AddFoodForm from './AddFoodForm';
 import ConfirmFoodForm from './ConfirmFoodForm';
 
 export class AddButton extends React.Component {
@@ -46,14 +47,14 @@ export class AddButton extends React.Component {
     Animated.sequence([
       Animated.timing(this.buttonSize, {
         toValue: 0.95,
-        duration: 100
+        duration: 100,
       }),
       Animated.timing(this.buttonSize, {
-        toValue: 1
+        toValue: 1,
       }),
       Animated.timing(this.mode, {
-        toValue: this.mode._value === 0 ? 1 : 0
-      })
+        toValue: this.mode._value === 0 ? 1 : 0,
+      }),
     ]).start();
   };
 
@@ -63,8 +64,8 @@ export class AddButton extends React.Component {
         Permissions.CAMERA_ROLL,
         Permissions.CAMERA
       );
-      if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
       }
     }
   };
@@ -74,7 +75,7 @@ export class AddButton extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      base64: true
+      base64: true,
     });
 
     this.setState({ uploading: true });
@@ -89,7 +90,7 @@ export class AddButton extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      base64: true
+      base64: true,
     });
 
     if (!image.cancelled) {
@@ -105,34 +106,39 @@ export class AddButton extends React.Component {
       let body = JSON.stringify({
         requests: [
           {
-            features: [{ type: "LABEL_DETECTION", maxResults: 10 }],
+            features: [{ type: 'LABEL_DETECTION', maxResults: 10 }],
             image: {
-              content: image.base64
-            }
-          }
-        ]
+              content: image.base64,
+            },
+          },
+        ],
       });
 
       let response = await fetch(
-        "https://vision.googleapis.com/v1/images:annotate?key=" +
+        'https://vision.googleapis.com/v1/images:annotate?key=' +
           GOOGLE_CLOUD_VISION_API_KEY,
         {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
-          method: "POST",
-          body: body
+          method: 'POST',
+          body: body,
         }
       );
       let googleResponseJson = await response.json();
-      let foodName = googleResponseJson['responses'][0]['labelAnnotations'][0]['description']
-      foodName = foodName.split(' ')[0]
-      let life = await axios.get(`${BACK_END_SERVER}/api/expiration/${foodName}`)
+      let foodName =
+        googleResponseJson['responses'][0]['labelAnnotations'][0][
+          'description'
+        ];
+      foodName = foodName.split(' ')[0];
+      let life = await axios.get(
+        `${BACK_END_SERVER}/api/expiration/${foodName}`
+      );
       this.setState({
         googleResponse: googleResponseJson,
         uploading: false,
-        lifeInputValue: life.data || "NO SHELF LIFE AVAILABLE"
+        lifeInputValue: life.data || 'NO SHELF LIFE AVAILABLE',
       });
     } catch (error) {
       console.log(error);
@@ -144,47 +150,51 @@ export class AddButton extends React.Component {
 
   render() {
     const sizeStyle = {
-      transform: [{ scale: this.buttonSize }]
+      transform: [{ scale: this.buttonSize }],
     };
 
     const rotation = this.mode.interpolate({
       inputRange: [0, 1],
-      outputRange: ["0deg", "45deg"]
+      outputRange: ['0deg', '45deg'],
     });
 
     const cameraX = this.mode.interpolate({
       inputRange: [0, 1],
-      outputRange: [-24, -100]
+      outputRange: [-24, -100],
     });
 
     const cameraY = this.mode.interpolate({
       inputRange: [0, 1],
-      outputRange: [-50, -100]
+      outputRange: [-50, -100],
     });
 
     const photosX = this.mode.interpolate({
       inputRange: [0, 1],
-      outputRange: [-24, -24]
+      outputRange: [-24, -24],
     });
 
     const photosY = this.mode.interpolate({
       inputRange: [0, 1],
-      outputRange: [-50, -150]
+      outputRange: [-50, -150],
     });
 
     const formX = this.mode.interpolate({
       inputRange: [0, 1],
-      outputRange: [-24, 50]
+      outputRange: [-24, 50],
     });
 
     const formY = this.mode.interpolate({
       inputRange: [0, 1],
-      outputRange: [-50, -100]
+      outputRange: [-50, -100],
     });
-    let { image, googleResponse } = this.state
-    let buttons = googleResponse ? googleResponse['responses'][0]['labelAnnotations'].slice(0, 3).map(button => button["description"]) : []
+    let { image, googleResponse } = this.state;
+    let buttons = googleResponse
+      ? googleResponse['responses'][0]['labelAnnotations']
+          .slice(0, 3)
+          .map(button => button['description'])
+      : [];
     return (
-      <View style={{ position: "absolute", alignItems: "center" }}>
+      <View style={{ position: 'absolute', alignItems: 'center' }}>
         <Dialog
           containerStyle={styles.dialogContainer}
           visible={!!this.state.image}
@@ -192,9 +202,15 @@ export class AddButton extends React.Component {
             this.setState({ image: null });
           }}
         >
-        { googleResponse && (  
-          <ConfirmFoodForm buttons={buttons} expiresIn={this.state.lifeInputValue} image={image} navigation={this.props.navigation} addFood={this.props.addFood} />
-        )}
+          {googleResponse && (
+            <ConfirmFoodForm
+              buttons={buttons}
+              expiresIn={this.state.lifeInputValue}
+              image={image}
+              navigation={this.props.navigation}
+              addFood={this.props.addFood}
+            />
+          )}
         </Dialog>
         <Dialog
           containerStyle={styles.dialogContainer}
@@ -203,18 +219,21 @@ export class AddButton extends React.Component {
             this.setState({ formPopUp: false });
           }}
         >
-          <AddFoodForm food={{ name: 'ex: Apple', expiresIn: 'ex: 10', navigation: this.props.navigation, addFood: this.props.addFood}}/>
-        </Dialog> 
+          <AddFoodForm
+            name={'ex: Apple'}
+            expiresIn={'ex: 10'}
+            navigation={this.props.navigation}
+            addFood={this.props.addFood}
+            visible={this.state.formPopUp}
+          />
+        </Dialog>
         <Animated.View
           style={[
             styles.secondaryButton,
-            { position: "absolute", left: cameraX, top: cameraY }
+            { position: 'absolute', left: cameraX, top: cameraY },
           ]}
         >
-          <TouchableHighlight
-            onPress={this.takePhoto}
-            underlayColor="#7F58FF"
-          >
+          <TouchableHighlight onPress={this.takePhoto} underlayColor="#7F58FF">
             <FontAwesome name="camera" size={24} color="#FFF" />
           </TouchableHighlight>
         </Animated.View>
@@ -222,7 +241,7 @@ export class AddButton extends React.Component {
         <Animated.View
           style={[
             styles.secondaryButton,
-            { position: "absolute", left: photosX, top: photosY }
+            { position: 'absolute', left: photosX, top: photosY },
           ]}
         >
           <TouchableHighlight
@@ -237,11 +256,11 @@ export class AddButton extends React.Component {
         <Animated.View
           style={[
             styles.secondaryButton,
-            { position: "absolute", left: formX, top: formY }
+            { position: 'absolute', left: formX, top: formY },
           ]}
         >
           <TouchableHighlight
-            onPress={() =>  this.setState({formPopUp: true})}
+            onPress={() => this.setState({ formPopUp: true })}
             underlayColor="#7F58FF"
           >
             <AntDesign name="form" size={24} color="#FFF" />
@@ -265,29 +284,29 @@ export class AddButton extends React.Component {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#035640",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#035640',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 72,
     height: 72,
     borderRadius: 36,
-    position: "absolute",
+    position: 'absolute',
     top: -55,
-    shadowColor: "#7F58FF",
+    shadowColor: '#7F58FF',
     shadowRadius: 5,
     shadowOpacity: 0.3,
     shadowOffset: { height: 10 },
     borderWidth: 3,
-    borderColor: "#FFF"
+    borderColor: '#FFF',
   },
   secondaryButton: {
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: "#035640"
+    backgroundColor: '#035640',
   },
   image: {
     marginTop: 70,
@@ -301,7 +320,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   imageConatiner: {
     marginTop: 75,
@@ -313,9 +331,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   buttonGroup: {
-    height: 25, 
-    width: '100%', 
-    shadowColor: '#262626'
+    height: 25,
+    width: '100%',
+    shadowColor: '#262626',
   },
   buttonContainer: {
     alignItems: 'center',
@@ -331,7 +349,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addFood: (foodName, foodLife) => dispatch(addFood(foodName, foodLife))
+  addFood: (food, shelfLife) => dispatch(addFood(food, shelfLife)),
 });
 
-export default connect(null, mapDispatchToProps )(AddButton)
+export default withNavigation(connect(null, mapDispatchToProps)(AddButton));

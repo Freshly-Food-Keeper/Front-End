@@ -8,7 +8,6 @@ import { getFavoriteRecipes } from '../store/reducers/recipe';
 class RecipeScreen extends Component {
   async componentDidMount() {
     await this.props.getFavoriteRecipes();
-    // console.log(this.props.getFavoriteRecipes());
   }
   render() {
     const recipes = this.props.recipes;

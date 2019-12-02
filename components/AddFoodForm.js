@@ -1,27 +1,24 @@
-import React from 'react'
+import React from 'react';
 import { DialogContent } from 'react-native-popup-dialog';
-import {
-  View,
-  StyleSheet
-} from "react-native";
-import { Button, Input, Icon} from 'react-native-elements'
+import { View, StyleSheet } from 'react-native';
+import { Button, Input, Icon } from 'react-native-elements';
 
-const AddFoodForm = (props) => {
+const AddFoodForm = props => {
   const [foodName, setName] = React.useState(props.food.name);
   const [foodLife, setLife] = React.useState(props.food.expiresIn);
-  return(
-  <DialogContent style={styles.dialogContent}>
-    <View>
+  return (
+    <DialogContent style={styles.dialogContent}>
       <View>
+        <View>
           <Input
-            label='FOOD NAME'
-            onChangeText={(food) => setName(food)}
+            label="FOOD NAME"
+            onChangeText={food => setName(food)}
             defaultValue={foodName}
           />
           <Input
             label="*optional: SHELF LIFE (days)"
             defaultValue={foodLife}
-            onChangeText={(life) => setLife(life)}
+            onChangeText={life => setLife(life)}
           />
         </View>
         <View style={styles.buttonContainer}>
@@ -29,15 +26,15 @@ const AddFoodForm = (props) => {
             title="SUBMIT"
             buttonStyle={styles.buttons}
             onPress={() => {
-              props.navigation.navigate("Food")
-              props.addFood(foodName, foodLife)
+              props.navigation.navigate('Food');
+              props.addFood(foodName, foodLife);
             }}
           />
         </View>
-    </View>
-  </DialogContent>
-)}
-
+      </View>
+    </DialogContent>
+  );
+};
 
 const styles = StyleSheet.create({
   dialogContent: {
@@ -62,6 +59,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
   },
-})
+});
 
-export default AddFoodForm
+export default AddFoodForm;
