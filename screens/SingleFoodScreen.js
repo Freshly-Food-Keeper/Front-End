@@ -24,7 +24,7 @@ export default class SingleItemScreen extends React.Component {
       imageUrl: navigation.getParam('imageUrl'),
       name: navigation.getParam('name'),
     };
-    const buttons = ['Recipes', 'Nutrition'];
+    const buttons = ['Nutrition', 'Recipes'];
     return (
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
@@ -50,9 +50,9 @@ export default class SingleItemScreen extends React.Component {
             containerStyle={{ height: 25 }}
           />
           {this.state.selectedIndex === 0 ? (
-            <RecipeComponent food={food} navigation={navigation} />
-            ) : (
             <NutritionInfo food={food} />
+          ) : (
+            <RecipeComponent food={food} navigation={navigation} />
           )}
         </View>
       </View>
