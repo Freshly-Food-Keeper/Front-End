@@ -18,7 +18,6 @@ class RecipeComponent extends Component {
     return recipes ? (
       <ScrollView>
         {recipes.map(recipe => {
-          console.log(recipe)
           return (
             <Card
               key={recipe.id}

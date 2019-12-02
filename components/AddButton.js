@@ -9,6 +9,7 @@ import {
   BACK_END_SERVER,
 } from '../config/secrets';
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { withNavigation } from 'react-navigation';
 import { ButtonGroup, Button, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import expirationDate, {
@@ -219,12 +220,11 @@ export class AddButton extends React.Component {
           }}
         >
           <AddFoodForm
-            food={{
-              name: 'ex: Apple',
-              expiresIn: 'ex: 10',
-              navigation: this.props.navigation,
-              addFood: this.props.addFood,
-            }}
+            name={'ex: Apple'}
+            expiresIn={'ex: 10'}
+            navigation={this.props.navigation}
+            addFood={this.props.addFood}
+            visible={this.state.formPopUp}
           />
         </Dialog>
         <Animated.View
@@ -352,4 +352,4 @@ const mapDispatchToProps = dispatch => ({
   addFood: (food, shelfLife) => dispatch(addFood(food, shelfLife)),
 });
 
-export default connect(null, mapDispatchToProps)(AddButton);
+export default withNavigation(connect(null, mapDispatchToProps)(AddButton));

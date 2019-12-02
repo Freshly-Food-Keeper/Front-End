@@ -3,11 +3,12 @@ import { View, StyleSheet, Text, Image } from 'react-native';
 import { ListItem, Badge, Avatar, Icon } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
 import { connect } from 'react-redux';
-import { getAllInventory } from '../store/reducers/food';
-import { titleCase, dayCalculator } from '../utils'
+import { getAllInventory, addFood } from '../store/reducers/food';
+import AddFoodForm from '../components/AddFoodForm';
+import { Dialog } from 'react-native-popup-dialog';
+import { titleCase, dayCalculator } from '../utils';
 
 class FoodScreen extends Component {
-
   state = {
     editVisible: false,
   };
@@ -35,8 +36,8 @@ class FoodScreen extends Component {
       //sort alphabetically by name
       foods.sort((a, b) => (a.name > b.name ? 1 : -1));
     }
-    
-    return foods.length > 0 ? ( 
+
+    return foods.length > 0 ? (
       <View style={styles.foodContainer}>
         {foods.map(food => {
           // Creating a new object here so that the calculations we do can also easily be sent to the Single Food View
@@ -48,53 +49,59 @@ class FoodScreen extends Component {
           };
           // console.log('FOOD ITEM', food);
           return (
-            <View>
+            <View key={food.id}>
               <View>
-              <Dialog
-                containerStyle={styles.dialogContainer}
-                visible={!!this.state.editVisible}
-                onTouchOutside={() => {
-                  this.setState({ editVisible: false });
-                }}
-              >
-                <AddFoodForm food={singleFood} navigation={this.props.navigation} addFood={this.props.addFood}/> 
-              </Dialog> 
+                <Dialog
+                  containerStyle={styles.dialogContainer}
+                  visible={!!this.state.editVisible}
+                  onTouchOutside={() => {
+                    this.setState({ editVisible: false });
+                  }}
+                >
+                  <AddFoodForm
+                    food={singleFood}
+                    navigation={this.props.navigation}
+                    addFood={this.props.addFood}
+                  />
+                </Dialog>
               </View>
-            <ListItem
-              key={singleFood.id}
-              Component={TouchableScale}
-              friction={90}
-              tension={100}
-              activeScale={0.95}
-              leftAvatar={
-                <AvatarComponent food={food} showBadge={food.expiresIn < 7} />
-              }
-              title={singleFood.name}
-              rightIcon={
-                <Icon
-                  name='edit'
-                  type='font-awesome'
-                  color='black'
-                  onPress={() => this.setState({ editVisible: !this.state.editVisible}) }
-                />
-              }
-              titleStyle={{ color: '#262626', fontWeight: 'bold' }}
-              subtitle={singleFood.expiresIn}
-              subtitleStyle={{ color: '#262626' }}
-              chevron={{ color: '#262626' }}
-              onPress={() =>
-                this.props.navigation.navigate('SingleFood', singleFood)
-              }
-              bottomDivider
-            />
-          </View>
+              <ListItem
+                key={singleFood.id}
+                Component={TouchableScale}
+                friction={90}
+                tension={100}
+                activeScale={0.95}
+                leftAvatar={
+                  <AvatarComponent food={food} showBadge={food.expiresIn < 7} />
+                }
+                title={singleFood.name}
+                rightIcon={
+                  <Icon
+                    name="edit"
+                    type="font-awesome"
+                    color="black"
+                    onPress={() =>
+                      this.setState({ editVisible: !this.state.editVisible })
+                    }
+                  />
+                }
+                titleStyle={{ color: '#262626', fontWeight: 'bold' }}
+                subtitle={singleFood.expiresIn}
+                subtitleStyle={{ color: '#262626' }}
+                chevron={{ color: '#262626' }}
+                onPress={() =>
+                  this.props.navigation.navigate('SingleFood', singleFood)
+                }
+                bottomDivider
+              />
+            </View>
           );
         })}
       </View>
     ) : (
       <NoFoodComponent />
     );
-  } 
+  }
 }
 
 FoodScreen.navigationOptions = {
@@ -131,7 +138,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getInventory: () => dispatch(getAllInventory()),
-  addFood: (food) => dispatch(addFood(food))
+  addFood: food => dispatch(addFood(food)),
 });
 
 // If a user has no food to display, show them a friendly message!
