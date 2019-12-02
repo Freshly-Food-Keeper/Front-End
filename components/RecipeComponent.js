@@ -5,7 +5,6 @@ import { getRecipesWithIngredient } from '../store';
 
 import { Card, Button } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
-import { titleCase } from '../utils';
 
 class RecipeComponent extends Component {
   async componentDidMount() {
@@ -18,7 +17,6 @@ class RecipeComponent extends Component {
     return recipes ? (
       <ScrollView>
         {recipes.map(recipe => {
-          console.log(recipe)
           return (
             <Card
               key={recipe.id}
@@ -27,7 +25,7 @@ class RecipeComponent extends Component {
               friction={90}
               tension={100}
               activeScale={0.95}
-              title={titleCase(recipe.title)}
+              title={recipe.title}
               titleStyle={{ color: '#262626', fontWeight: 'bold' }}
               chevron={{ color: '#262626' }}
               image={{ uri: recipe.image }}

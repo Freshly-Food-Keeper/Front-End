@@ -1,4 +1,5 @@
 import FoodScreen from './FoodScreen';
+import InitialScreen from './InitialScreen';
 import LoginScreen from './LoginScreen';
 import SettingsScreen from './SettingsScreen';
 import SignUpScreen from './SignUpScreen';
@@ -10,6 +11,7 @@ import SingleRecipeScreen from './SingleRecipeScreen';
 
 export {
   FoodScreen,
+  InitialScreen,
   LoginScreen,
   SettingsScreen,
   SignUpScreen,

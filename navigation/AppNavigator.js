@@ -29,8 +29,7 @@ const AuthStack = createStackNavigator({
 const UserHomeStack = createStackNavigator({
   UserHome: UserHomeScreen,
   Food: FoodScreen,
-  SingleFood: SingleFoodScreen,
-  SingleRecipe: SingleRecipeScreen
+  SingleFood: SingleFoodScreen
 })
 
 UserHomeStack.navigationOptions = {
@@ -46,7 +45,6 @@ UserHomeStack.navigationOptions = {
 const FoodStack = createStackNavigator({
   Food: FoodScreen,
   SingleFood: SingleFoodScreen,
-  SingleRecipe: SingleRecipeScreen
 });
 
 FoodStack.path = 'singleFood';
@@ -67,11 +65,11 @@ const RecipeStack = createStackNavigator({
 });
 
 RecipeStack.navigationOptions = {
-  tabBarLabel: 'My Favorites',
+  tabBarLabel: 'My Recipes',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-heart' : 'md-heart'}
+      name={Platform.OS === 'ios' ? 'ios-list' : 'md-list'}
     />
   ),
 };
