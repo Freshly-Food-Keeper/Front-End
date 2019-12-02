@@ -16,7 +16,7 @@ export const getExpirationDate = foodName => {
       const { data } = await axios.get(
         `${BACK_END_SERVER}/api/expiration/${foodName}`
       );
-      // console.log('data', data)
+
       dispatch(gotExpirationDate(data));
     } catch (error) {
       console.error(error);

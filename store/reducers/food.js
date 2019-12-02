@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import { BACK_END_SERVER } from '../../config/secrets.js';
+import { dayCalculator } from '../../screens/FoodScreen.js';
 
 const foods = [];
 
@@ -32,16 +33,28 @@ export const getAllInventory = () => {
   };
 };
 
-export const addFood = food => {
+export const addFood = (food, shelfLife) => {
   return async dispatch => {
     try {
+      console.log('hi');
+      console.log('food', food);
+      console.log('shelfLife', shelfLife);
       const userId = await AsyncStorage.getItem('userId');
-      const { data } = await axios.post(`${BACK_END_SERVER}/api/food`, food, {
-        params: {
-          userId,
-        },
-      });
-      dispatch(addedFood(data));
+      const foodObj = {
+        userId,
+        food,
+        shelfLife,
+      };
+      const { data } = await axios.post(`${BACK_END_SERVER}/api/food`, foodObj);
+      console.log('food', food);
+      const newFood = {
+        expiresIn: dayCalculator(shelfLife),
+        id: data.foodId,
+        imageUrl: null,
+        name: food,
+      };
+
+      dispatch(addedFood(newFood));
     } catch (error) {
       console.error(error);
     }

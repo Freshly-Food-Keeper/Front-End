@@ -81,6 +81,7 @@ class FoodScreen extends Component {
             expiresIn: dayCalculator(food.expiresIn),
             imageUrl: food.imageUrl,
           };
+          // console.log('FOOD ITEM', food);
           return (
             <ListItem
               key={singleFood.id}
