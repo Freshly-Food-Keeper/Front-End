@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableHighlight,
-  Animated,
-  Platform,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  Text,
-  Image,
-} from 'react-native';
+import { View, StyleSheet, TouchableHighlight, Animated } from 'react-native';
 import { FontAwesome5, FontAwesome, AntDesign } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -25,8 +15,9 @@ import expirationDate, {
   getExpirationDate,
 } from '../store/reducers/expirationDate';
 import axios from 'axios';
-import { withNavigation } from 'react-navigation';
 import { addFood } from '../store/reducers/food';
+import AddFoodForm from './AddFoodForm';
+import ConfirmFoodForm from './ConfirmFoodForm';
 
 export class AddButton extends React.Component {
   constructor(props) {
@@ -139,15 +130,14 @@ export class AddButton extends React.Component {
         googleResponseJson['responses'][0]['labelAnnotations'][0][
           'description'
         ];
-
+      foodName = foodName.split(' ')[0];
       let life = await axios.get(
         `${BACK_END_SERVER}/api/expiration/${foodName}`
       );
-
       this.setState({
         googleResponse: googleResponseJson,
         uploading: false,
-        lifeInputValue: life.data,
+        lifeInputValue: life.data || 'NO SHELF LIFE AVAILABLE',
       });
     } catch (error) {
       console.log(error);
@@ -202,7 +192,6 @@ export class AddButton extends React.Component {
           .slice(0, 3)
           .map(button => button['description'])
       : [];
-
     return (
       <View style={{ position: 'absolute', alignItems: 'center' }}>
         <Dialog
@@ -212,55 +201,15 @@ export class AddButton extends React.Component {
             this.setState({ image: null });
           }}
         >
-          <DialogContent style={styles.dialogContent}>
-            <View styles={styles.imageConatiner}>
-              <Image
-                style={styles.image}
-                source={require('../assets/images/arrow.png')}
-              />
-            </View>
-            {googleResponse && (
-              <View>
-                <View styles={styles.listContainer}>
-                  <ButtonGroup
-                    onPress={selectedButtonIndex =>
-                      this.setState({ selectedButtonIndex })
-                    }
-                    selectedIndex={this.state.selectedButtonIndex}
-                    buttons={buttons}
-                    containerStyle={styles.buttonGroup}
-                  />
-                </View>
-                <View>
-                  <Input
-                    label="CHANGE FOOD NAME"
-                    defaultValue={buttons[this.state.selectedButtonIndex]}
-                    onChangeText={text =>
-                      this.setState({ foodInputValue: text })
-                    }
-                  />
-                  <Input
-                    label="CHANGE SHELF LIFE"
-                    defaultValue={this.state.lifeInputValue}
-                    value={this.state.lifeInputValue}
-                    onChangeText={text =>
-                      this.setState({ lifeInputValue: text })
-                    }
-                  />
-                </View>
-                <View style={styles.buttonContainer}>
-                  <Button
-                    title="SUBMIT"
-                    buttonStyle={styles.buttons}
-                    onPress={() => {
-                      this.props.addFood(this.state.foodInputValue);
-                      this.props.navigation.navigate('Food');
-                    }}
-                  />
-                </View>
-              </View>
-            )}
-          </DialogContent>
+          {googleResponse && (
+            <ConfirmFoodForm
+              buttons={buttons}
+              expiresIn={this.state.lifeInputValue}
+              image={image}
+              navigation={this.props.navigation}
+              addFood={this.props.addFood}
+            />
+          )}
         </Dialog>
         <Dialog
           containerStyle={styles.dialogContainer}
@@ -269,40 +218,14 @@ export class AddButton extends React.Component {
             this.setState({ formPopUp: false });
           }}
         >
-          <DialogContent style={styles.dialogContent}>
-            <View>
-              <View>
-                <View styles={styles.imageConatiner}>
-                  <Image style={styles.image} source={image} />
-                </View>
-                <Input
-                  label="FOOD NAME"
-                  placeholder="ex: Apple"
-                  onChangeText={text => this.setState({ foodInputValue: text })}
-                />
-                <Input
-                  label="*optional: SHELF LIFE (days)"
-                  defaultValue={this.state.lifeInputValue}
-                  placeholder="ex: 10"
-                  value={this.state.lifeInputValue}
-                  onChangeText={text => this.setState({ lifeInputValue: text })}
-                />
-              </View>
-              <View style={styles.buttonContainer}>
-                <Button
-                  title="SUBMIT"
-                  buttonStyle={styles.buttons}
-                  onPress={() => {
-                    this.props.addFood(
-                      this.state.foodInputValue,
-                      this.state.lifeInputValue
-                    );
-                    this.props.navigation.navigate('Food');
-                  }}
-                />
-              </View>
-            </View>
-          </DialogContent>
+          <AddFoodForm
+            food={{
+              name: 'ex: Apple',
+              expiresIn: 'ex: 10',
+              navigation: this.props.navigation,
+              addFood: this.props.addFood,
+            }}
+          />
         </Dialog>
         <Animated.View
           style={[
@@ -429,4 +352,4 @@ const mapDispatchToProps = dispatch => ({
   addFood: (food, shelfLife) => dispatch(addFood(food, shelfLife)),
 });
 
-export default withNavigation(connect(null, mapDispatchToProps)(AddButton));
+export default connect(null, mapDispatchToProps)(AddButton);
