@@ -34,6 +34,7 @@ class Login extends React.Component {
     const { error } = this.props;
 
     if (error) {
+      console.log(error);
       Alert.alert(
         'Oops!',
         error.response.data,
