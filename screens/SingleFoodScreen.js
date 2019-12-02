@@ -3,21 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, ButtonGroup } from 'react-native-elements';
 import NutritionInfo from '../components/NutritionInfo';
 
-function Nutrition() {
-  return (
-    <View>
-      <Text>Hi! I'm the nutrition component</Text>
-    </View>
-  );
-}
-
-function Recipes() {
-  return (
-    <View>
-      <Text>Hi! I'm the receipes component</Text>
-    </View>
-  );
-}
+import RecipeComponent from '../components/RecipeComponent';
 
 export default class SingleItemScreen extends React.Component {
   constructor() {
@@ -31,13 +17,14 @@ export default class SingleItemScreen extends React.Component {
     this.setState({ selectedIndex: index });
   }
   render() {
+    const navigation = this.props.navigation;
     const food = {
-      id: this.props.navigation.getParam('id'),
-      expiresIn: this.props.navigation.getParam('expiresIn'),
-      imageUrl: this.props.navigation.getParam('imageUrl'),
-      name: this.props.navigation.getParam('name')
-    }
-    const buttons = ['Nutrition', 'Recipes']
+      id: navigation.getParam('id'),
+      expiresIn: navigation.getParam('expiresIn'),
+      imageUrl: navigation.getParam('imageUrl'),
+      name: navigation.getParam('name'),
+    };
+    const buttons = ['Nutrition', 'Recipes'];
     return (
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
@@ -62,7 +49,11 @@ export default class SingleItemScreen extends React.Component {
             buttons={buttons}
             containerStyle={{ height: 25 }}
           />
-          {this.state.selectedIndex === 0 ? <NutritionInfo food={food} /> : <Recipes />}
+          {this.state.selectedIndex === 0 ? (
+            <NutritionInfo food={food} />
+          ) : (
+            <RecipeComponent food={food} navigation={navigation} />
+          )}
         </View>
       </View>
     );
