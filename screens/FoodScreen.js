@@ -50,7 +50,7 @@ class FoodScreen extends Component {
             imageUrl: food.imageUrl,
           };
           return (
-            <View>
+            <View key={food.id}>
               <View>
               <Dialog
                 containerStyle={styles.dialogContainer}
