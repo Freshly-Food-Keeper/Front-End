@@ -5,13 +5,8 @@ import { connect } from 'react-redux';
 
 class SingleRecipeScreen extends Component {
   render() {
-    const recipes = this.props.recipes;
-    const _recipe = this.props.navigation.getParam('recipe');
-    const selectedRecipe = _recipe.recipe;
-    const filteredRecipe = recipes.filter(
-      result => result.id === selectedRecipe.id
-    );
-    const recipe = filteredRecipe[0];
+    const recipe = this.props.navigation.getParam('recipe').recipe;
+
     const instructions = recipe.analyzedInstructions[0].steps;
     const ingredients = [
       ...recipe.usedIngredients,
