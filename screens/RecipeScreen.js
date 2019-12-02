@@ -12,7 +12,6 @@ class RecipeScreen extends Component {
   }
   render() {
     const recipes = this.props.recipes;
-    console.log('RECIPES', recipes);
     const navigation = this.props.navigation;
 
     return recipes ? (
