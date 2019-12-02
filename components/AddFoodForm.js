@@ -4,8 +4,8 @@ import { View, StyleSheet } from 'react-native';
 import { Button, Input, Icon } from 'react-native-elements';
 
 const AddFoodForm = props => {
-  const [foodName, setName] = React.useState(props.food.name);
-  const [foodLife, setLife] = React.useState(props.food.expiresIn);
+  const [foodName, setName] = React.useState(props.name);
+  const [foodLife, setLife] = React.useState(props.expiresIn);
   return (
     <DialogContent style={styles.dialogContent}>
       <View>
