@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-import { ListItem, Badge, Avatar } from 'react-native-elements';
+import { ListItem, Badge, Avatar, Icon } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
 import { connect } from 'react-redux';
 import { getAllInventory } from '../store/reducers/food';
+import AddFoodForm from '../components/AddFoodForm'
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { withNavigation } from 'react-navigation'
+import { addFood } from '../store/reducers/food'
 
 const titleCase = title => {
   return title
@@ -46,13 +50,17 @@ export const dayCalculator = days => {
 };
 
 class FoodScreen extends Component {
+
+  state = {
+    editVisible: false,
+  };
+
   componentDidMount() {
     this.props.getInventory();
   }
 
   render() {
     let foods = this.props.allFoods || [];
-
     // Sort by Expiration Date if we're on the UserHomeScreen. Doing in front end so we don't have to query the database every time a user switches screens
     if (this.props.navigation.state.routeName === 'UserHome') {
       //sort numerically by expiration days
@@ -70,8 +78,8 @@ class FoodScreen extends Component {
       //sort alphabetically by name
       foods.sort((a, b) => (a.name > b.name ? 1 : -1));
     }
-
-    return foods.length > 0 ? (
+    
+    return foods.length > 0 ? ( 
       <View style={styles.foodContainer}>
         {foods.map(food => {
           // Creating a new object here so that the calculations we do can also easily be sent to the Single Food View
@@ -82,6 +90,18 @@ class FoodScreen extends Component {
             imageUrl: food.imageUrl,
           };
           return (
+            <View>
+              <View>
+              <Dialog
+                containerStyle={styles.dialogContainer}
+                visible={!!this.state.editVisible}
+                onTouchOutside={() => {
+                  this.setState({ editVisible: false });
+                }}
+              >
+                <AddFoodForm food={singleFood} navigation={this.props.navigation} addFood={this.props.addFood}/> 
+              </Dialog> 
+              </View>
             <ListItem
               key={singleFood.id}
               Component={TouchableScale}
@@ -92,6 +112,14 @@ class FoodScreen extends Component {
                 <AvatarComponent food={food} showBadge={food.expiresIn < 7} />
               }
               title={singleFood.name}
+              rightIcon={
+                <Icon
+                  name='edit'
+                  type='font-awesome'
+                  color='black'
+                  onPress={() => this.setState({ editVisible: !this.state.editVisible}) }
+                />
+              }
               titleStyle={{ color: '#262626', fontWeight: 'bold' }}
               subtitle={singleFood.expiresIn}
               subtitleStyle={{ color: '#262626' }}
@@ -101,13 +129,14 @@ class FoodScreen extends Component {
               }
               bottomDivider
             />
+          </View>
           );
         })}
       </View>
     ) : (
       <NoFoodComponent />
     );
-  }
+  } 
 }
 
 FoodScreen.navigationOptions = {
@@ -144,6 +173,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getInventory: () => dispatch(getAllInventory()),
+  addFood: (food) => dispatch(addFood(food))
 });
 
 // If a user has no food to display, show them a friendly message!
