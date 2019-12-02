@@ -4,7 +4,50 @@ import { ListItem, Badge, Avatar, Icon } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
 import { connect } from 'react-redux';
 import { getAllInventory } from '../store/reducers/food';
-import { titleCase, dayCalculator } from '../utils'
+import AddFoodForm from '../components/AddFoodForm'
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { withNavigation } from 'react-navigation'
+import { addFood } from '../store/reducers/food'
+
+const titleCase = title => {
+  return title
+    .toLowerCase()
+    .split(' ')
+    .map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+};
+
+export const dayCalculator = days => {
+  if (days <= 0) {
+    return 'Expired';
+  }
+
+  if (days === 1) {
+    return `Expires in 1 day`;
+  }
+
+  if (days < 7) {
+    return `Expires in ${days} days`;
+  }
+
+  if (days < 29) {
+    const weeks = Math.round(days / 7);
+    if (weeks === 1) return `Expires in 1 week`;
+    return `Expires in ${weeks} weeks`;
+  }
+
+  if (days < 365) {
+    const months = Math.round(days / 30);
+    if (months === 1) return `Expires in 1 month`;
+    return `Expires in ${months} months`;
+  }
+
+  if (days === 365) {
+    return `Expires in 1 year`;
+  }
+};
 
 class FoodScreen extends Component {
 
