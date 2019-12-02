@@ -97,7 +97,7 @@ const TabNavigator = createBottomTabNavigator(
     Add: {
       screen: () => null,
       navigationOptions: {
-        tabBarIcon: <AddButton />,
+        tabBarIcon: props => <AddButton {...props}/>,
       },
     },
     RecipeStack,
