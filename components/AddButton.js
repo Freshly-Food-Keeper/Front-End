@@ -18,6 +18,7 @@ import axios from 'axios';
 import { addFood } from '../store/reducers/food';
 import AddFoodForm from "./AddFoodForm";
 import ConfirmFoodForm from './ConfirmFoodForm';
+import { withNavigation } from 'react-navigation'
 
 export class AddButton extends React.Component {
   constructor(props) {
@@ -203,7 +204,7 @@ export class AddButton extends React.Component {
             this.setState({ formPopUp: false });
           }}
         >
-          <AddFoodForm food={{ name: 'ex: Apple', expiresIn: 'ex: 10', navigation: this.props.navigation, addFood: this.props.addFood}}/>
+          <AddFoodForm name={'ex: Apple'} expiresIn={'ex: 10'} navigation={this.props.navigation} addFood={this.props.addFood} />
         </Dialog> 
         <Animated.View
           style={[
@@ -334,4 +335,4 @@ const mapDispatchToProps = dispatch => ({
   addFood: (foodName, foodLife) => dispatch(addFood(foodName, foodLife))
 });
 
-export default connect(null, mapDispatchToProps )(AddButton)
+export default withNavigation(connect(null, mapDispatchToProps )(AddButton))

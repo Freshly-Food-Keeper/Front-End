@@ -5,10 +5,11 @@ import {
   StyleSheet
 } from "react-native";
 import { Button, Input, Icon} from 'react-native-elements'
+import { withNavigation } from 'react-navigation'
 
 const AddFoodForm = (props) => {
-  const [foodName, setName] = React.useState(props.food.name);
-  const [foodLife, setLife] = React.useState(props.food.expiresIn);
+  const [foodName, setName] = React.useState(props.name);
+  const [foodLife, setLife] = React.useState(props.expiresIn);
   return(
   <DialogContent style={styles.dialogContent}>
     <View>
@@ -29,8 +30,8 @@ const AddFoodForm = (props) => {
             title="SUBMIT"
             buttonStyle={styles.buttons}
             onPress={() => {
-              props.navigation.navigate("Food")
               props.addFood(foodName, foodLife)
+              props.navigation.navigate("Food")
             }}
           />
         </View>
