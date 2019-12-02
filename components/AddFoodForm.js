@@ -30,6 +30,7 @@ const AddFoodForm = (props) => {
             buttonStyle={styles.buttons}
             onPress={() => {
               props.navigation.navigate("Food")
+              props.addFood(foodName, foodLife)
             }}
           />
         </View>

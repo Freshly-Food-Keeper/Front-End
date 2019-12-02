@@ -17,7 +17,7 @@ import expirationDate, { getExpirationDate } from '../store/reducers/expirationD
 import axios from 'axios';
 import { addFood } from '../store/reducers/food';
 import AddFoodForm from "./AddFoodForm";
-import EditFoodForm from './ConfirmFoodForm';
+import ConfirmFoodForm from './ConfirmFoodForm';
 
 export class AddButton extends React.Component {
   constructor(props) {
@@ -127,14 +127,12 @@ export class AddButton extends React.Component {
       );
       let googleResponseJson = await response.json();
       let foodName = googleResponseJson['responses'][0]['labelAnnotations'][0]['description']
-      console.log('foodName', foodName)
-      console.log(`${BACK_END_SERVER}/api/expiration/${foodName}`)
-      let life = await axios.get(`http://localhost:8080/api/expiration/${foodName}`)
-      console.log("life", life)
+      foodName = foodName.split(' ')[0]
+      let life = await axios.get(`${BACK_END_SERVER}/api/expiration/${foodName}`)
       this.setState({
         googleResponse: googleResponseJson,
         uploading: false,
-        lifeInputValue: life.data
+        lifeInputValue: life.data || "NO SHELF LIFE AVAILABLE"
       });
     } catch (error) {
       console.log(error);
@@ -145,7 +143,6 @@ export class AddButton extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const sizeStyle = {
       transform: [{ scale: this.buttonSize }]
     };
@@ -186,7 +183,6 @@ export class AddButton extends React.Component {
     });
     let { image, googleResponse } = this.state
     let buttons = googleResponse ? googleResponse['responses'][0]['labelAnnotations'].slice(0, 3).map(button => button["description"]) : []
-    console.log("googleresponse", googleResponse)
     return (
       <View style={{ position: "absolute", alignItems: "center" }}>
         <Dialog
@@ -197,7 +193,7 @@ export class AddButton extends React.Component {
           }}
         >
         { googleResponse && (  
-          <AddFoodForm food={{ buttons: buttons, expiresIn: this.state.lifeInputValue, image: image, navigation: this.props.navigation, addFood: this.props.addFood}} />
+          <ConfirmFoodForm buttons={buttons} expiresIn={this.state.lifeInputValue} image={image} navigation={this.props.navigation} addFood={this.props.addFood} />
         )}
         </Dialog>
         <Dialog
@@ -335,7 +331,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addFood: (food) => dispatch(addFood(food))
+  addFood: (foodName, foodLife) => dispatch(addFood(foodName, foodLife))
 });
 
 export default connect(null, mapDispatchToProps )(AddButton)

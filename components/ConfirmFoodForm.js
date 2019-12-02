@@ -5,20 +5,18 @@ import {
   Image,
   StyleSheet
 } from "react-native";
-import { addFood } from '../store/reducers/food'
-import { connect } from 'react-redux'
 import { ButtonGroup, Button, Input } from 'react-native-elements';
 
 const ConfirmFoodForm = (props) => {
-  const [name, setName] = React.useState(props.food.buttons[0]);
+  const [name, setName] = React.useState(props.buttons[0]);
   const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(0)
-  const [foodLife, setLife] = React.useState(props.food.expiresIn);
+  const [foodLife, setLife] = React.useState(props.expiresIn);
   return (
       <DialogContent style={styles.dialogContent}>
         <View styles={styles.imageConatiner}>
           <Image
             style={styles.image}
-            source={image}
+            source={props.image}
           />
         </View>
           <View styles={styles.listContainer}>
@@ -47,6 +45,7 @@ const ConfirmFoodForm = (props) => {
               buttonStyle={styles.buttons}
               onPress={() => {
                 props.navigation.navigate("Food")
+                props.addFood(name, foodLife)
               }}
             />
           </View>
@@ -126,8 +125,4 @@ const styles = StyleSheet.create({
   },
 })
 
-const mapDispatchToProps = dispatch => ({
-  addFood: (food) => dispatch(addFood(food))
-});
-
-export default connect(null, mapDispatchToProps)(ConfirmFoodForm)
+export default ConfirmFoodForm
