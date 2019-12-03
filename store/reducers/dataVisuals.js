@@ -23,7 +23,6 @@ export const getWastedPercentage = () => {
             userId
           }
         })
-        console.log('DATA', data)
       dispatch(gotWastedPrecentage(data))
     } catch (error) {
       console.error(error)

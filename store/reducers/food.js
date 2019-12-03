@@ -26,11 +26,6 @@ const deletedFood = id => ({
   id
 })
 
-const updatedFood = food => ({
-  type: UPDATE_FOOD,
-  food
-})
-
 // THUNKS
 export const getAllInventory = () => {
   return async dispatch => {
