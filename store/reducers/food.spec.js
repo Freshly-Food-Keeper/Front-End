@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import reducer, { product, products } from './product'
+import reducer from './product'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import configureMockStore from 'redux-mock-store'
