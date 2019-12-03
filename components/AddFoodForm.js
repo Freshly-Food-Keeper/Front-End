@@ -1,7 +1,7 @@
 import React from 'react';
 import { DialogContent } from 'react-native-popup-dialog';
 import { View, StyleSheet } from 'react-native';
-import { Button, Input, Icon } from 'react-native-elements';
+import { Button, Input } from 'react-native-elements';
 
 const AddFoodForm = props => {
   const [foodName, setName] = React.useState(props.name);

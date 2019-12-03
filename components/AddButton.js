@@ -8,13 +8,9 @@ import {
   GOOGLE_CLOUD_VISION_API_KEY,
   BACK_END_SERVER,
 } from '../config/secrets';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import Dialog from 'react-native-popup-dialog';
 import { withNavigation } from 'react-navigation';
-import { ButtonGroup, Button, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
-import expirationDate, {
-  getExpirationDate,
-} from '../store/reducers/expirationDate';
 import axios from 'axios';
 import { addFood } from '../store/reducers/food';
 import AddFoodForm from './AddFoodForm';
