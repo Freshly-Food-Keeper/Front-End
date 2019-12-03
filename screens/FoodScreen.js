@@ -7,7 +7,46 @@ import { getAllInventory } from '../store/reducers/food';
 import AddFoodForm from '../components/AddFoodForm'
 import Dialog from 'react-native-popup-dialog';
 import { addFood } from '../store/reducers/food'
-import { titleCase, dayCalculator } from '../utils'
+
+const titleCase = title => {
+  return title
+    .toLowerCase()
+    .split(' ')
+    .map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+};
+
+export const dayCalculator = days => {
+  if (days <= 0) {
+    return 'Expired';
+  }
+
+  if (days === 1) {
+    return `Expires in 1 day`;
+  }
+
+  if (days < 7) {
+    return `Expires in ${days} days`;
+  }
+
+  if (days < 29) {
+    const weeks = Math.round(days / 7);
+    if (weeks === 1) return `Expires in 1 week`;
+    return `Expires in ${weeks} weeks`;
+  }
+
+  if (days < 365) {
+    const months = Math.round(days / 30);
+    if (months === 1) return `Expires in 1 month`;
+    return `Expires in ${months} months`;
+  }
+
+  if (days === 365) {
+    return `Expires in 1 year`;
+  }
+};
 
 class FoodScreen extends Component {
 
@@ -50,7 +89,7 @@ class FoodScreen extends Component {
             imageUrl: food.imageUrl,
           };
           return (
-            <View key={food.id}>
+            <View>
               <View>
               <Dialog
                 containerStyle={styles.dialogContainer}
