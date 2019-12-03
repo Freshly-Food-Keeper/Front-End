@@ -44,7 +44,8 @@
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "watchman": "^1.0.0",
-    "yup": "^0.27.0"
+    "yup": "^0.27.0",
+    "lottie-react-native": "~2.6.1"
   },
   "devDependencies": {
     "babel-jest": "^24.9.0",

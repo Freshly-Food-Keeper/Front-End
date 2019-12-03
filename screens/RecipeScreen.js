@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 
 import RecipeCards from '../components/RecipeCards';
 import { getFavoriteRecipes } from '../store/reducers/recipe';
+import LoadingScreen from './LoadingScreen';
 
 class RecipeScreen extends Component {
   async componentDidMount() {
@@ -11,13 +12,12 @@ class RecipeScreen extends Component {
   }
   render() {
     const recipes = this.props.recipes;
-    console.log('RECIPES', recipes);
     const navigation = this.props.navigation;
 
     return recipes ? (
       <RecipeCards recipes={recipes} navigation={navigation} />
     ) : (
-      <View />
+      <LoadingScreen />
     );
   }
 }
