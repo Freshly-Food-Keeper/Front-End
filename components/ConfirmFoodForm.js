@@ -9,7 +9,6 @@ import { ButtonGroup, Button, Input } from 'react-native-elements';
 
 const ConfirmFoodForm = (props) => {
   const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(0)
-  console.log(selectedButtonIndex)
   const [name, setName] = React.useState(props.buttons[selectedButtonIndex]);
   const [foodLife, setLife] = React.useState(props.expiresIn);
   return (

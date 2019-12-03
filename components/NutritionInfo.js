@@ -42,6 +42,7 @@ class NutritionInfo extends React.Component {
     return (
       <ScrollView style={styles.container}>
         {(this.props.nutrition || []).map((item, index) => {
+          item.value= Math.floor(item.value)
           return this.renderRow(item, index)
         })}
       </ScrollView>
