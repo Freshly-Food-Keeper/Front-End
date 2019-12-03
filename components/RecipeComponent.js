@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Title, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { getRecipesWithIngredient } from '../store';
 import { Card, Button } from 'react-native-elements';

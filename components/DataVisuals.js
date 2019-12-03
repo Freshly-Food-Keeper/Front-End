@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Dimensions, Text } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { PieChart } from 'react-native-svg-charts'
 import { getWastedPercentage } from '../store/reducers/dataVisuals'
 import { connect } from 'react-redux'

@@ -1,43 +1,32 @@
-// import React from 'react';
-// import { Image, StyleSheet, Text, View } from 'react-native';
-// import { Button, ThemeProvider } from 'react-native-elements';
-// import AnimatedLoader from 'react-native-animated-loader';
+import React from 'react';
+import { StyleSheet, View, Image } from 'react-native';
 
-// export default class LoadingScreen extends React.Component {
-//   _isMounted = false;
-//   constructor(props) {
-//     super(props);
-//     this.state = { visible: false };
-//   }
+const LoadingScreen = () => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.contentContainer}>
+        <Image
+          source={require('../assets/icons/freshly_loading.gif')}
+          style={styles.gif}
+        />
+      </View>
+    </View>
+  );
+};
 
-//   componentDidMount() {
-//     this._isMounted = true;
-//     if (this._isMounted) {
-//       setInterval(() => {
-//         this.setState({ visible: !this.state.visible });
-//       }, 2000);
-//     }
-//   }
-//   render() {
-//     const { visible } = this.state;
-//     return (
-//       <AnimatedLoader
-//         visible={visible}
-//         overlayColor="rgba(255,255,255,0.75)"
-//         source={require('../assets/logos/circle.png')}
-//         animationStyle={styles.lottie}
-//         speed={1}
-//       />
-//     );
-//   }
-// }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  contentContainer: {
+    alignItems: 'center',
+  },
+  gif: {
+    width: 200,
+    height: 200,
+  },
+});
 
-// LoadingScreen.navigationOptions = {
-//   header: null,
-// };
-// const styles = StyleSheet.create({
-//   lottie: {
-//     width: 100,
-//     height: 100,
-//   },
-// });
+export default LoadingScreen;

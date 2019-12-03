@@ -8,8 +8,9 @@ import {
 import { ButtonGroup, Button, Input } from 'react-native-elements';
 
 const ConfirmFoodForm = (props) => {
-  const [name, setName] = React.useState(props.buttons[0]);
   const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(0)
+  console.log(selectedButtonIndex)
+  const [name, setName] = React.useState(props.buttons[selectedButtonIndex]);
   const [foodLife, setLife] = React.useState(props.expiresIn);
   return (
       <DialogContent style={styles.dialogContent}>
@@ -30,7 +31,7 @@ const ConfirmFoodForm = (props) => {
           <View>
             <Input
               label='CHANGE FOOD NAME'
-              defaultValue={name}
+              defaultValue={props.buttons[selectedButtonIndex]}
               onChangeText={(text) => setName(text)}
             />
             <Input
