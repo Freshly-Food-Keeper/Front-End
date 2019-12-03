@@ -7,6 +7,8 @@ import WelcomeScreen from './WelcomeScreen';
 import SingleFoodScreen from './SingleFoodScreen';
 import RecipeScreen from './RecipeScreen';
 import SingleRecipeScreen from './SingleRecipeScreen';
+import AddScreen from './AddScreen';
+import ConfirmFoodScreen from './ConfirmFoodScreen';
 
 export {
   FoodScreen,
@@ -18,4 +20,6 @@ export {
   SingleFoodScreen,
   RecipeScreen,
   SingleRecipeScreen,
+  AddScreen,
+  ConfirmFoodScreen,
 };

@@ -27,40 +27,38 @@ export default class WelcomeScreen extends React.Component {
     const userId = await AsyncStorage.getItem("userId");
     this.props.navigation.navigate(userId ? "App" : "Auth");
   };
-  
+
   render() {
     return (
       <ThemeProvider theme={theme}>
         <View style={styles.container}>
-          <View style={styles.contentContainer}>
-            <Image
-              style={styles.logo}
-              source={require("../assets/logos/circle.png")}
-            />
+          <Image
+            style={styles.logo}
+            source={require("../assets/logos/circle.png")}
+          />
 
-            <Text style={styles.freshly}>freshly</Text>
+          <Text style={styles.freshly}>freshly</Text>
 
-            <View style={styles.buttonContainer}>
-              <View>
-                <TouchableOpacity
-                  style={styles.buttons}
-                  onPress={() => {
-                    this.props.navigation.navigate("Login");
-                  }}
-                >
-                  <Text style={styles.buttonText}>LOG IN</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <TouchableOpacity
-                  style={styles.buttons}
-                  onPress={() => {
-                    this.props.navigation.navigate('SignUp');
-                  }}
-                >
-                  <Text style={styles.buttonText}>SIGN UP</Text>
-                </TouchableOpacity>
-              </View>
+          <View>
+            <View>
+              <TouchableOpacity
+                style={styles.buttons}
+                onPress={() => {
+                  this.props.navigation.navigate("Login");
+                }}
+              >
+                <Text style={styles.buttonText}>LOG IN</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.buttons}
+                onPress={() => {
+                  this.props.navigation.navigate("SignUp");
+                }}
+              >
+                <Text style={styles.buttonText}>SIGN UP</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -76,9 +74,7 @@ WelcomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#035640"
-  },
-  contentContainer: {
+    backgroundColor: "#035640",
     alignItems: "center"
   },
   freshly: {
