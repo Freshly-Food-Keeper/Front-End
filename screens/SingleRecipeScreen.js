@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, Card, Divider } from 'react-native-elements';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 class SingleRecipeScreen extends Component {
