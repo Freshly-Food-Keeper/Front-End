@@ -15,6 +15,7 @@ import {
   SingleFoodScreen,
   SettingsScreen,
   SingleRecipeScreen,
+  LoadingScreen,
 } from '../screens';
 import TabBarIcon from '../components/TabBarIcon';
 import AddButton from '../components/AddButton';
@@ -30,8 +31,8 @@ const UserHomeStack = createStackNavigator({
   UserHome: UserHomeScreen,
   Food: FoodScreen,
   SingleFood: SingleFoodScreen,
-  SingleRecipe: SingleRecipeScreen
-})
+  SingleRecipe: SingleRecipeScreen,
+});
 
 UserHomeStack.navigationOptions = {
   tabBarLabel: 'Home',
@@ -46,7 +47,7 @@ UserHomeStack.navigationOptions = {
 const FoodStack = createStackNavigator({
   Food: FoodScreen,
   SingleFood: SingleFoodScreen,
-  SingleRecipe: SingleRecipeScreen
+  SingleRecipe: SingleRecipeScreen,
 });
 
 FoodStack.path = 'singleFood';
@@ -90,6 +91,10 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+const LoadingStack = createStackNavigator({
+  LoadingStack: LoadingScreen,
+});
+
 const TabNavigator = createBottomTabNavigator(
   {
     UserHomeStack,
@@ -97,7 +102,7 @@ const TabNavigator = createBottomTabNavigator(
     Add: {
       screen: () => null,
       navigationOptions: {
-        tabBarIcon: props => <AddButton {...props}/>,
+        tabBarIcon: props => <AddButton {...props} />,
       },
     },
     RecipeStack,
@@ -115,9 +120,10 @@ const App = createAppContainer(
     {
       Auth: AuthStack,
       App: TabNavigator,
+      Loading: LoadingStack,
     },
     {
-      initialRouteName: 'Auth',
+      initialRouteName: 'App',
       defaultNavigationOptions: {
         headerStyle: {
           backgroundColor: '#035640',
