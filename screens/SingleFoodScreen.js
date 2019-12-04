@@ -28,7 +28,7 @@ export default class SingleItemScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
           <Avatar
-            size="xlarge"
+            size="large"
             rounded
             source={
               food.imageUrl === null
@@ -46,6 +46,7 @@ export default class SingleItemScreen extends React.Component {
             selectedButtonStyle={{ backgroundColor: '#ED6A5A' }}
             selectedIndex={this.state.selectedIndex}
             buttons={buttons}
+            buttonStyle={styles.button}
             containerStyle={{ height: 25 }}
           />
           {this.state.selectedIndex === 0 ? (
@@ -89,6 +90,5 @@ const styles = StyleSheet.create({
     width: '50%',
     backgroundColor: '#035640',
     alignSelf: 'center',
-    fontSize: 20,
   },
 });
