@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ThemeProvider } from 'react-native-elements';
 import DataVisuals from '../components/Data/DataVisuals';
 import FoodScreen from './FoodScreen';
 
@@ -15,12 +14,10 @@ const theme = {
 export default class UserHomeScreen extends React.Component {
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <View style={styles.container}>
-          <DataVisuals />
-          <FoodScreen navigation={this.props.navigation} />
-        </View>
-      </ThemeProvider>
+      <View style={styles.container}>
+        <DataVisuals />
+        <FoodScreen navigation={this.props.navigation} />
+      </View>
     );
   }
 }
