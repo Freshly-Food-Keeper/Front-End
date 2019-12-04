@@ -29,7 +29,6 @@ const SingleRecipeCard = props => {
           <Ionicons
             name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'}
             size={30}
-            // onPress={console.log('hi')}
             onPress={() => addFavoriteRecipe(formattedRecipe)}
           />
         </View>
