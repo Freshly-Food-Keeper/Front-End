@@ -16,7 +16,7 @@ import Dialog, {
 import { sortFoodsByExpirationDate, sortFoodsAlphabetically } from '../utils';
 import LoadingScreen from './LoadingScreen';
 
-import FoodList from '../components/FoodList';
+import FoodList from '../components/Food/FoodList';
 
 class FoodScreen extends React.Component {
   constructor() {

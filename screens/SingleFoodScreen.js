@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, ButtonGroup } from 'react-native-elements';
-import NutritionInfo from '../components/NutritionInfo';
+import NutritionInfo from '../components/Food/NutritionInfo';
 import RecipeComponent from '../components/Recipes/RecipeComponent';
 
 export default class SingleItemScreen extends React.Component {
@@ -28,11 +28,11 @@ export default class SingleItemScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
           <Avatar
-            size="xlarge"
+            size="large"
             rounded
             source={
               food.imageUrl === null
-                ? require('../assets/images/food-placeholder.jpg')
+                ? require('../images/food-placeholder.jpg')
                 : { uri: food.imageUrl }
             }
           />
@@ -46,6 +46,7 @@ export default class SingleItemScreen extends React.Component {
             selectedButtonStyle={{ backgroundColor: '#ED6A5A' }}
             selectedIndex={this.state.selectedIndex}
             buttons={buttons}
+            buttonStyle={styles.button}
             containerStyle={{ height: 25 }}
           />
           {this.state.selectedIndex === 0 ? (
@@ -89,6 +90,5 @@ const styles = StyleSheet.create({
     width: '50%',
     backgroundColor: '#035640',
     alignSelf: 'center',
-    fontSize: 20,
   },
 });
