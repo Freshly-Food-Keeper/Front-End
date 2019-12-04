@@ -1,20 +1,48 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import AddFoodForm from '../components/Forms/AddFoodForm';
+import Dialog from 'react-native-popup-dialog';
+import { connect } from 'react-redux';
+import { addFood } from '../store/reducers/food';
 import { Avatar, ButtonGroup } from 'react-native-elements';
 import NutritionInfo from '../components/Food/NutritionInfo';
 import RecipeComponent from '../components/Recipes/RecipeComponent';
 
-export default class SingleItemScreen extends React.Component {
+class SingleItemScreen extends React.Component {
   constructor() {
     super();
     this.state = {
       selectedIndex: 0,
+      editVisible: false
     };
     this.updateSelectedIndex = this.updateSelectedIndex.bind(this);
   }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ handlePressEdit: this.handlePressEdit });
+  }
+
   updateSelectedIndex(index) {
     this.setState({ selectedIndex: index });
   }
+
+  handlePressEdit = () => {
+    this.setState({ editVisible: !this.state.editVisible })
+  }
+
+  static navigationOptions = (props) => {
+    return {
+      editVisible: false,
+      title: 'My Profile!',
+      headerRight: (
+        <Button
+          title='Edit'
+          onPress={props.navigation.getParam('handlePressEdit')}
+        />
+      )
+    }
+  }
+
   render() {
     const navigation = this.props.navigation;
     const food = {
@@ -26,6 +54,20 @@ export default class SingleItemScreen extends React.Component {
     const buttons = ['Recipes', 'Nutrition'];
     return (
       <View style={styles.container}>
+        <View>
+          <Dialog
+            containerStyle={styles.dialogContainer}
+            visible={this.state.editVisible}
+            onTouchOutside={this.handlePressEdit}
+          >
+          <AddFoodForm
+            name={food.name}
+            expiresIn={food.expiresIn}
+            navigation={navigation}
+            addFood={this.props.addFood}
+          />
+        </Dialog>
+    </View>
         <View style={styles.avatarContainer}>
           <Avatar
             size="large"
@@ -91,4 +133,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#035640',
     alignSelf: 'center',
   },
+  editIcon: {
+    alignSelf: 'flex-end'
+  }
 });
+
+const mapDispatchToProps = dispatch => ({
+  addFood: food => dispatch(addFood(food)),
+});
+
+export default connect(null, mapDispatchToProps)(SingleItemScreen);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Icon} from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -53,7 +53,7 @@ const FoodStack = createStackNavigator({
 FoodStack.path = 'singleFood';
 
 FoodStack.navigationOptions = {
-  tabBarLabel: 'My Food',
+  tabBarLabel: `My Food`,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
