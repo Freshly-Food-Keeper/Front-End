@@ -15,6 +15,8 @@ import {
   SingleFoodScreen,
   SettingsScreen,
   SingleRecipeScreen,
+  AddScreen,
+  ConfirmFoodScreen,
   LoadingScreen,
 } from '../screens';
 import TabBarIcon from './TabBarIcon';
@@ -29,7 +31,6 @@ const AuthStack = createStackNavigator({
 
 const UserHomeStack = createStackNavigator({
   UserHome: UserHomeScreen,
-  Food: FoodScreen,
   SingleFood: SingleFoodScreen,
   SingleRecipe: SingleRecipeScreen,
 });
@@ -50,7 +51,7 @@ const FoodStack = createStackNavigator({
   SingleRecipe: SingleRecipeScreen,
 });
 
-FoodStack.path = 'singleFood';
+FoodStack.path = 'AllFood';
 
 FoodStack.navigationOptions = {
   tabBarLabel: `My Food`,
@@ -62,13 +63,29 @@ FoodStack.navigationOptions = {
   ),
 };
 
+const AddStack = createStackNavigator({
+  Add: AddScreen,
+  ConfirmFood: ConfirmFoodScreen,
+});
+
+
+AddStack.navigationOptions = {
+  tabBarLabel: 'Add',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-add-circle' : 'md-add-circle'}
+    />
+  ),
+};
+
 const RecipeStack = createStackNavigator({
   Recipe: RecipeScreen,
   SingleRecipe: SingleRecipeScreen,
 });
 
 RecipeStack.navigationOptions = {
-  tabBarLabel: 'My Favorites',
+  tabBarLabel: 'Favorites',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -99,19 +116,15 @@ const TabNavigator = createBottomTabNavigator(
   {
     UserHomeStack,
     FoodStack,
-    Add: {
-      screen: () => null,
-      navigationOptions: {
-        tabBarIcon: props => <AddButton {...props} />,
-      },
-    },
+    AddStack,
+    // Add: {
+    //   screen: () => null,
+    //   navigationOptions: {
+    //     tabBarIcon: props => <AddButton {...props}/>,
+    //   },
+    // },
     RecipeStack,
     SettingsStack,
-  },
-  {
-    tabBarOptions: {
-      showLabel: false,
-    },
   }
 );
 

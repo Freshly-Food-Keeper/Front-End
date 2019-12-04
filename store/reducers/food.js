@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
-import { BACK_END_SERVER } from '../../config/secrets';
+import { BACK_END_SERVER, SPOONACULAR_API_KEY } from '../../config/secrets.js'
 
 const foods = [];
 
@@ -46,18 +46,20 @@ export const getAllInventory = () => {
 export const addFood = (food, shelfLife) => {
   return async dispatch => {
     try {
+      const imageUrl = await getImage(food)
       const userId = await AsyncStorage.getItem('userId');
       const foodObj = {
         userId,
         food,
         shelfLife,
-      };
+        imageUrl
+      }
       const { data } = await axios.post(`${BACK_END_SERVER}/api/food`, foodObj);
 
       const newFood = {
         expiresIn: shelfLife,
         id: data.foodId,
-        imageUrl: null,
+        imageUrl: imageUrl,
         name: food,
       };
 
@@ -118,5 +120,18 @@ export default function(state = foods, action) {
       return state;
     default:
       return state;
+  }
+}
+
+async function getImage(name) {
+  try {
+    const { data } = await axios.get(
+      `https://api.spoonacular.com/food/ingredients/autocomplete?query=${name}&number=1&apiKey=${SPOONACULAR_API_KEY}`
+    )
+    return data.length
+      ? `https://spoonacular.com/cdn/ingredients_250x250/${data[0].image}`
+      : null
+  } catch (error) {
+    console.error(error)
   }
 }
