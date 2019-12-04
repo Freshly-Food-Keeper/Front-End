@@ -83,3 +83,17 @@ export const formatRecipe = recipe => {
     ingredients,
   };
 };
+
+// If a user has no food to display, show them a friendly message!
+export function NoFoodComponent() {
+  return (
+    <View style={styles.noFoodContainer}>
+      <Text style={styles.title}>Hi! Welcome to Freshly!</Text>
+      <Text style={styles.subTitle}>Why don't you add some food?</Text>
+      <Image
+        style={{ width: 90, height: 300, marginTop: 40 }}
+        source={require('../assets/images/arrow.png')}
+      />
+    </View>
+  );
+}

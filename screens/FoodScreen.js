@@ -1,7 +1,5 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import TouchableScale from 'react-native-touchable-scale';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import {
   getAllInventory,
@@ -15,15 +13,10 @@ import Dialog, {
   DialogContent,
   DialogFooter,
 } from 'react-native-popup-dialog';
-import {
-  titleCase,
-  dayCalculator,
-  sortFoodsByExpirationDate,
-  sortFoodsAlphabetically,
-} from '../utils';
+import { sortFoodsByExpirationDate, sortFoodsAlphabetically } from '../utils';
 import LoadingScreen from './LoadingScreen';
-import { styles } from '../styles';
-import { AvatarComponent } from '../components/AvatarComponent';
+
+import FoodList from '../components/FoodList';
 
 class FoodScreen extends React.Component {
   constructor() {
@@ -33,6 +26,7 @@ class FoodScreen extends React.Component {
     };
     this.renderStatusDialog = this.renderStatusDialog.bind(this);
     this.handleStatusUpdate = this.handleStatusUpdate.bind(this);
+    this.onLongPress = this.onLongPress.bind(this);
   }
 
   componentDidMount() {
@@ -56,6 +50,13 @@ class FoodScreen extends React.Component {
       selectedFood: {},
     });
     this.props.getWastedPercentage();
+  }
+
+  onLongPress(visible, selectedFood) {
+    this.setState({
+      editVisible: !visible,
+      selectedFood,
+    });
   }
 
   renderStatusDialog() {
@@ -103,6 +104,7 @@ class FoodScreen extends React.Component {
   render() {
     let foods = this.props.allFoods;
     const routeName = this.props.navigation.state.routeName;
+    const navigation = this.props.navigation;
 
     // Sort by Expiration Date if we're on the UserHomeScreen. Doing in front end so we don't have to query the database every time a user switches screens
     routeName === 'UserHome'
@@ -110,47 +112,13 @@ class FoodScreen extends React.Component {
       : (foods = sortFoodsAlphabetically(foods));
 
     return foods.length > 0 ? (
-      <View style={styles.flex}>
-        {this.renderStatusDialog()}
-        {foods.map(food => {
-          // Creating a new object here so that the calculations we do can also easily be sent to the Single Food View
-          const singleFood = {
-            id: food.id,
-            name: titleCase(food.name),
-            expiresIn: dayCalculator(food.expiresIn),
-            imageUrl: food.imageUrl,
-          };
-          return (
-            <View key={food.id}>
-              <ListItem
-                key={singleFood.id}
-                Component={TouchableScale}
-                friction={90}
-                tension={100}
-                activeScale={0.95}
-                leftAvatar={
-                  <AvatarComponent food={food} showBadge={food.expiresIn < 7} />
-                }
-                title={singleFood.name}
-                onLongPress={() =>
-                  this.setState({
-                    editVisible: !this.state.editVisible,
-                    selectedFood: singleFood,
-                  })
-                }
-                titleStyle={styles.title}
-                subtitle={singleFood.expiresIn}
-                subtitleStyle={styles.smallText}
-                chevron={{ color: '#262626' }}
-                onPress={() =>
-                  this.props.navigation.navigate('SingleFood', singleFood)
-                }
-                bottomDivider
-              />
-            </View>
-          );
-        })}
-      </View>
+      <FoodList
+        foods={foods}
+        renderStatusDialog={this.renderStatusDialog}
+        onLongPress={this.onLongPress}
+        visible={this.state.editVisible}
+        navigation={navigation}
+      />
     ) : (
       <LoadingScreen />
     );
@@ -160,20 +128,6 @@ class FoodScreen extends React.Component {
 FoodScreen.navigationOptions = {
   title: 'My Food',
 };
-
-// If a user has no food to display, show them a friendly message!
-function NoFoodComponent() {
-  return (
-    <View style={styles.noFoodContainer}>
-      <Text style={styles.title}>Hi! Welcome to Freshly!</Text>
-      <Text style={styles.subTitle}>Why don't you add some food?</Text>
-      <Image
-        style={{ width: 90, height: 300, marginTop: 40 }}
-        source={require('../assets/images/arrow.png')}
-      />
-    </View>
-  );
-}
 
 const mapStateToProps = state => ({
   allFoods: state.food,
