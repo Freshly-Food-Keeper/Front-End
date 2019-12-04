@@ -48,7 +48,6 @@ class AddScreen extends React.Component {
   };
 
   takePhoto = async () => {
-    console.log('In take photo')
 
     let image = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -62,15 +61,11 @@ class AddScreen extends React.Component {
   };
 
   pickPhoto = async () => {
-    console.log('In pick photo')
-
     let image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       base64: true
     });
-
-    console.log('Lauched photo picker')
 
     if (!image.cancelled) {
       this.submitToGoogle(image);
@@ -90,10 +85,6 @@ class AddScreen extends React.Component {
           }
         ]
       });
-      
-      // console.log(image)
-      console.log('Sending to Google')
-
       let response = await fetch(
         "https://vision.googleapis.com/v1/images:annotate?key=" +
           GOOGLE_CLOUD_VISION_API_KEY,
@@ -106,8 +97,6 @@ class AddScreen extends React.Component {
           body: body
         }
       );
-
-      console.log('Got response from Google')
 
       let googleResponseJson = await response.json();
 
@@ -128,7 +117,7 @@ class AddScreen extends React.Component {
       this.setState({ uploading: false });
       this.props.navigation.navigate("ConfirmFood", {
         topFoods,
-        life: life.data || "No shelf life available", 
+        life: life.data || "No shelf life available",
         image
       });
     } catch (error) {
@@ -138,7 +127,7 @@ class AddScreen extends React.Component {
   };
 
   render() {
-    return ( this.state.uploading ? 
+    return ( this.state.uploading ?
       <LoadingScreen /> :
       <View style={styles.container}>
         <View>
