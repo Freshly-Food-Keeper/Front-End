@@ -8,6 +8,8 @@ import { Avatar, ButtonGroup } from 'react-native-elements';
 import NutritionInfo from '../components/Food/NutritionInfo';
 import RecipeComponent from '../components/Recipes/RecipeComponent';
 import { styles } from '../styles';
+import { dayCalculator } from '../utils';
+
 
 class SingleItemScreen extends React.Component {
   constructor() {
@@ -63,7 +65,7 @@ class SingleItemScreen extends React.Component {
           >
             <AddFoodForm
               name={food.name}
-              expiresIn={food.expiresIn}
+              expiresIn={dayCalculator(food.expiresIn)}
               navigation={navigation}
               addFood={this.props.addFood}
             />

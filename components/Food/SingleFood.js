@@ -8,7 +8,6 @@ import { AvatarComponent } from '../Avatars/AvatarComponent';
 
 const SingleFood = props => {
   const { singleFood, visible, navigation, onLongPress } = props;
-  console.log(singleFood.expiresIn)
   return (
     <View key={singleFood.id}>
       <ListItem
