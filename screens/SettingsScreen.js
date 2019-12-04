@@ -1,54 +1,46 @@
-import React from 'react'
-import SettingsList from 'react-native-settings-list'
-import { View, StyleSheet } from 'react-native'
-import { logout } from '../store/reducers/user'
-import { connect } from 'react-redux'
+import React from 'react';
+import SettingsList from 'react-native-settings-list';
+import { View } from 'react-native';
+import { logout } from '../store/reducers/user';
+import { connect } from 'react-redux';
+import { styles } from '../styles';
 
 class SettingsScreen extends React.Component {
   constructor() {
-    super()
-    this.logOut = this.logOut.bind(this)
+    super();
+    this.logOut = this.logOut.bind(this);
   }
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
-          <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
-            <SettingsList.Header headerStyle={{ marginTop: 15 }} headerText='User Settings' />
+        <View style={styles.greyBackground}>
+          <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
+            <SettingsList.Header
+              headerStyle={{ marginTop: 15 }}
+              headerText="User Settings"
+            />
             <SettingsList.Item
               hasNavArrow={false}
-              title='Log Out'
+              title="Log Out"
               onPress={() => this.logOut()}
             />
           </SettingsList>
         </View>
       </View>
-    )
+    );
   }
   logOut = () => {
-    this.props.logUserOut()
-    this.props.navigation.navigate('Auth')
-  }
+    this.props.logUserOut();
+    this.props.navigation.navigate('Auth');
+  };
 }
 
 SettingsScreen.navigationOptions = {
-  title: 'Settings'
-}
-
-const styles = StyleSheet.create({
-  container: { backgroundColor: '#EFEFF4', flex: 1 },
-  imageStyle: {
-    marginLeft: 15,
-    marginRight: 20,
-    alignSelf: 'center',
-    width: 20,
-    height: 24,
-    justifyContent: 'center'
-  }
-})
+  title: 'Settings',
+};
 
 const mapDispatchToProps = dispatch => ({
-  logUserOut: () => dispatch(logout())
-})
+  logUserOut: () => dispatch(logout()),
+});
 
-export default connect(null, mapDispatchToProps)(SettingsScreen)
+export default connect(null, mapDispatchToProps)(SettingsScreen);
