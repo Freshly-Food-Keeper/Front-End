@@ -1,14 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
+import FreshlyGif from '../assets/icons/freshly_loading.gif';
 
 const LoadingScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        <Image
-          source={require('../assets/icons/freshly_loading.gif')}
-          style={styles.gif}
-        />
+        <Image source={FreshlyGif} style={styles.gif} />
       </View>
     </View>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { titleCase, dayCalculator } from '../utils';
-import { styles } from '../styles';
+import { titleCase, dayCalculator } from '../../utils';
+import { styles } from '../../styles';
 import SingleFood from './SingleFood';
 
 const FoodList = props => {

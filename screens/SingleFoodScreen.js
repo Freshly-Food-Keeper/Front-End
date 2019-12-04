@@ -7,6 +7,9 @@ import Dialog from 'react-native-popup-dialog';
 import { SingleFoodScreen } from '.';
 import { connect } from 'react-redux';
 import { addFood } from '../store/reducers/food';
+import { StyleSheet, Text, View } from 'react-native';
+import { Avatar, ButtonGroup } from 'react-native-elements';
+import NutritionInfo from '../components/Food/NutritionInfo';
 import RecipeComponent from '../components/Recipes/RecipeComponent';
 
 class SingleItemScreen extends React.Component {
@@ -72,16 +75,16 @@ class SingleItemScreen extends React.Component {
           />
         </Dialog>
     </View>
-      <View style={styles.avatarContainer}>
-        <Avatar
-          size="xlarge"
-          rounded
-          source={
-            food.imageUrl === null
-              ? require('../assets/images/food-placeholder.jpg')
-              : { uri: food.imageUrl }
-          }
-        />
+        <View style={styles.avatarContainer}>
+          <Avatar
+            size="large"
+            rounded
+            source={
+              food.imageUrl === null
+                ? require('../images/food-placeholder.jpg')
+                : { uri: food.imageUrl }
+            }
+          />
           <Text style={styles.title}>{food.name}</Text>
           <Text style={styles.subTitle}>{food.expiresIn}</Text>
         </View>
@@ -92,6 +95,7 @@ class SingleItemScreen extends React.Component {
             selectedButtonStyle={{ backgroundColor: '#ED6A5A' }}
             selectedIndex={this.state.selectedIndex}
             buttons={buttons}
+            buttonStyle={styles.button}
             containerStyle={{ height: 25 }}
           />
           {this.state.selectedIndex === 0 ? (
@@ -135,7 +139,6 @@ const styles = StyleSheet.create({
     width: '50%',
     backgroundColor: '#035640',
     alignSelf: 'center',
-    fontSize: 20,
   },
   editIcon: {
     alignSelf: 'flex-end'

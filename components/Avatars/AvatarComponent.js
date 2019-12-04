@@ -10,7 +10,7 @@ export function AvatarComponent({ food, showBadge }) {
         rounded
         source={
           food.imageUrl === null
-            ? require('../assets/images/food-placeholder.jpg')
+            ? require('../../images/food-placeholder.jpg')
             : { uri: food.imageUrl }
         }
       />

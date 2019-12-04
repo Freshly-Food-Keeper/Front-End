@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 import {
   Image,
   StyleSheet,
   Text,
   View,
   AsyncStorage,
-  TouchableOpacity
-} from "react-native";
-import { Button, ThemeProvider } from "react-native-elements";
+  TouchableOpacity,
+} from 'react-native';
+import { Button, ThemeProvider } from 'react-native-elements';
 
 const theme = {
   Button: {
     titleStyle: {
-      color: "#262626"
-    }
-  }
+      color: '#262626',
+    },
+  },
 };
 
 export default class WelcomeScreen extends React.Component {
@@ -24,10 +24,10 @@ export default class WelcomeScreen extends React.Component {
   }
 
   bootstrapAsync = async () => {
-    const userId = await AsyncStorage.getItem("userId");
-    this.props.navigation.navigate(userId ? "App" : "Auth");
+    const userId = await AsyncStorage.getItem('userId');
+    this.props.navigation.navigate(userId ? 'App' : 'Auth');
   };
-  
+
   render() {
     return (
       <ThemeProvider theme={theme}>
@@ -35,7 +35,7 @@ export default class WelcomeScreen extends React.Component {
           <View style={styles.contentContainer}>
             <Image
               style={styles.logo}
-              source={require("../assets/logos/circle.png")}
+              source={require('../assets/logos/circle.png')}
             />
 
             <Text style={styles.freshly}>freshly</Text>
@@ -45,7 +45,7 @@ export default class WelcomeScreen extends React.Component {
                 <TouchableOpacity
                   style={styles.buttons}
                   onPress={() => {
-                    this.props.navigation.navigate("Login");
+                    this.props.navigation.navigate('Login');
                   }}
                 >
                   <Text style={styles.buttonText}>LOG IN</Text>
@@ -70,39 +70,39 @@ export default class WelcomeScreen extends React.Component {
 }
 
 WelcomeScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#035640"
+    backgroundColor: '#035640',
   },
   contentContainer: {
-    alignItems: "center"
+    alignItems: 'center',
   },
   freshly: {
     padding: 0,
     marginBottom: 50,
     fontSize: 45,
-    color: "white"
+    color: 'white',
   },
   logo: {
-    alignSelf: "center",
-    width: "30%",
-    resizeMode: "contain",
-    marginTop: 100
+    alignSelf: 'center',
+    width: '30%',
+    resizeMode: 'contain',
+    marginTop: 100,
   },
   buttons: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     width: 300,
     padding: 15,
     margin: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   buttonText: {
-    textAlign: "center",
-    color: "#262626",
-    fontSize: 20
-  }
+    textAlign: 'center',
+    color: '#262626',
+    fontSize: 20,
+  },
 });
