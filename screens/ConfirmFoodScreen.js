@@ -3,31 +3,41 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   TouchableOpacity,
-  Image,
-  SafeAreaView,
   ScrollView
 } from "react-native";
-import { Input, Avatar, Scroll } from "react-native-elements";
+import { Input, Avatar } from "react-native-elements";
 import { connect } from "react-redux";
 import { addFood } from "../store/reducers/food";
+import DatePicker from "react-native-datepicker";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const ConfirmFoodScreen = props => {
   const [name, setName] = React.useState(
     props.navigation.state.params.topFoods[0]
   );
   const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(0);
-  const [life, setLife] = React.useState(props.navigation.state.params.life);
+  const [life, setLife] = React.useState(
+    props.navigation.state.params.life === "NO AVAILABLE SHELF LIFE"
+      ? 0
+      : props.navigation.state.params.life
+  );
+  const [expDate, setExpDate] = React.useState(
+    life ? new Date(new Date().getTime() + life * 1000 * 3600 * 24) : new Date()
+  );
+  console.log("name: ", name, "life: ", life, "expiration date:", expDate);
 
   const foodOne = props.navigation.state.params.topFoods[0];
   const foodTwo = props.navigation.state.params.topFoods[1];
   const foodThree = props.navigation.state.params.topFoods[2];
-  console.log(name);
-  console.log(props.addFood)
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <KeyboardAwareScrollView
+      style={{ backgroundColor: "#035640" }}
+      contentContainerStyle={styles.scrollView}
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      scrollEnabled={false}
+    >
       <View style={styles.form}>
         <View style={styles.avatarContainer}>
           <Avatar
@@ -135,52 +145,60 @@ const ConfirmFoodScreen = props => {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>Select expiration date:</Text>
+        </View>
+
+        <DatePicker
+          style={styles.calendar}
+          date={expDate}
+          mode="date"
+          placeholder="Select Expiration Date"
+          format="MMM D YYYY"
+          minDate={new Date()}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: "absolute",
+              left: 2,
+              top: 8,
+              marginLeft: 0
+            },
+            dateInput: {
+              position: "absolute",
+              top: 4,
+              marginLeft: 36,
+              borderColor: "white"
+            }
+          }}
+          onDateChange={date => {
+            const newExpDate = new Date(date);
+            const today = new Date();
+            const newLife = Math.round(
+              (newExpDate.getTime() - today.getTime()) / (1000 * 3600 * 24)
+            );
+            setExpDate(new Date(newExpDate));
+            console.log("newLife ", newLife);
+            setLife(newLife);
+          }}
+        />
+
         <View>
-              <TouchableOpacity
-                style={styles.selectedButton}
-                buttonStyle={styles.buttons}
-                onPress={() => {
-                  props.navigation.navigate("Food");
-                  props.addFood(name, life);
-                }}
-              >
-                <Text style={styles.selectedButtonText}>SUBMIT</Text>
-              </TouchableOpacity>
-            </View>
-
-        {/* <View style={styles.input}>
-                <Input
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                  placeholder="Email"
-                />
-              </View>
-
-              <View style={styles.input}>
-                <Input
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  placeholder="Password"
-                  secureTextEntry={true}
-                />
-                {touched.password && errors.password ? (
-                  <Text style={styles.errorText}>{errors.password}</Text>
-                ) : null}
-              </View>
-
-              <View>
-                <TouchableOpacity
-                  style={[styles.button, !isValid && { opacity: 0.7 }]}
-                  disabled={!isValid}
-                  onPress={handleSubmit}
-                >
-                  <Text style={styles.buttonText}>LOGIN</Text>
-                </TouchableOpacity>
-              </View> */}
+          <TouchableOpacity
+            style={styles.submitButton}
+            buttonStyle={styles.buttons}
+            onPress={() => {
+              props.navigation.popToTop();
+              props.navigation.navigate("Food");
+              props.addFood(name, life);
+            }}
+          >
+            <Text style={styles.submitButtonText}>SUBMIT</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -214,6 +232,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  calendar: {
+    width: 300,
+    backgroundColor: "white",
+    borderRadius: 5,
+    borderWidth: 1.5,
+    borderColor: "white",
+    height: 50
+  },
   form: {
     padding: 10,
     marginTop: 10,
@@ -227,7 +253,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: "white",
-    fontSize: 20
+    fontSize: 20,
+    marginTop: 5
   },
   labelContainer: {
     margin: 5
@@ -242,6 +269,18 @@ const styles = StyleSheet.create({
   selectedButtonText: {
     color: "#262626",
     fontSize: 20
+  },
+  submitButton: {
+    backgroundColor: "white",
+    width: 300,
+    padding: 15,
+    margin: 10,
+    borderRadius: 5
+  },
+  submitButtonText: {
+    color: "#262626",
+    fontSize: 20,
+    textAlign: "center"
   },
   buttons: {
     width: 300,

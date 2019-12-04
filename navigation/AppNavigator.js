@@ -31,7 +31,6 @@ const AuthStack = createStackNavigator({
 
 const UserHomeStack = createStackNavigator({
   UserHome: UserHomeScreen,
-  Food: FoodScreen,
   SingleFood: SingleFoodScreen,
   SingleRecipe: SingleRecipeScreen,
 });
@@ -52,7 +51,7 @@ const FoodStack = createStackNavigator({
   SingleRecipe: SingleRecipeScreen,
 });
 
-FoodStack.path = 'SingleFood';
+FoodStack.path = 'AllFood';
 
 FoodStack.navigationOptions = {
   tabBarLabel: `My Food`,
@@ -67,7 +66,6 @@ FoodStack.navigationOptions = {
 const AddStack = createStackNavigator({
   Add: AddScreen,
   ConfirmFood: ConfirmFoodScreen,
-  Food: FoodScreen
 });
 
 
