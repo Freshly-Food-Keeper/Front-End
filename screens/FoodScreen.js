@@ -1,91 +1,93 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { connect } from 'react-redux';
+import React from 'react'
+import { View, Text } from 'react-native'
+import { connect } from 'react-redux'
 import {
   getAllInventory,
   addFood,
   deleteFood,
-  updateFood,
-} from '../store/reducers/food';
-import { getWastedPercentage } from '../store/reducers/dataVisuals';
+  updateFood
+} from '../store/reducers/food'
+import { getWastedPercentage } from '../store/reducers/dataVisuals'
 import Dialog, {
   DialogButton,
   DialogContent,
-  DialogFooter,
-} from 'react-native-popup-dialog';
-import { sortFoodsByExpirationDate, sortFoodsAlphabetically } from '../utils';
-import LoadingScreen from './LoadingScreen';
+  DialogFooter
+} from 'react-native-popup-dialog'
+import { sortFoodsByExpirationDate, sortFoodsAlphabetically } from '../utils'
+import LoadingScreen from './LoadingScreen'
 
-import FoodList from '../components/Food/FoodList';
+import FoodList from '../components/Food/FoodList'
 
 class FoodScreen extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {
-      editVisible: false,
-    };
-    this.renderStatusDialog = this.renderStatusDialog.bind(this);
-    this.handleStatusUpdate = this.handleStatusUpdate.bind(this);
-    this.onLongPress = this.onLongPress.bind(this);
+      editVisible: false
+    }
+    this.renderStatusDialog = this.renderStatusDialog.bind(this)
+    this.handleStatusUpdate = this.handleStatusUpdate.bind(this)
+    this.onLongPress = this.onLongPress.bind(this)
   }
 
   componentDidMount() {
-    this.props.getInventory();
+    this.props.getInventory()
   }
 
-  handleStatusUpdate(food, selectedButton) {
+  async handleStatusUpdate(food, selectedButton) {
     switch (selectedButton) {
       case 'Eaten':
+        await this.props.updateFood(food.id, selectedButton)
+        break
       case 'Thrown Away':
-        this.props.updateFood(food.id, selectedButton);
-        break;
+        await this.props.updateFood(food.id, selectedButton)
+        break
       case 'Delete':
-        this.props.deleteFood(food.id);
-        break;
+        this.props.deleteFood(food.id)
+        break
       default:
-        break;
+        break
     }
     this.setState({
       editVisible: false,
-      selectedFood: {},
-    });
-    this.props.getWastedPercentage();
+      selectedFood: {}
+    })
+    this.props.getWastedPercentage()
   }
 
   onLongPress(visible, selectedFood) {
     this.setState({
       editVisible: !visible,
-      selectedFood,
-    });
+      selectedFood
+    })
   }
 
   renderStatusDialog() {
-    const food = this.state.selectedFood;
+    const food = this.state.selectedFood
     if (food) {
       return (
         <Dialog
           visible={!!this.state.editVisible}
           onTouchOutside={() => {
-            this.setState({ editVisible: false });
+            this.setState({ editVisible: false })
           }}
           footer={
             <DialogFooter>
               <DialogButton
-                text="Thrown Away"
+                text='Thrown Away'
                 onPress={() => {
-                  this.handleStatusUpdate(food, 'Thrown Away');
+                  this.handleStatusUpdate(food, 'Thrown Away')
                 }}
               />
               <DialogButton
-                text="Eaten"
+                text='Eaten'
                 onPress={() => {
-                  this.handleStatusUpdate(food, 'Eaten');
+                  this.handleStatusUpdate(food, 'Eaten')
                 }}
               />
               <DialogButton
-                text="Delete"
+                text='Delete'
                 onPress={() => {
-                  this.handleStatusUpdate(food, 'Delete');
+                  this.handleStatusUpdate(food, 'Delete')
                 }}
               />
             </DialogFooter>
@@ -95,21 +97,21 @@ class FoodScreen extends React.Component {
             <Text>{food.name}</Text>
           </DialogContent>
         </Dialog>
-      );
+      )
     } else {
-      return <View />;
+      return <View />
     }
   }
 
   render() {
-    let foods = this.props.allFoods;
-    const routeName = this.props.navigation.state.routeName;
-    const navigation = this.props.navigation;
+    let foods = this.props.allFoods
+    const routeName = this.props.navigation.state.routeName
+    const navigation = this.props.navigation
 
     // Sort by Expiration Date if we're on the UserHomeScreen. Doing in front end so we don't have to query the database every time a user switches screens
     routeName === 'UserHome'
       ? (foods = sortFoodsByExpirationDate(foods))
-      : (foods = sortFoodsAlphabetically(foods));
+      : (foods = sortFoodsAlphabetically(foods))
 
     return foods.length > 0 ? (
       <FoodList
@@ -121,24 +123,24 @@ class FoodScreen extends React.Component {
       />
     ) : (
       <LoadingScreen />
-    );
+    )
   }
 }
 
 FoodScreen.navigationOptions = {
-  title: 'My Food',
-};
+  title: 'My Food'
+}
 
 const mapStateToProps = state => ({
-  allFoods: state.food,
-});
+  allFoods: state.food
+})
 
 const mapDispatchToProps = dispatch => ({
   getInventory: () => dispatch(getAllInventory()),
   addFood: food => dispatch(addFood(food)),
   deleteFood: id => dispatch(deleteFood(id)),
   updateFood: (id, status) => dispatch(updateFood(id, status)),
-  getWastedPercentage: () => dispatch(getWastedPercentage()),
-});
+  getWastedPercentage: () => dispatch(getWastedPercentage())
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(FoodScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(FoodScreen)
