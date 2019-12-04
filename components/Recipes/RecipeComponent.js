@@ -15,12 +15,12 @@ class RecipeComponent extends React.Component {
     const recipes = this.props.allRecipes.results;
     const navigation = this.props.navigation;
     return recipes ? (
-      <ScrollView>
+      <ScrollView contentInset={{ top: 0, left: 0, bottom: 225, right: 0 }}>
         <RecipeCards recipes={recipes} navigation={navigation} />
       </ScrollView>
     ) : (
       <LoadingScreen />
-    );
+    )
   }
 }
 
