@@ -1,84 +1,90 @@
-import React, { Component } from 'react'
-import { View, StyleSheet, Text, Image } from 'react-native'
-import { ListItem, Badge, Avatar, Icon } from 'react-native-elements'
-import TouchableScale from 'react-native-touchable-scale' // https://github.com/kohver/react-native-touchable-scale
-import { connect } from 'react-redux'
+import React from 'react';
+import { View, Text, Image } from 'react-native';
+import { ListItem } from 'react-native-elements';
+import TouchableScale from 'react-native-touchable-scale';
+import { connect } from 'react-redux';
 import {
   getAllInventory,
   addFood,
   deleteFood,
-  updateFood
-} from '../store/reducers/food'
-import { getWastedPercentage } from '../store/reducers/dataVisuals'
-import AddFoodForm from '../components/AddFoodForm'
+  updateFood,
+} from '../store/reducers/food';
+import { getWastedPercentage } from '../store/reducers/dataVisuals';
 import Dialog, {
   DialogButton,
   DialogContent,
-  DialogFooter
-} from 'react-native-popup-dialog'
-import { titleCase, dayCalculator } from '../utils'
-import LoadingScreen from './LoadingScreen'
+  DialogFooter,
+} from 'react-native-popup-dialog';
+import {
+  titleCase,
+  dayCalculator,
+  sortFoodsByExpirationDate,
+  sortFoodsAlphabetically,
+} from '../utils';
+import LoadingScreen from './LoadingScreen';
+import { styles } from '../styles';
+import { AvatarComponent } from '../components/AvatarComponent';
 
-class FoodScreen extends Component {
+class FoodScreen extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
-      editVisible: false
-    }
-    this.renderStatusDialog = this.renderStatusDialog.bind(this)
-    this.handleStatusUpdate = this.handleStatusUpdate.bind(this)
+      editVisible: false,
+    };
+    this.renderStatusDialog = this.renderStatusDialog.bind(this);
+    this.handleStatusUpdate = this.handleStatusUpdate.bind(this);
   }
 
   componentDidMount() {
-    this.props.getInventory()
+    this.props.getInventory();
   }
 
   handleStatusUpdate(food, selectedButton) {
     switch (selectedButton) {
       case 'Eaten':
       case 'Thrown Away':
-        this.props.updateFood(food.id, selectedButton)
-        break
+        this.props.updateFood(food.id, selectedButton);
+        break;
       case 'Delete':
-        this.props.deleteFood(food.id)
-        break
+        this.props.deleteFood(food.id);
+        break;
       default:
-        break
+        break;
     }
     this.setState({
       editVisible: false,
-      selectedFood: {}
-    })
-    this.props.getWastedPercentage()
+      selectedFood: {},
+    });
+    this.props.getWastedPercentage();
   }
 
   renderStatusDialog() {
-    const food = this.state.selectedFood
+    const food = this.state.selectedFood;
     if (food) {
       return (
         <Dialog
           visible={!!this.state.editVisible}
           onTouchOutside={() => {
-            this.setState({ editVisible: false })
+            this.setState({ editVisible: false });
           }}
           footer={
             <DialogFooter>
               <DialogButton
-                text='Thrown Away'
+                text="Thrown Away"
                 onPress={() => {
-                  this.handleStatusUpdate(food, 'Thrown Away')
+                  this.handleStatusUpdate(food, 'Thrown Away');
                 }}
               />
               <DialogButton
-                text='Eaten'
+                text="Eaten"
                 onPress={() => {
-                  this.handleStatusUpdate(food, 'Eaten')
+                  this.handleStatusUpdate(food, 'Eaten');
                 }}
               />
               <DialogButton
-                text='Delete'
+                text="Delete"
                 onPress={() => {
-                  this.handleStatusUpdate(food, 'Delete')
+                  this.handleStatusUpdate(food, 'Delete');
                 }}
               />
             </DialogFooter>
@@ -88,34 +94,23 @@ class FoodScreen extends Component {
             <Text>{food.name}</Text>
           </DialogContent>
         </Dialog>
-      )
+      );
     } else {
-      return <View />
+      return <View />;
     }
   }
 
   render() {
-    let foods = this.props.allFoods || []
-    // Sort by Expiration Date if we're on the UserHomeScreen. Doing in front end so we don't have to query the database every time a user switches screens
-    if (this.props.navigation.state.routeName === 'UserHome') {
-      //sort numerically by expiration days
-      foods.sort((a, b) => a.expiresIn - b.expiresIn)
+    let foods = this.props.allFoods;
+    const routeName = this.props.navigation.state.routeName;
 
-      //Only allow 4 items to be shown
-      let tempArray = []
-      let count = 0
-      while (count < 4 && foods.length > count) {
-        tempArray.push(foods[count])
-        count++
-      }
-      foods = [...tempArray]
-    } else {
-      //sort alphabetically by name
-      foods.sort((a, b) => (a.name > b.name ? 1 : -1))
-    }
+    // Sort by Expiration Date if we're on the UserHomeScreen. Doing in front end so we don't have to query the database every time a user switches screens
+    routeName === 'UserHome'
+      ? (foods = sortFoodsByExpirationDate(foods))
+      : (foods = sortFoodsAlphabetically(foods));
 
     return foods.length > 0 ? (
-      <View style={styles.foodContainer}>
+      <View style={styles.flex}>
         {this.renderStatusDialog()}
         {foods.map(food => {
           // Creating a new object here so that the calculations we do can also easily be sent to the Single Food View
@@ -123,8 +118,8 @@ class FoodScreen extends Component {
             id: food.id,
             name: titleCase(food.name),
             expiresIn: dayCalculator(food.expiresIn),
-            imageUrl: food.imageUrl
-          }
+            imageUrl: food.imageUrl,
+          };
           return (
             <View key={food.id}>
               <ListItem
@@ -140,12 +135,12 @@ class FoodScreen extends Component {
                 onLongPress={() =>
                   this.setState({
                     editVisible: !this.state.editVisible,
-                    selectedFood: singleFood
+                    selectedFood: singleFood,
                   })
                 }
-                titleStyle={{ color: '#262626', fontWeight: 'bold' }}
+                titleStyle={styles.title}
                 subtitle={singleFood.expiresIn}
-                subtitleStyle={{ color: '#262626' }}
+                subtitleStyle={styles.smallText}
                 chevron={{ color: '#262626' }}
                 onPress={() =>
                   this.props.navigation.navigate('SingleFood', singleFood)
@@ -153,42 +148,18 @@ class FoodScreen extends Component {
                 bottomDivider
               />
             </View>
-          )
+          );
         })}
       </View>
     ) : (
       <LoadingScreen />
-    )
+    );
   }
 }
 
 FoodScreen.navigationOptions = {
-  title: 'My Food'
-}
-
-const styles = StyleSheet.create({
-  foodContainer: {
-    flex: 1
-  },
-  noFoodContainer: {
-    flex: 1,
-    alignContent: 'center',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  title: {
-    paddingTop: 5,
-    margin: 0,
-    fontSize: 30,
-    color: 'black'
-  },
-  subTitle: {
-    paddingTop: 5,
-    margin: 0,
-    fontSize: 20,
-    color: 'gray'
-  }
-})
+  title: 'My Food',
+};
 
 // If a user has no food to display, show them a friendly message!
 function NoFoodComponent() {
@@ -201,43 +172,19 @@ function NoFoodComponent() {
         source={require('../assets/images/arrow.png')}
       />
     </View>
-  )
-}
-
-/* Add style and logic to avatar (left image). If no image, use default. If expiration date
-is less than 7 days, add red badge */
-function AvatarComponent({ food, showBadge }) {
-  return (
-    <View>
-      <Avatar
-        size='small'
-        rounded
-        source={
-          food.imageUrl === null
-            ? require('../assets/images/food-placeholder.jpg')
-            : { uri: food.imageUrl }
-        }
-      />
-      {showBadge && (
-        <Badge
-          status='error'
-          containerStyle={{ position: 'absolute', top: -4, right: -4 }}
-        />
-      )}
-    </View>
-  )
+  );
 }
 
 const mapStateToProps = state => ({
-  allFoods: state.food
-})
+  allFoods: state.food,
+});
 
 const mapDispatchToProps = dispatch => ({
   getInventory: () => dispatch(getAllInventory()),
   addFood: food => dispatch(addFood(food)),
   deleteFood: id => dispatch(deleteFood(id)),
   updateFood: (id, status) => dispatch(updateFood(id, status)),
-  getWastedPercentage: () => dispatch(getWastedPercentage())
-})
+  getWastedPercentage: () => dispatch(getWastedPercentage()),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(FoodScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(FoodScreen);

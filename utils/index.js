@@ -48,6 +48,23 @@ export const dayCalculator = days => {
   }
 };
 
+export const sortFoodsByExpirationDate = foods => {
+  foods.sort((a, b) => a.expiresIn - b.expiresIn);
+
+  //Only allow 4 items to be shown
+  let tempArray = [];
+  let count = 0;
+  while (count < 4 && foods.length > count) {
+    tempArray.push(foods[count]);
+    count++;
+  }
+  foods = [...tempArray];
+  return foods;
+};
+
+export const sortFoodsAlphabetically = foods =>
+  foods.sort((a, b) => (a.name > b.name ? 1 : -1));
+
 export const formatRecipe = recipe => {
   const instructions = recipe.instructions
     ? recipe.instructions

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Button } from 'react-native-elements';
+import { styles } from '../styles';
 
 const RecipeCard = props => {
   const navigation = props.navigation;
@@ -12,20 +13,15 @@ const RecipeCard = props => {
       tension={100}
       activeScale={0.95}
       title={recipe.title}
-      titleStyle={{ color: '#262626', fontWeight: 'bold' }}
+      titleStyle={styles.cardTitle}
       chevron={{ color: '#262626' }}
       image={{ uri: recipe.image }}
+      imageStyle={styles.cardImage}
     >
       <Button
-        buttonStyle={{
-          borderRadius: 5,
-          margin: 5,
-          width: '50%',
-          backgroundColor: '#035640',
-          alignSelf: 'center',
-        }}
+        buttonStyle={styles.cardButton}
         title="View Recipe"
-        titleStyle={{ color: 'white', fontWeight: 'bold' }}
+        titleStyle={styles.buttonTitle}
         onPress={() =>
           navigation.navigate('SingleRecipe', { recipe: { recipe } })
         }
