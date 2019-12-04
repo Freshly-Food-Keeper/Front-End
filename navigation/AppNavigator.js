@@ -18,6 +18,7 @@ import {
   AddScreen,
   ConfirmFoodScreen,
   LoadingScreen,
+  AddFormScreen
 } from '../screens';
 import TabBarIcon from './TabBarIcon';
 import AddButton from '../components/Buttons/AddButton';
@@ -66,6 +67,7 @@ FoodStack.navigationOptions = {
 const AddStack = createStackNavigator({
   Add: AddScreen,
   ConfirmFood: ConfirmFoodScreen,
+  AddForm: AddFormScreen
 });
 
 
