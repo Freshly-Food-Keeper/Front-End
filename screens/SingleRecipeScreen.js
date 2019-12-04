@@ -1,16 +1,19 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import { addFavoriteRecipe } from '../store';
+import { addFavoriteRecipe, getFavoriteRecipes } from '../store';
 import SingleRecipeCard from '../components/Recipes/SingleRecipeCard';
+
 class SingleRecipeScreen extends React.Component {
+  async componentDidMount() {
+    await this.props.getFavoriteRecipes();
+  }
   render() {
     const recipe = this.props.navigation.getParam('recipe').recipe;
-
     return (
       <View style={styles.container}>
         <ScrollView>
-          <SingleRecipeCard recipe={recipe} />
+          <SingleRecipeCard recipe={recipe} addFavoriteRecipe={this.props.addFavoriteRecipe} favoriteRecipes={this.props.favoriteRecipes}/>
         </ScrollView>
       </View>
     );
@@ -24,6 +27,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addFavoriteRecipe: recipe => dispatch(addFavoriteRecipe(recipe)),
+  getFavoriteRecipes: () => dispatch(getFavoriteRecipes()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleRecipeScreen);

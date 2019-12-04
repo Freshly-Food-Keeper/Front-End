@@ -16,7 +16,7 @@ class RecipeComponent extends React.Component {
     const navigation = this.props.navigation;
     return recipes ? (
       <ScrollView>
-        <RecipeCards recipes={recipes} navigation={navigation} />
+        <RecipeCards recipes={recipes} navigation={navigation} favoriteRecipes={this.props.favoriteRecipes}/>
       </ScrollView>
     ) : (
       <LoadingScreen />
@@ -26,6 +26,7 @@ class RecipeComponent extends React.Component {
 
 const mapStateToProps = state => ({
   allRecipes: state.recipe.recipes,
+  favoriteRecipes: state.recipe.favoriteRecipes
 });
 
 const mapDispatchToProps = dispatch => ({

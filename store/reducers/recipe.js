@@ -31,6 +31,7 @@ const deletedFavoriteRecipe = recipe => ({
   type: DELETED_FAVORITE_RECIPE,
   recipe,
 });
+
 export const getRecipesWithIngredient = ingredient => {
   return async dispatch => {
     try {
@@ -65,7 +66,7 @@ export const addFavoriteRecipe = recipe => {
   return async dispatch => {
     try {
       const userId = await AsyncStorage.getItem('userId');
-
+      console.log(`${BACK_END_SERVER}/api/recipe`)
       const { data } = await axios.post(
         `${BACK_END_SERVER}/api/recipe`,
         recipe,
@@ -82,8 +83,32 @@ export const addFavoriteRecipe = recipe => {
     }
   };
 };
+
+export const deleteFavoriteRecipe = recipe => {
+  return async dispatch => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      await axios.delete(`${BACK_END_SERVER}/api/recipes/`, {
+        params: {
+          userId,
+          recipeId: recipe.id,
+        }
+      })
+      dispatch(deletedFavoriteRecipe(recipe))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+};
+
 export default function(state = initialState, action) {
   switch (action.type) {
+    case DELETED_FAVORITE_RECIPE:
+      return state.filter(function (recipe) {
+        if (action.id !== recipe.id) {
+          return recipe
+        }
+      })
     case GOT_RECIPES_WITH_INGREDIENT:
       return { ...state, recipes: action.allRecipes };
     case GOT_FAVORITE_RECIPES:

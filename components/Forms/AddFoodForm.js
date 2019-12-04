@@ -9,22 +9,22 @@ const AddFoodForm = props => {
   return (
     <DialogContent style={styles.dialogContent}>
       <View>
-        <View>
+        <View style={styles.inputContent}>
           <Input
+            style={styles.input}
             label="FOOD NAME"
             onChangeText={food => setName(food)}
             defaultValue={foodName}
           />
           <Input
+            style={styles.input}
             label="*optional: SHELF LIFE (days)"
             defaultValue={foodLife}
             onChangeText={life => setLife(life)}
           />
-        </View>
-        <View style={styles.buttonContainer}>
           <Button
             title="SUBMIT"
-            buttonStyle={styles.buttons}
+            buttonStyle={styles.button}
             onPress={() => {
               props.navigation.navigate('Food');
               props.addFood(foodName, foodLife);
@@ -40,7 +40,15 @@ const styles = StyleSheet.create({
   dialogContent: {
     marginTop: 50,
     minWidth: '75%',
-    height: '50%',
+    height: '25%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputContent: {
+    marginTop: 50,
+    minWidth: '75%',
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -59,6 +67,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
   },
+  input: {
+    marginTop: 20,
+  },
+  button: {
+    marginTop: 30,
+    marginBottom: 30,
+    minWidth: '75%',
+    height: '25%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  }
 });
 
 export default AddFoodForm;

@@ -9,13 +9,12 @@ class RecipeScreen extends React.Component {
   async componentDidMount() {
     await this.props.getFavoriteRecipes();
   }
-  render() {
-    const recipes = this.props.favoriteRecipes;
-    const navigation = this.props.navigation;
 
+  render() {
+    const recipes = this.props.favoriteRecipes
     return recipes ? (
       <ScrollView>
-        <RecipeCards recipes={recipes} navigation={navigation} />
+        <RecipeCards {...this.props} />
       </ScrollView>
     ) : (
       <LoadingScreen />
@@ -33,6 +32,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getFavoriteRecipes: () => dispatch(getFavoriteRecipes()),
+  addFavoriteRecipe: (recipe) => dispatch(addFavoriteRecipe(recipe)),
+  deleteFavoriteRecipe: (recipe) => dispatch(deleteFavoriteRecipe(recipe))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeScreen);

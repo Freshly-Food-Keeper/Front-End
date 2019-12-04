@@ -5,6 +5,7 @@ import { styles } from '../../styles';
 const RecipeCard = props => {
   const navigation = props.navigation;
   const recipe = props.recipe;
+  const apiId = props.apiId
 
   return (
     <Card

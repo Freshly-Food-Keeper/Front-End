@@ -4,12 +4,18 @@ import { Card, Divider } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { formatRecipe, capitalize } from '../../utils';
 import { styles } from '../../styles';
+import { connect } from 'react-redux';
+import { addFavoriteRecipe, deleteFavoriteRecipe } from '../../store';
 
 const SingleRecipeCard = props => {
   const recipe = props.recipe;
   const formattedRecipe = formatRecipe(recipe);
   const title = capitalize(recipe.title);
-
+  console.log("recipe", recipe)
+  const recipeIds = []
+  props.favoriteRecipes.forEach(recipe => recipeIds.push(recipe["users_recipes"]["recipeId"]))
+  console.log(recipeIds)
+  const isFavorite = recipeIds.includes(recipe.id) ? true : false
   return (
     <View>
       <Card
@@ -24,11 +30,23 @@ const SingleRecipeCard = props => {
             Servings: {recipe.servings}
             {'\n'}
           </Text>
-          <Ionicons
-            name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'}
-            size={30}
-            onPress={() => props.addFavoriteRecipe(formattedRecipe)}
-          />
+          {isFavorite ? 
+            <Ionicons
+              name={Platform.OS === 'ios' ? 'ios-heart' : 'md-heart'}
+              size={30}
+              onPress={() => {
+                props.deleteFavoriteRecipe(recipe)
+              }}
+            /> : 
+            <Ionicons
+              name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'}
+              size={30}
+              onPress={() => {
+                console.log('adding recipe!')
+                props.addFavoriteRecipe(recipe)
+              }}
+            />
+          }
         </View>
 
         <Text style={styles.subHeader}>INGREDIENTS</Text>
@@ -56,4 +74,5 @@ const SingleRecipeCard = props => {
     </View>
   );
 };
+
 export default SingleRecipeCard;
