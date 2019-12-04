@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 
-import { styles } from '../styles';
-import { AvatarComponent } from '../components/AvatarComponent';
+import { styles } from '../../styles';
+import { AvatarComponent } from '../Avatars/AvatarComponent';
 
 const SingleFood = props => {
   const { singleFood, visible, navigation, onLongPress } = props;

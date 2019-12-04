@@ -92,7 +92,7 @@ export function NoFoodComponent() {
       <Text style={styles.subTitle}>Why don't you add some food?</Text>
       <Image
         style={{ width: 90, height: 300, marginTop: 40 }}
-        source={require('../assets/images/arrow.png')}
+        source={require('../images/arrow.png')}
       />
     </View>
   );

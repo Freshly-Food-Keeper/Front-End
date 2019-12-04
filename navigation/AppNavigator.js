@@ -17,8 +17,8 @@ import {
   SingleRecipeScreen,
   LoadingScreen,
 } from '../screens';
-import TabBarIcon from '../components/TabBarIcon';
-import AddButton from '../components/AddButton';
+import TabBarIcon from './TabBarIcon';
+import AddButton from '../components/Buttons/AddButton';
 import RecipeScreen from '../screens/RecipeScreen';
 
 const AuthStack = createStackNavigator({

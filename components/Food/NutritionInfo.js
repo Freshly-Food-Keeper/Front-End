@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { getNutrition } from '../store/reducers/nutrition';
+import { getNutrition } from '../../store/reducers/nutrition';
 import { ScrollView } from 'react-native-gesture-handler';
-import LoadingScreen from '../screens/LoadingScreen';
-import { styles } from '../styles';
+import LoadingScreen from '../../screens/LoadingScreen';
+import { styles } from '../../styles';
 
 class NutritionInfo extends React.Component {
   constructor(props) {

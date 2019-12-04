@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, ButtonGroup } from 'react-native-elements';
-import NutritionInfo from '../components/NutritionInfo';
+import NutritionInfo from '../components/Food/NutritionInfo';
 import RecipeComponent from '../components/Recipes/RecipeComponent';
 
 export default class SingleItemScreen extends React.Component {
@@ -32,7 +32,7 @@ export default class SingleItemScreen extends React.Component {
             rounded
             source={
               food.imageUrl === null
-                ? require('../assets/images/food-placeholder.jpg')
+                ? require('../images/food-placeholder.jpg')
                 : { uri: food.imageUrl }
             }
           />

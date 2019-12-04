@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { PieChart } from 'react-native-svg-charts';
-import { getWastedPercentage } from '../store/reducers/dataVisuals';
+import { getWastedPercentage } from '../../store/reducers/dataVisuals';
 import { connect } from 'react-redux';
-import { styles } from '../styles';
+import { styles } from '../../styles';
 
 class DataVisuals extends React.PureComponent {
   componentDidMount() {
