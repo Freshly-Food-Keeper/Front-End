@@ -65,7 +65,7 @@ class SingleItemScreen extends React.Component {
           >
             <AddFoodForm
               name={food.name}
-              expiresIn={dayCalculator(food.expiresIn)}
+              expiresIn={food.expiresIn}
               navigation={navigation}
               addFood={this.props.addFood}
             />
@@ -82,7 +82,7 @@ class SingleItemScreen extends React.Component {
             }
           />
           <Text style={styles.title}>{food.name}</Text>
-          <Text style={styles.smallText}>{food.expiresIn}</Text>
+          <Text style={styles.smallText}>{dayCalculator(food.expiresIn)}</Text>
         </View>
         <View>
           <ButtonGroup
