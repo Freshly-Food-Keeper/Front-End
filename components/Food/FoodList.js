@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { titleCase, dayCalculator } from '../../utils';
+import { titleCase } from '../../utils';
 import { styles } from '../../styles';
 import SingleFood from './SingleFood';
 
@@ -15,7 +15,7 @@ const FoodList = props => {
         const singleFood = {
           id: food.id,
           name: titleCase(food.name),
-          expiresIn: dayCalculator(food.expiresIn),
+          expiresIn: food.expiresIn,
           imageUrl: food.imageUrl,
         };
         return (

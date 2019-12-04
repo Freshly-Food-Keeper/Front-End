@@ -2,12 +2,13 @@ import React from 'react';
 import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
-
+import { dayCalculator } from '../../utils';
 import { styles } from '../../styles';
 import { AvatarComponent } from '../Avatars/AvatarComponent';
 
 const SingleFood = props => {
   const { singleFood, visible, navigation, onLongPress } = props;
+  console.log(singleFood.expiresIn)
   return (
     <View key={singleFood.id}>
       <ListItem
@@ -25,7 +26,7 @@ const SingleFood = props => {
         title={singleFood.name}
         onLongPress={() => onLongPress(visible, singleFood)}
         titleStyle={styles.title}
-        subtitle={singleFood.expiresIn}
+        subtitle={dayCalculator(singleFood.expiresIn)}
         subtitleStyle={styles.smallText}
         chevron={{ color: '#262626' }}
         onPress={() => navigation.navigate('SingleFood', singleFood)}
