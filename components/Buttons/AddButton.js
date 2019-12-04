@@ -7,14 +7,14 @@ import * as ImagePicker from 'expo-image-picker';
 import {
   GOOGLE_CLOUD_VISION_API_KEY,
   BACK_END_SERVER,
-} from '../config/secrets';
+} from '../../config/secrets';
 import Dialog from 'react-native-popup-dialog';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { addFood } from '../store/reducers/food';
-import AddFoodForm from './AddFoodForm';
-import ConfirmFoodForm from './ConfirmFoodForm';
+import { addFood } from '../../store/reducers/food';
+import AddFoodForm from '../Forms/AddFoodForm';
+import ConfirmFoodForm from '../Forms/ConfirmFoodForm';
 
 export class AddButton extends React.Component {
   constructor(props) {

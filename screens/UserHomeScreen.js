@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
-import DataVisuals from '../components/DataVisuals';
+import DataVisuals from '../components/Data/DataVisuals';
 import FoodScreen from './FoodScreen';
 
 const theme = {

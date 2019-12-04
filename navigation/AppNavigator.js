@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Icon} from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -19,8 +19,8 @@ import {
   ConfirmFoodScreen,
   LoadingScreen,
 } from '../screens';
-import TabBarIcon from '../components/TabBarIcon';
-import AddButton from '../components/AddButton';
+import TabBarIcon from './TabBarIcon';
+import AddButton from '../components/Buttons/AddButton';
 import RecipeScreen from '../screens/RecipeScreen';
 
 const AuthStack = createStackNavigator({
@@ -55,7 +55,7 @@ const FoodStack = createStackNavigator({
 FoodStack.path = 'SingleFood';
 
 FoodStack.navigationOptions = {
-  tabBarLabel: 'My Food',
+  tabBarLabel: `My Food`,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}

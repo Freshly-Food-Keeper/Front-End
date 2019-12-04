@@ -9,6 +9,8 @@ const initialState = {
 
 const GOT_RECIPES_WITH_INGREDIENT = 'GOT_RECIPES_WITH_INGREDIENT';
 const GOT_FAVORITE_RECIPES = 'GOT_FAVORITE_RECIPES';
+const ADDED_FAVORITE_RECIPE = 'ADDED_FAVORITE_RECIPE';
+const DELETED_FAVORITE_RECIPE = 'REMOVED_FAVORITE_RECIPE';
 
 const gotRecipesWithIngredient = allRecipes => ({
   type: GOT_RECIPES_WITH_INGREDIENT,
@@ -20,6 +22,15 @@ const gotFavoriteRecipes = favoriteRecipes => ({
   favoriteRecipes,
 });
 
+const addedFavoriteRecipe = recipe => ({
+  type: ADDED_FAVORITE_RECIPE,
+  recipe,
+});
+
+const deletedFavoriteRecipe = recipe => ({
+  type: DELETED_FAVORITE_RECIPE,
+  recipe,
+});
 export const getRecipesWithIngredient = ingredient => {
   return async dispatch => {
     try {
@@ -50,6 +61,27 @@ export const getFavoriteRecipes = () => {
   };
 };
 
+export const addFavoriteRecipe = recipe => {
+  return async dispatch => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+
+      const { data } = await axios.post(
+        `${BACK_END_SERVER}/api/recipe`,
+        recipe,
+        {
+          params: {
+            userId,
+          },
+        }
+      );
+
+      dispatch(addedFavoriteRecipe(recipe));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
 export default function(state = initialState, action) {
   switch (action.type) {
     case GOT_RECIPES_WITH_INGREDIENT:
