@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import RecipeCard from './RecipeCard';
-import { styles } from '../styles';
+import { styles } from '../../styles';
 
 const RecipeCards = props => {
   const recipes = props.recipes;

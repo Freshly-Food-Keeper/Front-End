@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import RecipeCards from '../components/RecipeCards';
+import RecipeCards from '../components/Recipes/RecipeCards';
 import { getFavoriteRecipes } from '../store/reducers/recipe';
 import LoadingScreen from './LoadingScreen';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -14,7 +14,9 @@ class RecipeScreen extends React.Component {
     const navigation = this.props.navigation;
 
     return recipes ? (
-      <RecipeCards recipes={recipes} navigation={navigation} />
+      <ScrollView>
+        <RecipeCards recipes={recipes} navigation={navigation} />
+      </ScrollView>
     ) : (
       <LoadingScreen />
     );

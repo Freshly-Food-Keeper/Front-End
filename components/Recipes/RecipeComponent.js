@@ -1,9 +1,10 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { getRecipesWithIngredient } from '../store';
+
 import RecipeCards from './RecipeCards';
-import LoadingScreen from '../screens/LoadingScreen';
+import LoadingScreen from '../../screens/LoadingScreen';
+import { getRecipesWithIngredient } from '../../store';
 
 class RecipeComponent extends React.Component {
   async componentDidMount() {

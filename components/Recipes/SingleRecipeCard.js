@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, View, Platform } from 'react-native';
 import { Card, Divider } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
-import { formatRecipe, capitalize } from '../utils';
-import { styles } from '../styles';
+import { formatRecipe, capitalize } from '../../utils';
+import { styles } from '../../styles';
 
 const SingleRecipeCard = props => {
   const recipe = props.recipe;

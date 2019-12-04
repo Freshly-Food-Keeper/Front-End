@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Button } from 'react-native-elements';
-import { styles } from '../styles';
+import { styles } from '../../styles';
 
 const RecipeCard = props => {
   const navigation = props.navigation;
