@@ -2,14 +2,13 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import { BACK_END_SERVER, SPOONACULAR_API_KEY } from '../../config/secrets.js'
 
-
 const foods = [];
 
 // ACTION TYPES
 const GOT_ALL_INVENTORY = 'GOT_ALL_INVENTORY';
 const ADDED_FOOD = 'ADDED_FOOD';
-const DELETE_FOOD = 'DELETE_FOOD'
-const UPDATE_FOOD = 'UPDATE_FOOD'
+const DELETE_FOOD = 'DELETE_FOOD';
+const UPDATE_FOOD = 'UPDATE_FOOD';
 
 // ACTION CREATORS
 const gotAllInventory = allFoods => ({
@@ -24,8 +23,8 @@ const addedFood = food => ({
 
 const deletedFood = id => ({
   type: DELETE_FOOD,
-  id
-})
+  id,
+});
 
 // THUNKS
 export const getAllInventory = () => {
@@ -74,53 +73,53 @@ export const addFood = (food, shelfLife) => {
 export const deleteFood = foodId => {
   return async dispatch => {
     try {
-      const userId = await AsyncStorage.getItem('userId')
+      const userId = await AsyncStorage.getItem('userId');
       await axios.delete(`${BACK_END_SERVER}/api/food/`, {
         params: {
           userId,
-          foodId
-        }
-      })
-      dispatch(deletedFood(foodId))
+          foodId,
+        },
+      });
+      dispatch(deletedFood(foodId));
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-}
+  };
+};
 
 export const updateFood = (foodId, status) => {
   return async dispatch => {
     try {
-      const userId = await AsyncStorage.getItem('userId')
+      const userId = await AsyncStorage.getItem('userId');
       await axios.put(`${BACK_END_SERVER}/api/food/`, {
-          userId,
-          foodId,
-          status
-      })
-      dispatch(getAllInventory())
+        userId,
+        foodId,
+        status,
+      });
+      dispatch(getAllInventory());
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-}
+  };
+};
 
 export default function(state = foods, action) {
   switch (action.type) {
     case ADDED_FOOD:
-      return [...state, action.food]
+      return [...state, action.food];
     case GOT_ALL_INVENTORY:
-      return action.allFoods
+      return action.allFoods;
     case DELETE_FOOD:
       //we have an ID of the deleted item, and we need to update the state to remove that item
       return state.filter(function(food) {
         if (action.id !== food.id) {
-          return food
+          return food;
         }
-      })
+      });
     case UPDATE_FOOD:
-      return state
+      return state;
     default:
-      return state
+      return state;
   }
 }
 
