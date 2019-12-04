@@ -1,13 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { Avatar, ButtonGroup, Icon } from 'react-native-elements';
-import NutritionInfo from '../components/NutritionInfo';
-import AddFoodForm from '../components/AddFoodForm';
+import AddFoodForm from '../components/Forms/AddFoodForm';
 import Dialog from 'react-native-popup-dialog';
-import { SingleFoodScreen } from '.';
 import { connect } from 'react-redux';
 import { addFood } from '../store/reducers/food';
-import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, ButtonGroup } from 'react-native-elements';
 import NutritionInfo from '../components/Food/NutritionInfo';
 import RecipeComponent from '../components/Recipes/RecipeComponent';
@@ -23,14 +19,14 @@ class SingleItemScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ _handlePressEdit: this._handlePressEdit });
+    this.props.navigation.setParams({ handlePressEdit: this.handlePressEdit });
   }
 
   updateSelectedIndex(index) {
     this.setState({ selectedIndex: index });
   }
 
-  _handlePressEdit = () => {
+  handlePressEdit = () => {
     this.setState({ editVisible: !this.state.editVisible })
   }
 
@@ -39,11 +35,9 @@ class SingleItemScreen extends React.Component {
       editVisible: false,
       title: 'My Profile!',
       headerRight: (
-        <Icon
-          name="edit"
-          type="font-awesome"
-          color="black"
-          onPress={props.navigation.getParam('_handlePressEdit')}
+        <Button
+          title='Edit'
+          onPress={props.navigation.getParam('handlePressEdit')}
         />
       )
     }
@@ -64,12 +58,11 @@ class SingleItemScreen extends React.Component {
           <Dialog
             containerStyle={styles.dialogContainer}
             visible={this.state.editVisible}
-            onTouchOutside={() => {
-              editVisible = false;
-            }}
+            onTouchOutside={this.handlePressEdit}
           >
           <AddFoodForm
-            food={food}
+            name={food.name}
+            expiresIn={food.expiresIn}
             navigation={navigation}
             addFood={this.props.addFood}
           />
