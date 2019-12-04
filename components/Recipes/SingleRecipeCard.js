@@ -10,7 +10,6 @@ const SingleRecipeCard = props => {
   const formattedRecipe = formatRecipe(recipe);
   const title = capitalize(recipe.title);
   const addFavoriteRecipe = props.addFavoriteRecipe;
-  console.log(addFavoriteRecipe);
 
   return (
     <View>
