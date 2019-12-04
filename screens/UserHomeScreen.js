@@ -3,14 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import DataVisuals from '../components/Data/DataVisuals';
 import FoodScreen from './FoodScreen';
 
-const theme = {
-  Button: {
-    titleStyle: {
-      color: '#262626',
-    },
-  },
-};
-
 export default class UserHomeScreen extends React.Component {
   render() {
     return (
