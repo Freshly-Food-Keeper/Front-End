@@ -34,7 +34,7 @@ class SingleItemScreen extends React.Component {
   static navigationOptions = props => {
     return {
       editVisible: false,
-      title: 'My Profile!',
+      title: 'My Profile',
       headerRight: (
         <Button
           title="Edit"
@@ -52,7 +52,7 @@ class SingleItemScreen extends React.Component {
       imageUrl: navigation.getParam('imageUrl'),
       name: navigation.getParam('name'),
     };
-    const buttons = ['Recipes', 'Nutrition'];
+    const buttons = ['RECIPES', 'NUTRITION'];
     return (
       <View style={styles.flex}>
         <View>
@@ -80,7 +80,7 @@ class SingleItemScreen extends React.Component {
             }
           />
           <Text style={styles.title}>{food.name}</Text>
-          <Text style={styles.subTitle}>{food.expiresIn}</Text>
+          <Text style={styles.smallText}>{food.expiresIn}</Text>
         </View>
         <View>
           <ButtonGroup
@@ -89,8 +89,9 @@ class SingleItemScreen extends React.Component {
             selectedButtonStyle={{ backgroundColor: '#ED6A5A' }}
             selectedIndex={this.state.selectedIndex}
             buttons={buttons}
-            buttonStyle={styles.button}
-            containerStyle={{ height: 25 }}
+            buttonStyle={{ backgroundColor: 'white' }}
+            containerStyle={{ height: 30 }}
+            textStyle={styles.buttonTitle}
           />
           {this.state.selectedIndex === 0 ? (
             <RecipeComponent food={food} navigation={navigation} />

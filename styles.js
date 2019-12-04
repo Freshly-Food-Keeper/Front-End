@@ -108,9 +108,11 @@ export const styles = StyleSheet.create({
   },
   buttonGroup: {
     borderRadius: 5,
-    margin: 15,
-    width: '50%',
-    backgroundColor: '#035640',
+
+    padding: 10,
+    margin: 10,
+    width: '40%',
+    backgroundColor: 'black',
     alignSelf: 'center',
   },
   button: {
