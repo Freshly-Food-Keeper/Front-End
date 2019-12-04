@@ -28,28 +28,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  freshly: {
-    padding: 0,
-    margin: 0,
-    fontSize: 30,
-    color: 'black',
-  },
-  logo: {
-    alignSelf: 'center',
-    width: '30%',
-    resizeMode: 'contain',
-    marginTop: 50,
-    marginBottom: 0,
-  },
-  buttonContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 50,
-  },
-  buttons: {
-    backgroundColor: 'white',
-    width: 300,
-    padding: 15,
-    margin: 15,
-  },
 });
