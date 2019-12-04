@@ -4,14 +4,31 @@ export const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
+
   container: {
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
   },
+  contentContainer: {
+    alignItems: 'center',
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  column: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+
+  greyBackground: {
+    backgroundColor: '#EFEFF4',
+    flex: 1,
+  },
+  header: {
+    marginTop: 15,
   },
   cardTitle: {
     textAlign: 'center',
@@ -49,6 +66,13 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderWidth: 1.5,
     borderColor: 'black',
+  },
+  buttonGroup: {
+    borderRadius: 5,
+    margin: 15,
+    width: '50%',
+    backgroundColor: '#035640',
+    alignSelf: 'center',
   },
   buttonTitle: {
     color: 'black',
@@ -98,5 +122,16 @@ export const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 15,
     fontWeight: '500',
+  },
+  avatarContainer: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gif: {
+    width: 200,
+    height: 200,
   },
 });
