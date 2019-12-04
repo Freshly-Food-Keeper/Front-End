@@ -50,7 +50,7 @@ class FoodScreen extends Component {
           };
           return (
             <View key={food.id}>
-              <View>
+              {/* <View>
                 <Dialog
                   containerStyle={styles.dialogContainer}
                   visible={!!this.state.editVisible}
@@ -64,7 +64,7 @@ class FoodScreen extends Component {
                     addFood={this.props.addFood}
                   />
                 </Dialog>
-              </View>
+              </View> */}
               <ListItem
                 key={singleFood.id}
                 Component={TouchableScale}
@@ -75,16 +75,6 @@ class FoodScreen extends Component {
                   <AvatarComponent food={food} showBadge={food.expiresIn < 7} />
                 }
                 title={singleFood.name}
-                rightIcon={
-                  <Icon
-                    name="edit"
-                    type="font-awesome"
-                    color="black"
-                    onPress={() =>
-                      this.setState({ editVisible: !this.state.editVisible })
-                    }
-                  />
-                }
                 titleStyle={{ color: '#262626', fontWeight: 'bold' }}
                 subtitle={singleFood.expiresIn}
                 subtitleStyle={{ color: '#262626' }}

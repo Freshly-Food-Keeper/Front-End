@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Button} from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -52,15 +52,23 @@ const FoodStack = createStackNavigator({
 
 FoodStack.path = 'singleFood';
 
-FoodStack.navigationOptions = {
-  tabBarLabel: 'My Food',
+FoodStack.navigationOptions = ({ testing, screenProps }) => ({
+  headerRight: (
+    <Button
+      title='Menu'
+      onPress={testing => {
+        testing.navigate('DrawerOpen')
+      }}
+    />
+  ),
+  tabBarLabel: `My Food`,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-leaf' : 'md-leaf'}
     />
   ),
-};
+});
 
 const RecipeStack = createStackNavigator({
   Recipe: RecipeScreen,
