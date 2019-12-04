@@ -4,7 +4,10 @@ export const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
-
+  greenBackground: {
+    flex: 1,
+    backgroundColor: '#035640',
+  },
   container: {
     flex: 1,
     alignContent: 'center',
@@ -22,13 +25,26 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-
   greyBackground: {
     backgroundColor: '#EFEFF4',
     flex: 1,
   },
   header: {
     marginTop: 15,
+    fontFamily: 'AvenirNext-Regular',
+  },
+  freshly: {
+    padding: 0,
+    marginBottom: 50,
+    fontSize: 45,
+    color: 'white',
+    fontFamily: 'AvenirNext-Regular',
+  },
+  logo: {
+    alignSelf: 'center',
+    width: '30%',
+    resizeMode: 'contain',
+    marginTop: 100,
   },
   cardTitle: {
     textAlign: 'center',
@@ -44,8 +60,10 @@ export const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     fontWeight: '500',
+    fontFamily: 'AvenirNext-Regular',
   },
   title: {
+    fontFamily: 'AvenirNext-Regular',
     paddingTop: 5,
     margin: 0,
     fontSize: 20,
@@ -53,6 +71,7 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   subTitle: {
+    fontFamily: 'AvenirNext-Regular',
     paddingTop: 5,
     margin: 0,
     fontSize: 20,
@@ -67,6 +86,26 @@ export const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: 'black',
   },
+  formContainer: {
+    flex: 1,
+    backgroundColor: '#035640',
+    alignItems: 'center',
+  },
+  form: {
+    backgroundColor: 'white',
+    width: '90%',
+    padding: 10,
+    marginTop: 50,
+    borderRadius: 8,
+  },
+  input: {
+    fontFamily: 'AvenirNext-Regular',
+    fontWeight: '500',
+    padding: 3,
+    margin: 10,
+    fontSize: 20,
+    borderRadius: 5,
+  },
   buttonGroup: {
     borderRadius: 5,
     margin: 15,
@@ -74,7 +113,14 @@ export const styles = StyleSheet.create({
     backgroundColor: '#035640',
     alignSelf: 'center',
   },
+  button: {
+    backgroundColor: '#035640',
+    padding: 15,
+    margin: 15,
+    borderRadius: 5,
+  },
   buttonTitle: {
+    fontFamily: 'AvenirNext-Regular',
     color: 'black',
     fontSize: 16,
     fontWeight: '500',
@@ -82,7 +128,30 @@ export const styles = StyleSheet.create({
     paddingTop: 3,
     paddingBottom: 3,
   },
+  buttonText: {
+    fontFamily: 'AvenirNext-Regular',
+    textAlign: 'center',
+    color: '#262626',
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  buttonTextWhite: {
+    fontFamily: 'AvenirNext-Regular',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  whiteButton: {
+    borderRadius: 10,
+    padding: 15,
+    margin: 10,
+    width: 300,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+  },
   smallText: {
+    fontFamily: 'AvenirNext-Regular',
     textAlign: 'left',
     fontSize: 16,
   },
@@ -93,12 +162,14 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
   },
   nutritionLabel: {
+    fontFamily: 'AvenirNext-Regular',
     textAlign: 'left',
     fontSize: 14,
     color: 'black',
     fontWeight: '700',
   },
   nutritionText: {
+    fontFamily: 'AvenirNext-Regular',
     textAlign: 'left',
     fontSize: 14,
     color: 'black',
@@ -114,6 +185,7 @@ export const styles = StyleSheet.create({
     paddingRight: 25,
   },
   dataText: {
+    fontFamily: 'AvenirNext-Regular',
     padding: 0,
     margin: 0,
     fontSize: 25,
@@ -133,5 +205,12 @@ export const styles = StyleSheet.create({
   gif: {
     width: 200,
     height: 200,
+  },
+  errorText: {
+    fontFamily: 'AvenirNext-Regular',
+    color: '#f44336',
+    fontSize: 12,
+    marginLeft: 10,
+    marginTop: 2,
   },
 });
