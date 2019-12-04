@@ -4,10 +4,10 @@ import { Avatar, ButtonGroup, Icon } from 'react-native-elements';
 import NutritionInfo from '../components/NutritionInfo';
 import AddFoodForm from '../components/AddFoodForm';
 import Dialog from 'react-native-popup-dialog';
-import RecipeComponent from '../components/RecipeComponent';
 import { SingleFoodScreen } from '.';
 import { connect } from 'react-redux';
 import { addFood } from '../store/reducers/food';
+import RecipeComponent from '../components/Recipes/RecipeComponent';
 
 class SingleItemScreen extends React.Component {
   constructor() {
@@ -96,7 +96,7 @@ class SingleItemScreen extends React.Component {
           />
           {this.state.selectedIndex === 0 ? (
             <RecipeComponent food={food} navigation={navigation} />
-            ) : (
+          ) : (
             <NutritionInfo food={food} />
           )}
         </View>
