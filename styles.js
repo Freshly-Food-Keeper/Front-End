@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 
 export const styles = StyleSheet.create({
   flex: {
@@ -31,14 +32,16 @@ export const styles = StyleSheet.create({
   },
   header: {
     marginTop: 15,
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
   },
   freshly: {
     padding: 0,
     marginBottom: 50,
     fontSize: 45,
     color: 'white',
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
   },
   logo: {
     alignSelf: 'center',
@@ -60,10 +63,12 @@ export const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     fontWeight: '500',
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
   },
   title: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     paddingTop: 5,
     margin: 0,
     fontSize: 20,
@@ -71,7 +76,8 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   subTitle: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     paddingTop: 5,
     margin: 0,
     fontSize: 20,
@@ -99,7 +105,8 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   input: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     fontWeight: '500',
     padding: 3,
     margin: 10,
@@ -122,7 +129,8 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonTitle: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     color: 'black',
     fontSize: 16,
     fontWeight: '500',
@@ -131,14 +139,16 @@ export const styles = StyleSheet.create({
     paddingBottom: 3,
   },
   buttonText: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     textAlign: 'center',
     color: '#262626',
     fontSize: 20,
     fontWeight: '500',
   },
   buttonTextWhite: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     textAlign: 'center',
     color: 'white',
     fontSize: 20,
@@ -153,7 +163,8 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   smallText: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     textAlign: 'left',
     fontSize: 16,
   },
@@ -164,14 +175,16 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
   },
   nutritionLabel: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     textAlign: 'left',
     fontSize: 14,
     color: 'black',
     fontWeight: '700',
   },
   nutritionText: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     textAlign: 'left',
     fontSize: 14,
     color: 'black',
@@ -187,7 +200,8 @@ export const styles = StyleSheet.create({
     paddingRight: 25,
   },
   dataText: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     padding: 0,
     margin: 0,
     fontSize: 25,
@@ -209,7 +223,8 @@ export const styles = StyleSheet.create({
     height: 200,
   },
   errorText: {
-    fontFamily: 'AvenirNext-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'sans-serif-light',
     color: '#f44336',
     fontSize: 12,
     marginLeft: 10,
