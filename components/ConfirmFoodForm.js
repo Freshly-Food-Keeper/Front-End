@@ -1,59 +1,51 @@
-import React from 'react'
+import React from 'react';
 import { DialogContent } from 'react-native-popup-dialog';
-import {
-  View,
-  Image,
-  StyleSheet
-} from "react-native";
+import { View, Image, StyleSheet } from 'react-native';
 import { ButtonGroup, Button, Input } from 'react-native-elements';
 
-const ConfirmFoodForm = (props) => {
-  const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(0)
-  console.log(selectedButtonIndex)
+const ConfirmFoodForm = props => {
+  const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(0);
+
   const [name, setName] = React.useState(props.buttons[selectedButtonIndex]);
   const [foodLife, setLife] = React.useState(props.expiresIn);
   return (
-      <DialogContent style={styles.dialogContent}>
-        <View styles={styles.imageConatiner}>
-          <Image
-            style={styles.image}
-            source={props.image}
-          />
-        </View>
-          <View styles={styles.listContainer}>
-            <ButtonGroup
-              onPress={(index) => setSelectedButtonIndex(index)}
-              selectedIndex={selectedButtonIndex}
-              buttons={props.buttons}
-              containerStyle={styles.buttonGroup}
-            />
-          </View>
-          <View>
-            <Input
-              label='CHANGE FOOD NAME'
-              defaultValue={props.buttons[selectedButtonIndex]}
-              onChangeText={(text) => setName(text)}
-            />
-            <Input
-              label="CHANGE SHELF LIFE"
-              defaultValue={foodLife}
-              onChangeText={(text) => setLife(text)}
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="SUBMIT"
-              buttonStyle={styles.buttons}
-              onPress={() => {
-                props.navigation.navigate("Food")
-                props.addFood(name, foodLife)
-              }}
-            />
-          </View>
-        </DialogContent>
-  )
-}
-
+    <DialogContent style={styles.dialogContent}>
+      <View styles={styles.imageConatiner}>
+        <Image style={styles.image} source={props.image} />
+      </View>
+      <View styles={styles.listContainer}>
+        <ButtonGroup
+          onPress={index => setSelectedButtonIndex(index)}
+          selectedIndex={selectedButtonIndex}
+          buttons={props.buttons}
+          containerStyle={styles.buttonGroup}
+        />
+      </View>
+      <View>
+        <Input
+          label="CHANGE FOOD NAME"
+          defaultValue={props.buttons[selectedButtonIndex]}
+          onChangeText={text => setName(text)}
+        />
+        <Input
+          label="CHANGE SHELF LIFE"
+          defaultValue={foodLife}
+          onChangeText={text => setLife(text)}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="SUBMIT"
+          buttonStyle={styles.buttons}
+          onPress={() => {
+            props.navigation.navigate('Food');
+            props.addFood(name, foodLife);
+          }}
+        />
+      </View>
+    </DialogContent>
+  );
+};
 
 const styles = StyleSheet.create({
   dialogContent: {
@@ -79,20 +71,20 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   button: {
-    backgroundColor: "#035640",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#035640',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 72,
     height: 72,
     borderRadius: 36,
-    position: "absolute",
+    position: 'absolute',
     top: -55,
-    shadowColor: "#7F58FF",
+    shadowColor: '#7F58FF',
     shadowRadius: 5,
     shadowOpacity: 0.3,
     shadowOffset: { height: 10 },
     borderWidth: 3,
-    borderColor: "#FFF"
+    borderColor: '#FFF',
   },
   buttons: {
     backgroundColor: '#035640',
@@ -103,7 +95,7 @@ const styles = StyleSheet.create({
   buttonGroup: {
     height: 25,
     width: '100%',
-    shadowColor: '#262626'
+    shadowColor: '#262626',
   },
   buttonContainer: {
     alignItems: 'center',
@@ -124,6 +116,6 @@ const styles = StyleSheet.create({
     height: 75,
     width: 75,
   },
-})
+});
 
-export default ConfirmFoodForm
+export default ConfirmFoodForm;
