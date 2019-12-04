@@ -64,4 +64,4 @@ const SingleRecipeCard = props => {
     </View>
   );
 };
-export { SingleRecipeCard };
+export default SingleRecipeCard;
