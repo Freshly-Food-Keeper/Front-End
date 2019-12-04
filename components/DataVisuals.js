@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Dimensions, Text } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { PieChart } from 'react-native-svg-charts'
 import { getWastedPercentage } from '../store/reducers/dataVisuals'
 import { connect } from 'react-redux'
@@ -10,14 +10,15 @@ class DataVisuals extends React.PureComponent {
   }
   render() {
     const userData = this.props.percentages
-    const wastedFood = {
+    let text = `${userData.consumed}% Consumed`
+    let wastedFood = {
       value: userData.wasted,
       svg: {
         fill: '#99ada8'
       },
       key: 'wasted'
     }
-    const eatenFood = {
+    let eatenFood = {
       value: userData.consumed,
       svg: {
         fill: '#1a473b'
@@ -25,13 +26,18 @@ class DataVisuals extends React.PureComponent {
       key: 'eaten'
     }
 
+    // If there's no food, force the values so we can still get a pie chart place holder
+    if (userData.consumed === 0 && userData.wasted === 0) {
+      eatenFood.value = 0
+      wastedFood.value = 100
+      text = 'Get Started!'
+    }
+
     return (
-      (this.props.percentages.consumed === null && this.props.percentages.wasted === null)
-      ? <View />
-      : <View style={styles.container}>
-          <PieChart style={{ height: 200 }} data={[wastedFood, eatenFood]} />
-          <Text style={styles.consumedText}>{userData.consumed}% Consumed</Text>
-        </View>
+      <View style={styles.container}>
+        <PieChart style={{ height: 200 }} data={[wastedFood, eatenFood]} />
+        <Text style={styles.consumedText}>{text}</Text>
+      </View>
     )
   }
 }
