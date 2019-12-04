@@ -27,7 +27,6 @@ const ConfirmFoodScreen = props => {
   const [expDate, setExpDate] = React.useState(
     life ? new Date(new Date().getTime() + life * 1000 * 3600 * 24) : new Date()
   );
-  console.log("name: ", name, "life: ", life, "expiration date:", expDate);
 
   const foodOne = props.navigation.state.params.topFoods[0];
   const foodTwo = props.navigation.state.params.topFoods[1];
@@ -178,7 +177,6 @@ const ConfirmFoodScreen = props => {
               (newExpDate.getTime() - today.getTime()) / (1000 * 3600 * 24)
             );
             setExpDate(new Date(newExpDate));
-            console.log("newLife ", newLife);
             setLife(newLife);
           }}
         />
