@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import { BACK_END_SERVER, SPOONACULAR_API_KEY } from '../../config/secrets.js';
+import user from './user.js';
 
 const initialState = {
   recipes: [],
@@ -66,15 +67,11 @@ export const addFavoriteRecipe = recipe => {
     try {
       const userId = await AsyncStorage.getItem('userId');
 
-      const { data } = await axios.post(
-        `${BACK_END_SERVER}/api/recipe`,
-        recipe,
-        {
-          params: {
-            userId,
-          },
-        }
-      );
+      await axios.post(`${BACK_END_SERVER}/api/recipe`, recipe, {
+        params: {
+          userId,
+        },
+      });
 
       dispatch(addedFavoriteRecipe(recipe));
     } catch (error) {
