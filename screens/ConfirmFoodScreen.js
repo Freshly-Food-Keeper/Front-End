@@ -24,10 +24,10 @@ const ConfirmFoodScreen = props => {
   const foodTwo = props.navigation.state.params.topFoods[1];
   const foodThree = props.navigation.state.params.topFoods[2];
   console.log(name);
+  console.log(props.addFood)
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+    <ScrollView style={styles.scrollView}>
       <View style={styles.form}>
         <View style={styles.avatarContainer}>
           <Avatar
@@ -37,9 +37,9 @@ const ConfirmFoodScreen = props => {
           />
         </View>
 
-    <View style={styles.labelContainer}>
-        <Text style={styles.label}>PLEASE CONFIRM FOOD NAME:</Text>
-    </View>
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>Select food:</Text>
+        </View>
 
         <View>
           <TouchableOpacity
@@ -51,15 +51,17 @@ const ConfirmFoodScreen = props => {
               setName(foodOne);
             }}
           >
-            <Text
-              style={
-                selectedButtonIndex === 0
-                  ? styles.selectedButtonText
-                  : styles.buttonText
-              }
-            >
-              {foodOne}
-            </Text>
+            <View>
+              <Text
+                style={
+                  selectedButtonIndex === 0
+                    ? styles.selectedButtonText
+                    : styles.buttonText
+                }
+              >
+                {foodOne}
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -73,15 +75,17 @@ const ConfirmFoodScreen = props => {
               setName(foodTwo);
             }}
           >
-            <Text
-              style={
-                selectedButtonIndex === 1
-                  ? styles.selectedButtonText
-                  : styles.buttonText
-              }
-            >
-              {foodTwo}
-            </Text>
+            <View>
+              <Text
+                style={
+                  selectedButtonIndex === 1
+                    ? styles.selectedButtonText
+                    : styles.buttonText
+                }
+              >
+                {foodTwo}
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -95,15 +99,17 @@ const ConfirmFoodScreen = props => {
               setName(foodThree);
             }}
           >
-            <Text
-              style={
-                selectedButtonIndex === 2
-                  ? styles.selectedButtonText
-                  : styles.buttonText
-              }
-            >
-              {foodThree}
-            </Text>
+            <View>
+              <Text
+                style={
+                  selectedButtonIndex === 2
+                    ? styles.selectedButtonText
+                    : styles.buttonText
+                }
+              >
+                {foodThree}
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -116,15 +122,31 @@ const ConfirmFoodScreen = props => {
               setSelectedButtonIndex(3);
             }}
           >
-            <Input
-              onChangeText={text => {
-                setName(text);
-                setSelectedButtonIndex(3);
-              }}
-              value={name}
-            />
+            <View>
+              <Input
+                onChangeText={text => {
+                  setName(text);
+                  setSelectedButtonIndex(3);
+                }}
+                // value=""
+                placeholder="Other"
+              />
+            </View>
           </TouchableOpacity>
         </View>
+
+        <View>
+              <TouchableOpacity
+                style={styles.selectedButton}
+                buttonStyle={styles.buttons}
+                onPress={() => {
+                  props.navigation.navigate("Food");
+                  props.addFood(name, life);
+                }}
+              >
+                <Text style={styles.selectedButtonText}>SUBMIT</Text>
+              </TouchableOpacity>
+            </View>
 
         {/* <View style={styles.input}>
                 <Input
@@ -158,8 +180,7 @@ const ConfirmFoodScreen = props => {
                 </TouchableOpacity>
               </View> */}
       </View>
-      </ScrollView>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -183,15 +204,11 @@ const mapDispatch = dispatch => ({
 export default connect(null, mapDispatch)(ConfirmFoodScreen);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   scrollView: {
     backgroundColor: "#035640",
     alignItems: "center"
   },
   avatarContainer: {
-    paddingTop: 15,
     paddingBottom: 15,
     alignContent: "center",
     justifyContent: "center",
@@ -199,7 +216,7 @@ const styles = StyleSheet.create({
   },
   form: {
     padding: 10,
-    marginTop: 50,
+    marginTop: 10,
     borderRadius: 8,
     alignItems: "center"
   },
@@ -208,15 +225,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     borderRadius: 5
   },
-  image: {
-    flex: 1,
-    height: null,
-    width: null
-  },
   label: {
     color: "white",
-    fontSize: 20,
-    alignSelf: "right"
+    fontSize: 20
   },
   labelContainer: {
     margin: 5
@@ -229,7 +240,6 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   selectedButtonText: {
-    textAlign: "center",
     color: "#262626",
     fontSize: 20
   },
@@ -242,7 +252,6 @@ const styles = StyleSheet.create({
     borderColor: "white"
   },
   buttonText: {
-    textAlign: "center",
     color: "white",
     fontSize: 20
   },
@@ -251,11 +260,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 10,
     marginTop: 2
-  },
-  image: {
-    marginTop: 10,
-    marginBottom: 10,
-    height: 200,
-    width: 200
   }
 });

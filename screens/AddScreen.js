@@ -16,11 +16,15 @@ import {
   BACK_END_SERVER
 } from "../config/secrets";
 import axios from 'axios';
+import LoadingScreen from "./LoadingScreen";
 
 
 class AddScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      uploading: false
+    }
     this.pickPhoto = this.pickPhoto.bind(this);
     this.takePhoto = this.takePhoto.bind(this);
     this.submitToGoogle = this.submitToGoogle.bind(this);
@@ -75,6 +79,7 @@ class AddScreen extends React.Component {
 
   submitToGoogle = async image => {
     try {
+      this.setState({ uploading: true });
       let body = JSON.stringify({
         requests: [
           {
@@ -120,23 +125,21 @@ class AddScreen extends React.Component {
 
       let life = await axios.get(`${BACK_END_SERVER}/api/expiration/${foodName}`);
 
+      this.setState({ uploading: false });
       this.props.navigation.navigate("ConfirmFood", {
         topFoods,
         life: life.data || "No shelf life available", 
         image
       });
-      // this.props.navigation.navigate("ConfirmFood", {
-      //   topFoods,
-      //   life: life.data || "No shelf life available", 
-      //   image
-      // });
     } catch (error) {
+      this.setState({ uploading: false });
       console.log(error);
     }
   };
 
   render() {
-    return (
+    return ( this.state.uploading ? 
+      <LoadingScreen /> :
       <View style={styles.container}>
         <View>
           <Text style={styles.header}>Add a new food!</Text>

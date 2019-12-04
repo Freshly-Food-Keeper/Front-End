@@ -67,6 +67,7 @@ FoodStack.navigationOptions = {
 const AddStack = createStackNavigator({
   Add: AddScreen,
   ConfirmFood: ConfirmFoodScreen,
+  Food: FoodScreen
 });
 
 
