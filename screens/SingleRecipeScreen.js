@@ -10,7 +10,10 @@ class SingleRecipeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-          <SingleRecipeCard recipe={recipe} />
+          <SingleRecipeCard
+            recipe={recipe}
+            addFavoriteRecipe={addFavoriteRecipe}
+          />
         </ScrollView>
       </View>
     );
