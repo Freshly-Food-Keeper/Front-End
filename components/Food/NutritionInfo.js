@@ -44,7 +44,7 @@ class NutritionInfo extends React.Component {
     return nutrition ? (
       <ScrollView
         style={styles.nutritionContainer}
-        contentInset={{ top: 0, left: 0, bottom: 20, right: 0 }}
+        contentInset={{ top: 0, left: 0, bottom: 35, right: 0 }}
       >
         {nutrition.map((item, index) => {
           item.value = Math.floor(item.value)
