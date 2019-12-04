@@ -47,7 +47,10 @@ class AddScreen extends React.Component {
   };
 
   takePhoto = async () => {
+<<<<<<< HEAD
     console.log('In take photo');
+=======
+>>>>>>> origin
 
     let image = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -61,16 +64,22 @@ class AddScreen extends React.Component {
   };
 
   pickPhoto = async () => {
+<<<<<<< HEAD
     console.log('In pick photo');
 
+=======
+>>>>>>> origin
     let image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       base64: true,
     });
 
+<<<<<<< HEAD
     console.log('Lauched photo picker');
 
+=======
+>>>>>>> origin
     if (!image.cancelled) {
       this.submitToGoogle(image);
     }
@@ -89,10 +98,13 @@ class AddScreen extends React.Component {
           },
         ],
       });
+<<<<<<< HEAD
 
       // console.log(image)
       console.log('Sending to Google');
 
+=======
+>>>>>>> origin
       let response = await fetch(
         'https://vision.googleapis.com/v1/images:annotate?key=' +
           GOOGLE_CLOUD_VISION_API_KEY,
@@ -106,8 +118,11 @@ class AddScreen extends React.Component {
         }
       );
 
+<<<<<<< HEAD
       console.log('Got response from Google');
 
+=======
+>>>>>>> origin
       let googleResponseJson = await response.json();
 
       let foodName = googleResponseJson['responses'][0]['labelAnnotations'][0][
