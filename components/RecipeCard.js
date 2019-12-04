@@ -1,7 +1,5 @@
 import React from 'react';
 import { Card, Button } from 'react-native-elements';
-import TouchableScale from 'react-native-touchable-scale';
-import { titleCase } from '../utils';
 
 const RecipeCard = props => {
   const navigation = props.navigation;
@@ -10,14 +8,13 @@ const RecipeCard = props => {
   return (
     <Card
       containerStyle={{ padding: 0 }}
-      Component={TouchableScale}
       friction={90}
       tension={100}
       activeScale={0.95}
-      title={titleCase(recipe.name)}
+      title={recipe.title}
       titleStyle={{ color: '#262626', fontWeight: 'bold' }}
       chevron={{ color: '#262626' }}
-      image={{ uri: recipe.imgUrl }}
+      image={{ uri: recipe.image }}
     >
       <Button
         buttonStyle={{

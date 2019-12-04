@@ -1,61 +1,41 @@
-import React, { Component } from 'react';
-import { Text, Card, Divider } from 'react-native-elements';
-import { ScrollView, View } from 'react-native';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
+import { addFavoriteRecipe } from '../store';
 
-class SingleRecipeScreen extends Component {
+import { SingleRecipeCard } from '../components/SingleRecipeCard';
+class SingleRecipeScreen extends React.Component {
   render() {
     const recipe = this.props.navigation.getParam('recipe').recipe;
-    const instructions = recipe.analyzedInstructions[0].steps;
-    const ingredients = [
-      ...recipe.usedIngredients,
-      ...recipe.missedIngredients,
-    ];
 
     return (
-      <ScrollView>
-        <Card
-          title={recipe.title}
-          titleStyle={{ color: '#262626', fontWeight: 'bold' }}
-          image={{ uri: recipe.image }}
-        >
-          <Text style={{ color: '#262626', fontWeight: 'bold' }}>
-            Ready in {recipe.readyInMinutes} minutes {'\n'}
-            Servings: {recipe.servings}
-            {'\n'}
-          </Text>
-
-          <Text style={{ color: '#262626', fontWeight: 'bold' }}>
-            Ingredients
-          </Text>
-
-          <Divider />
-
-          {ingredients.map(ingredient => {
-            return <Text key={ingredient.id}>{ingredient.original}</Text>;
-          })}
-
-          <Text style={{ color: '#262626', fontWeight: 'bold' }}>
-            {'\n'}Instructions
-          </Text>
-          <Divider />
-
-          {instructions.map(instruction => {
-            return (
-              <Text key={instruction.number}>
-                {instruction.number}: {instruction.step}
-                {'\n'}
-              </Text>
-            );
-          })}
-        </Card>
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView>
+          <SingleRecipeCard recipe={recipe} />
+        </ScrollView>
+      </View>
     );
   }
 }
 
 const mapStateToProps = state => ({
   recipes: state.recipe.recipes.results,
+  favoriteRecipes: state.recipe.favoriteRecipes,
 });
 
-export default connect(mapStateToProps)(SingleRecipeScreen);
+const mapDispatchToProps = dispatch => ({
+  addFavoriteRecipe: recipe => dispatch(addFavoriteRecipe(recipe)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleRecipeScreen);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  contentContainer: {
+    alignItems: 'center',
+  },
+});

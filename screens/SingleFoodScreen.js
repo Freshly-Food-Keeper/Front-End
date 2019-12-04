@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, ButtonGroup } from 'react-native-elements';
 import NutritionInfo from '../components/NutritionInfo';
-
 import RecipeComponent from '../components/RecipeComponent';
 
 export default class SingleItemScreen extends React.Component {
@@ -51,7 +50,7 @@ export default class SingleItemScreen extends React.Component {
           />
           {this.state.selectedIndex === 0 ? (
             <RecipeComponent food={food} navigation={navigation} />
-            ) : (
+          ) : (
             <NutritionInfo food={food} />
           )}
         </View>

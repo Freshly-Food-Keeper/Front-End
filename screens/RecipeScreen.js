@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
+import React from 'react';
 import { connect } from 'react-redux';
-
 import RecipeCards from '../components/RecipeCards';
 import { getFavoriteRecipes } from '../store/reducers/recipe';
 import LoadingScreen from './LoadingScreen';
+import { ScrollView } from 'react-native-gesture-handler';
 
-class RecipeScreen extends Component {
+class RecipeScreen extends React.Component {
   async componentDidMount() {
     await this.props.getFavoriteRecipes();
   }
   render() {
-    const recipes = this.props.recipes;
+    const recipes = this.props.favoriteRecipes;
     const navigation = this.props.navigation;
 
     return recipes ? (
@@ -27,7 +26,7 @@ RecipeScreen.navigationOptions = {
 };
 
 const mapStateToProps = state => ({
-  recipes: state.recipe.favoriteRecipes,
+  favoriteRecipes: state.recipe.favoriteRecipes,
 });
 
 const mapDispatchToProps = dispatch => ({
