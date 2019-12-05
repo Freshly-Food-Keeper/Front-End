@@ -52,8 +52,8 @@ export const styles = StyleSheet.create({
   cardTitle: {
     textAlign: 'center',
     fontSize: 18,
-    paddingTop: 5,
-    paddingBottom: 5,
+    padding: 5,
+    margin: 5,
     fontWeight: '600',
   },
   cardImage: { width: '100%', height: 200 },
@@ -86,11 +86,11 @@ export const styles = StyleSheet.create({
   cardButton: {
     borderRadius: 5,
     margin: 5,
-    width: '50%',
+    width: '75%',
     backgroundColor: 'white',
-    alignSelf: 'center',
     borderWidth: 1.5,
     borderColor: 'black',
+    justifyContent: 'center',
   },
   formContainer: {
     flex: 1,
@@ -115,7 +115,6 @@ export const styles = StyleSheet.create({
   },
   buttonGroup: {
     borderRadius: 5,
-
     padding: 10,
     margin: 10,
     width: '40%',
@@ -193,6 +192,7 @@ export const styles = StyleSheet.create({
   nutritionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignContent: 'center',
     paddingVertical: 5,
   },
   nutritionContainer: {
@@ -229,5 +229,10 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 10,
     marginTop: 2,
+  },
+  icon: {
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+    padding: 5,
   },
 });

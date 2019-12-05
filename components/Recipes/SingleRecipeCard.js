@@ -2,20 +2,17 @@ import React from 'react';
 import { Text, View, Platform } from 'react-native';
 import { Card, Divider } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
-import { formatRecipe, capitalize } from '../../utils';
 import { styles } from '../../styles';
 import { connect } from 'react-redux';
 import { addFavoriteRecipe } from '../../store';
 
 const SingleRecipeCard = props => {
   const recipe = props.recipe;
-  const formattedRecipe = formatRecipe(recipe);
-  const title = capitalize(recipe.title);
-  console.log('formateedRecipe', formattedRecipe);
+
   return (
     <View>
       <Card
-        title={title}
+        title={recipe.title}
         titleStyle={styles.cardTitle}
         image={{ uri: recipe.image }}
         imageStyle={styles.cardImage}
@@ -29,7 +26,7 @@ const SingleRecipeCard = props => {
           <Ionicons
             name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'}
             size={30}
-            onPress={() => props.addFavRecipe(formattedRecipe)}
+            onPress={() => props.addFavRecipe(recipe)}
           />
         </View>
 
@@ -37,7 +34,7 @@ const SingleRecipeCard = props => {
         <Divider style={styles.divider} />
 
         <View>
-          {formattedRecipe.ingredients.map((ingredient, i) => (
+          {recipe.ingredients.map((ingredient, i) => (
             <Text key={i} style={styles.smallText}>
               - {ingredient}
             </Text>
@@ -48,7 +45,7 @@ const SingleRecipeCard = props => {
         </View>
 
         <View>
-          {formattedRecipe.instructions.map((step, i) => (
+          {recipe.instructions.map((step, i) => (
             <Text key={i} style={styles.smallText}>
               - {step}
             </Text>

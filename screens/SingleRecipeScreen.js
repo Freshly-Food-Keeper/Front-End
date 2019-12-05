@@ -1,27 +1,20 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { connect } from 'react-redux';
 
 import SingleRecipeCard from '../components/Recipes/SingleRecipeCard';
-class SingleRecipeScreen extends React.Component {
-  render() {
-    const recipe = this.props.navigation.getParam('recipe').recipe;
+const SingleRecipeScreen = props => {
+  const recipe = props.navigation.getParam('recipe').formattedRecipe;
 
-    return (
-      <View style={styles.container}>
-        <ScrollView>
-          <SingleRecipeCard recipe={recipe} />
-        </ScrollView>
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        <SingleRecipeCard recipe={recipe} />
+      </ScrollView>
+    </View>
+  );
+};
 
-const mapStateToProps = state => ({
-  recipes: state.recipe.recipes.results,
-});
-
-export default connect(mapStateToProps)(SingleRecipeScreen);
+export default SingleRecipeScreen;
 
 const styles = StyleSheet.create({
   container: {
