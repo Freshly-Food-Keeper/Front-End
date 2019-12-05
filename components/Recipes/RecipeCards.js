@@ -9,10 +9,10 @@ const RecipeCards = props => {
   const addFavoriteRecipe = props.addFavoriteRecipe;
   return (
     <ScrollView style={styles.flex}>
-      {recipes.map(recipe => {
+      {recipes.map((recipe, i) => {
         return (
           <RecipeCard
-            key={recipe.id}
+            key={i}
             recipe={recipe}
             navigation={navigation}
             addFavoriteRecipe={addFavoriteRecipe}

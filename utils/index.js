@@ -81,6 +81,7 @@ export const formatRecipe = recipe => {
     servings: recipe.servings,
     instructions,
     ingredients,
+    apiId: recipe.id,
   };
 };
 

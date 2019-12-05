@@ -4,13 +4,14 @@ import { Card, Divider } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { formatRecipe, capitalize } from '../../utils';
 import { styles } from '../../styles';
+import { connect } from 'react-redux';
+import { addFavoriteRecipe } from '../../store';
 
 const SingleRecipeCard = props => {
   const recipe = props.recipe;
   const formattedRecipe = formatRecipe(recipe);
   const title = capitalize(recipe.title);
-  const addFavoriteRecipe = props.addFavoriteRecipe;
-
+  console.log('formateedRecipe', formattedRecipe);
   return (
     <View>
       <Card
@@ -28,7 +29,7 @@ const SingleRecipeCard = props => {
           <Ionicons
             name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'}
             size={30}
-            onPress={() => addFavoriteRecipe(formattedRecipe)}
+            onPress={() => props.addFavRecipe(formattedRecipe)}
           />
         </View>
 
@@ -57,4 +58,14 @@ const SingleRecipeCard = props => {
     </View>
   );
 };
-export default SingleRecipeCard;
+
+const mapStateToProps = state => ({
+  recipes: state.recipe.recipes.results,
+  favoriteRecipes: state.recipe.favoriteRecipes,
+});
+
+const mapDispatchToProps = dispatch => ({
+  addFavRecipe: recipe => dispatch(addFavoriteRecipe(recipe)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleRecipeCard);

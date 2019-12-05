@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import { addFavoriteRecipe } from '../store';
+
 import SingleRecipeCard from '../components/Recipes/SingleRecipeCard';
 class SingleRecipeScreen extends React.Component {
   render() {
@@ -10,10 +10,7 @@ class SingleRecipeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-          <SingleRecipeCard
-            recipe={recipe}
-            addFavoriteRecipe={addFavoriteRecipe}
-          />
+          <SingleRecipeCard recipe={recipe} />
         </ScrollView>
       </View>
     );
@@ -22,14 +19,9 @@ class SingleRecipeScreen extends React.Component {
 
 const mapStateToProps = state => ({
   recipes: state.recipe.recipes.results,
-  favoriteRecipes: state.recipe.favoriteRecipes,
 });
 
-const mapDispatchToProps = dispatch => ({
-  addFavoriteRecipe: recipe => dispatch(addFavoriteRecipe(recipe)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleRecipeScreen);
+export default connect(mapStateToProps)(SingleRecipeScreen);
 
 const styles = StyleSheet.create({
   container: {
