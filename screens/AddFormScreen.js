@@ -14,19 +14,21 @@ import DatePicker from "react-native-datepicker";
 const AddFormScreen = props => {
   const defaultExp = new Date()
   defaultExp.setDate(defaultExp.getDate() + 7)
-  const [name, setName] = React.useState("");
-  const [life, setLife] = React.useState(0);
+  const [name, setName] = React.useState(props.navigation.state.params.name || "");
+  const [life, setLife] = React.useState(props.navigation.state.params.expiresIn || 0);
   const [expDate, setExpDate] = React.useState(defaultExp);
+  const [isEdit] = React.useState(props.navigation.state.params.isEdit || false)
   console.log("name: ", name, "life: ", life, "expiration date:", expDate);
-
 
   return (
     <View style={styles.view}>
       <View style={styles.form}>
         <View style={styles.labelContainer}>
-          <Text style={styles.label}>Add a food:</Text>
+          { isEdit ? (
+          <Text style={styles.label}>Add a food:</Text>) 
+          : (<Text style={styles.label}>Edit food:</Text>)
+          }
         </View>
-
         <View style={styles.input}>
           <TouchableOpacity
             style={styles.selectedButton}
@@ -36,7 +38,7 @@ const AddFormScreen = props => {
                 onChangeText={text => {
                   setName(text);
                 }}
-                placeholder="Food"
+                placeholder={`${name}` || "Food"}
               />
             </View>
           </TouchableOpacity>
@@ -76,7 +78,6 @@ const AddFormScreen = props => {
               (newExpDate.getTime() - today.getTime()) / (1000 * 3600 * 24)
             );
             setExpDate(new Date(newExpDate));
-            console.log("newLife ", newLife);
             setLife(newLife);
           }}
         />
@@ -88,7 +89,9 @@ const AddFormScreen = props => {
             onPress={() => {
               props.navigation.popToTop();
               props.navigation.navigate("Food");
-              props.addFood(name, life);
+              props.isEdit ? 
+              (props.updateFoodLife(name,life)) :
+              (props.addFood(name, life));
             }}
           >
             <Text style={styles.submitButtonText}>SUBMIT</Text>
@@ -114,7 +117,8 @@ AddFormScreen.navigationOptions = () => {
   };
 
 const mapDispatch = dispatch => ({
-  addFood: (food, shelfLife) => dispatch(addFood(food, shelfLife))
+  addFood: (food, shelfLife) => dispatch(addFood(food, shelfLife)),
+  updateFoodLife: (food, shelfLife) => dispatch(updateFoodLife(food, shelfLife))
 });
 
 export default connect(null, mapDispatch)(AddFormScreen);

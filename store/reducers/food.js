@@ -108,7 +108,6 @@ export const updateFoodLife = (foodId, shelfLife) => {
   return async dispatch => {
     try {
       const userId = await AsyncStorage.getItem('userId');
-      console.log(foodId)
       await axios.put(`${BACK_END_SERVER}/api/food/`, {
         userId,
         foodId,
