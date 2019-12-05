@@ -8,7 +8,7 @@ const foods = [];
 const GOT_ALL_INVENTORY = 'GOT_ALL_INVENTORY';
 const ADDED_FOOD = 'ADDED_FOOD';
 const DELETE_FOOD = 'DELETE_FOOD';
-const UPDATE_FOOD = 'UPDATE_FOOD';
+const UPDATE_FOOD_STATUS = 'UPDATE_FOOD_STATUS';
 
 // ACTION CREATORS
 const gotAllInventory = allFoods => ({
@@ -25,6 +25,7 @@ const deletedFood = id => ({
   type: DELETE_FOOD,
   id,
 });
+
 
 // THUNKS
 export const getAllInventory = () => {
@@ -87,7 +88,7 @@ export const deleteFood = foodId => {
   };
 };
 
-export const updateFood = (foodId, status) => {
+export const updateFoodStatus = (foodId, status) => {
   return async dispatch => {
     try {
       const userId = await AsyncStorage.getItem('userId');
@@ -95,6 +96,22 @@ export const updateFood = (foodId, status) => {
         userId,
         foodId,
         status,
+      });
+      dispatch(getAllInventory());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const updateFoodLife = (foodId, shelfLife) => {
+  return async dispatch => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      await axios.put(`${BACK_END_SERVER}/api/food/`, {
+        userId,
+        foodId,
+        shelfLife,
       });
       dispatch(getAllInventory());
     } catch (error) {
@@ -116,7 +133,7 @@ export default function(state = foods, action) {
           return food;
         }
       });
-    case UPDATE_FOOD:
+    case UPDATE_FOOD_STATUS:
       return state;
     default:
       return state;

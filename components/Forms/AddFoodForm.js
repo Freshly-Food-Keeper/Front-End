@@ -3,37 +3,52 @@ import { DialogContent } from 'react-native-popup-dialog';
 import { View, StyleSheet } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 
-const AddFoodForm = props => {
-  const [foodName, setName] = React.useState(props.name);
-  const [foodLife, setLife] = React.useState(props.expiresIn);
+class AddFoodForm extends React.Component {
+  constructor (props){
+    super (props)
+    this.state = {
+      foodName: this.props.name,
+      foodLife: this.props.expiresIn,
+      foodId: this.props.foodId
+    }
+  }
+render() {
   return (
     <DialogContent style={styles.dialogContent}>
       <View>
         <View>
           <Input
-            label="FOOD NAME"
-            onChangeText={food => setName(food)}
-            defaultValue={foodName}
+            label="Edit food name"
+            onChangeText={food => this.setState({foodName: food})}
+            defaultValue={this.state.foodName}
           />
+          { this.state.foodLife ? (
           <Input
-            label="*optional: SHELF LIFE (days)"
-            defaultValue={foodLife}
-            onChangeText={life => setLife(life)}
-          />
+            label="Edit shelf life"
+            defaultValue={`${this.state.foodLife}`}
+            onChangeText={life => this.setState({foodLife: life})}
+          /> 
+          ) : (
+            <Input
+              label="Add shelf life"
+                onChangeText={life => this.setState({ foodLife: life })}
+            /> 
+          )}
         </View>
         <View style={styles.buttonContainer}>
           <Button
             title="SUBMIT"
             buttonStyle={styles.buttons}
             onPress={() => {
-              props.navigation.navigate('Food');
-              props.addFood(foodName, foodLife);
+              this.props.navigation.navigate('Food');
+              this.props.updateFoodLife(this.state.foodId, this.state.foodLife)
             }}
           />
         </View>
       </View>
     </DialogContent>
   );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -49,15 +64,6 @@ const styles = StyleSheet.create({
     marginTop: 70,
     height: 75,
     width: 75,
-  },
-  imageConatiner: {
-    marginTop: 75,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
   },
 });
 
