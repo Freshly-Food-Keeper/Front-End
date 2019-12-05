@@ -3,7 +3,7 @@ import { Text, View, Button } from 'react-native';
 import AddFoodForm from '../components/Forms/AddFoodForm';
 import Dialog from 'react-native-popup-dialog';
 import { connect } from 'react-redux';
-import { addFood } from '../store/reducers/food';
+import { addFood, updateFoodLife } from '../store/reducers/food';
 import { Avatar, ButtonGroup } from 'react-native-elements';
 import NutritionInfo from '../components/Food/NutritionInfo';
 import RecipeComponent from '../components/Recipes/RecipeComponent';
@@ -62,10 +62,11 @@ class SingleItemScreen extends React.Component {
             onTouchOutside={this.handlePressEdit}
           >
             <AddFoodForm
+              foodId={food.id}
               name={food.name}
               expiresIn={food.expiresIn}
               navigation={navigation}
-              addFood={this.props.addFood}
+              updateFoodLife={this.props.updateFoodLife}
             />
           </Dialog>
         </View>
@@ -106,6 +107,7 @@ class SingleItemScreen extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   addFood: food => dispatch(addFood(food)),
+  updateFoodLife: (foodId, shelfLife) => dispatch(updateFoodLife(foodId, shelfLife))
 });
 
 export default connect(null, mapDispatchToProps)(SingleItemScreen);
