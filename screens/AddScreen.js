@@ -147,7 +147,9 @@ class AddScreen extends React.Component {
             <TouchableOpacity
               style={styles.buttons}
               onPress={() => {
-                this.props.navigation.navigate('SignUp');
+
+                this.props.navigation.navigate("AddForm");
+
               }}
             >
               <Text style={styles.buttonText}>ADD CUSTOM</Text>

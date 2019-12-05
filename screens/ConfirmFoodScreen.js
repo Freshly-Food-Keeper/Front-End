@@ -136,8 +136,9 @@ const ConfirmFoodScreen = props => {
                   setName(text);
                   setSelectedButtonIndex(3);
                 }}
-                // value=""
+                onFocus={() => setSelectedButtonIndex(3)}
                 placeholder="Other"
+                placeholderTextColor="white"
               />
             </View>
           </TouchableOpacity>
@@ -285,6 +286,7 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 15,
     margin: 10,
+    marginTop: 30,
     borderRadius: 5
   },
   submitButtonText: {
