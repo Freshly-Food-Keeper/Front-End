@@ -11,6 +11,8 @@ import { connect } from "react-redux";
 import { addFood } from "../store/reducers/food";
 import DatePicker from "react-native-datepicker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import axios from 'axios'
+
 
 const ConfirmFoodScreen = props => {
   const [name, setName] = React.useState(
@@ -25,18 +27,14 @@ const ConfirmFoodScreen = props => {
   const [expDate, setExpDate] = React.useState(
     life ? new Date(new Date().getTime() + life * 1000 * 3600 * 24) : new Date()
   );
-  console.log("name: ", name, "life: ", life, "expiration date:", expDate);
 
   const foodOne = props.navigation.state.params.topFoods[0];
   const foodTwo = props.navigation.state.params.topFoods[1];
   const foodThree = props.navigation.state.params.topFoods[2];
 
   return (
-    <KeyboardAwareScrollView
+    <ScrollView
       style={{ backgroundColor: "#035640" }}
-      contentContainerStyle={styles.scrollView}
-      resetScrollToCoords={{ x: 0, y: 0 }}
-      scrollEnabled={false}
     >
       <View style={styles.form}>
         <View style={styles.avatarContainer}>
@@ -180,7 +178,6 @@ const ConfirmFoodScreen = props => {
               (newExpDate.getTime() - today.getTime()) / (1000 * 3600 * 24)
             );
             setExpDate(new Date(newExpDate));
-            console.log("newLife ", newLife);
             setLife(newLife);
           }}
         />
@@ -199,9 +196,22 @@ const ConfirmFoodScreen = props => {
           </TouchableOpacity>
         </View>
       </View>
-    </KeyboardAwareScrollView>
+    </ScrollView>
   );
 };
+
+// async function getImage(name) {
+//    try {
+//       const { data } = await axios.get(
+//         `https://api.spoonacular.com/food/ingredients/autocomplete?query=${name}&number=1&apiKey=${SPOONACULAR_API_KEY}`
+//       )
+//       console.log(`https://spoonacular.com/cdn/ingredients_250x250/${data[0].image}`)
+//       return data[0].image ? `https://spoonacular.com/cdn/ingredients_250x250/${data[0].image}` : null
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   // https://api.spoonacular.com/food/ingredients/autocomplete?query=blueberries&number=1&apiKey=d1d95a97cd0f48ae89126a0a04b17718
+// }
 
 ConfirmFoodScreen.navigationOptions = () => {
   return {

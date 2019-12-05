@@ -1,6 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
-import { titleCase, dayCalculator } from '../../utils';
+import { ScrollView } from 'react-native';
+import { titleCase } from '../../utils';
 import { styles } from '../../styles';
 import SingleFood from './SingleFood';
 
@@ -8,27 +8,27 @@ const FoodList = props => {
   const { foods, visible, navigation, onLongPress } = props;
 
   return (
-    <View style={styles.flex}>
+    <ScrollView style={styles.flex}>
       {props.renderStatusDialog()}
-      {foods.map(food => {
+      {foods.map((food, index) => {
         // Creating a new object here so that the calculations we do can also easily be sent to the Single Food View
         const singleFood = {
           id: food.id,
           name: titleCase(food.name),
-          expiresIn: dayCalculator(food.expiresIn),
+          expiresIn: food.expiresIn,
           imageUrl: food.imageUrl,
         };
         return (
           <SingleFood
+            key={index}
             singleFood={singleFood}
-            key={singleFood.id}
             visible={visible}
             navigation={navigation}
             onLongPress={onLongPress}
           />
-        );
+        )
       })}
-    </View>
+    </ScrollView>
   );
 };
 export default FoodList;

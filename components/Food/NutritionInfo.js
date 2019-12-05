@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { getNutrition } from '../../store/reducers/nutrition';
-import { ScrollView } from 'react-native-gesture-handler';
 import LoadingScreen from '../../screens/LoadingScreen';
 import { styles } from '../../styles';
 
@@ -43,15 +42,18 @@ class NutritionInfo extends React.Component {
   render() {
     const nutrition = this.props.nutrition;
     return nutrition ? (
-      <ScrollView style={styles.nutritionContainer}>
+      <ScrollView
+        style={styles.nutritionContainer}
+        contentInset={{ top: 0, left: 0, bottom: 35, right: 0 }}
+      >
         {nutrition.map((item, index) => {
-          item.value = Math.floor(item.value);
-          return this.renderRow(item, index);
+          item.value = Math.floor(item.value)
+          return this.renderRow(item, index)
         })}
       </ScrollView>
     ) : (
       <LoadingScreen />
-    );
+    )
   }
 }
 

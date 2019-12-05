@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import FreshlyGif from '../assets/icons/freshly_loading.gif';
+import { styles } from '../styles';
 
 const LoadingScreen = () => {
   return (
@@ -11,20 +12,5 @@ const LoadingScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  contentContainer: {
-    alignItems: 'center',
-  },
-  gif: {
-    width: 200,
-    height: 200,
-  },
-});
 
 export default LoadingScreen;

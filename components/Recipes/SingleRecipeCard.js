@@ -9,6 +9,7 @@ const SingleRecipeCard = props => {
   const recipe = props.recipe;
   const formattedRecipe = formatRecipe(recipe);
   const title = capitalize(recipe.title);
+  const addFavoriteRecipe = props.addFavoriteRecipe;
 
   return (
     <View>
@@ -27,7 +28,7 @@ const SingleRecipeCard = props => {
           <Ionicons
             name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'}
             size={30}
-            onPress={() => props.addFavoriteRecipe(formattedRecipe)}
+            onPress={() => addFavoriteRecipe(formattedRecipe)}
           />
         </View>
 

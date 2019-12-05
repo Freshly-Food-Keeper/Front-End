@@ -1,23 +1,24 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity, Alert } from "react-native";
+import { View, Text, Button, TouchableOpacity, Alert } from 'react-native';
 import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { createUser, removeError } from '../store';
-import { Formik } from "formik";
-import * as Yup from "yup";
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { styles } from '../styles';
 
 class SignUp extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
+
   async handleSubmit(values) {
     const email = values.email.toLowerCase();
 
     await this.props.createUser({ ...values, email });
 
-    if (!this.props.error){
+    if (!this.props.error) {
       this.props.navigation.navigate('App');
     }
   }
@@ -25,35 +26,38 @@ class SignUp extends React.Component {
   render() {
     const { error } = this.props;
 
-    if(error) {
+    if (error) {
       Alert.alert(
         'Oops!',
         error.response.data,
-        [
-          {text: 'OK', onPress: this.props.removeError,}
-        ],
-        {cancelable: false},
+        [{ text: 'OK', onPress: this.props.removeError }],
+        { cancelable: false }
       );
     }
 
     return (
-      <View style={styles.container}>
+      <View style={styles.formContainer}>
         <View style={styles.form}>
           <Formik
-            initialValues={{ firstName: "", lastName: "", email: "", password: "" }}
+            initialValues={{
+              firstName: '',
+              lastName: '',
+              email: '',
+              password: '',
+            }}
             validationSchema={Yup.object({
               firstName: Yup.string()
-                .min(2, "Names must be at least 2 characters long")
-                .required("Please enter your first name"),
+                .min(2, 'Names must be at least 2 characters long')
+                .required('Please enter your first name'),
               lastName: Yup.string()
-                .min(2, "Names must be at least 2 characters long")
-                .required("Please enter your last name"),
+                .min(2, 'Names must be at least 2 characters long')
+                .required('Please enter your last name'),
               email: Yup.string()
-                .email("Please enter a valid email address")
-                .required("Please enter your email address"),
+                .email('Please enter a valid email address')
+                .required('Please enter your email address'),
               password: Yup.string()
-                .min(8, "Password must be at least 8 characters long")
-                .required("Please enter a password")
+                .min(5, 'Password must be at least 5 characters long')
+                .required('Please enter a password'),
             })}
             onSubmit={this.handleSubmit}
           >
@@ -64,13 +68,13 @@ class SignUp extends React.Component {
               values,
               errors,
               touched,
-              isValid
+              isValid,
             }) => (
               <React.Fragment>
                 <View style={styles.input}>
                   <Input
-                    onChangeText={handleChange("firstName")}
-                    onBlur={handleBlur("firstName")}
+                    onChangeText={handleChange('firstName')}
+                    onBlur={handleBlur('firstName')}
                     value={values.firstName}
                     placeholder="First Name"
                   />
@@ -81,8 +85,8 @@ class SignUp extends React.Component {
 
                 <View style={styles.input}>
                   <Input
-                    onChangeText={handleChange("lastName")}
-                    onBlur={handleBlur("lastName")}
+                    onChangeText={handleChange('lastName')}
+                    onBlur={handleBlur('lastName')}
                     value={values.lastName}
                     placeholder="Last Name"
                   />
@@ -93,8 +97,8 @@ class SignUp extends React.Component {
 
                 <View style={styles.input}>
                   <Input
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
                     value={values.email}
                     placeholder="Email"
                   />
@@ -105,8 +109,8 @@ class SignUp extends React.Component {
 
                 <View style={styles.input}>
                   <Input
-                    onChangeText={handleChange("password")}
-                    onBlur={handleBlur("password")}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
                     value={values.password}
                     placeholder="Password"
                     secureTextEntry={true}
@@ -122,7 +126,7 @@ class SignUp extends React.Component {
                     disabled={!isValid}
                     onPress={handleSubmit}
                   >
-                    <Text style={styles.buttonText}>LOGIN</Text>
+                    <Text style={styles.buttonTextWhite}>SIGN UP</Text>
                   </TouchableOpacity>
                 </View>
               </React.Fragment>
@@ -137,13 +141,15 @@ class SignUp extends React.Component {
 SignUp.navigationOptions = ({ navigation }) => {
   return {
     headerTitle: 'Create Account',
-    headerRight: <Button
-      onPress={() => {
-        navigation.navigate('Login')
-      }}
-      title="Login"
-      color="#fff" 
-    />,
+    headerRight: (
+      <Button
+        onPress={() => {
+          navigation.navigate('Login');
+        }}
+        title="Login"
+        color="#fff"
+      />
+    ),
     headerStyle: {
       backgroundColor: '#035640',
     },
@@ -151,7 +157,7 @@ SignUp.navigationOptions = ({ navigation }) => {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-  }
+  };
 };
 
 const mapState = state => {
@@ -163,51 +169,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     createUser: user => dispatch(createUser(user)),
-    removeError: () => dispatch(removeError())
+    removeError: () => dispatch(removeError()),
   };
 };
 
 export default connect(mapState, mapDispatch)(SignUp);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#035640",
-    alignItems: "center"
-  },
-  form: {
-    backgroundColor: "white",
-    width: "90%",
-    padding: 10,
-    marginTop: 50,
-    borderRadius: 8
-  },
-  input: {
-    padding: 3,
-    margin: 10,
-    fontSize: 20,
-    borderRadius: 5
-  },
-  image: {
-    flex: 1,
-    height: null,
-    width: null
-  },
-  button: {
-    backgroundColor: "#035640",
-    padding: 15,
-    margin: 15,
-    borderRadius: 5
-  },
-  buttonText: {
-    textAlign: "center",
-    color: "white",
-    fontSize: 20
-  },
-  errorText: {
-    color: "#f44336",
-    fontSize: 12,
-    marginLeft: 10,
-    marginTop: 2
-  }
-});

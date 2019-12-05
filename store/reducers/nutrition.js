@@ -13,73 +13,73 @@ const gotNutrition = info => ({
   info
 })
 
-const createNutritionArray = info => ([
+const createNutritionArray = info => [
   {
-    value: info.nf_calories,
+    value: info.nf_calories || 0,
     label: 'Calories',
     header: true
   },
   {
-    value: info.nf_total_fat,
+    value: info.nf_total_fat || 0,
     label: 'Total Fat (g)',
     header: true
   },
   {
-    value: info.nf_saturated_fat,
+    value: info.nf_saturated_fat || 0,
     label: 'Saturated Fat (g)',
     header: false
   },
   {
-    value: info.nf_cholesterol,
+    value: info.nf_cholesterol || 0,
     label: 'Cholesterol',
     header: true
   },
   {
-    value: info.nf_sodium,
+    value: info.nf_sodium || 0,
     label: 'Sodium',
     header: true
   },
   {
-    value: info.nf_total_carbohydrate,
+    value: info.nf_total_carbohydrate || 0,
     label: 'Carbohydrates',
     header: true
   },
   {
-    value: info.nf_dietary_fiber,
+    value: info.nf_dietary_fiber || 0,
     label: 'Fiber',
     header: false
   },
   {
-    value: info.nf_sugars,
+    value: info.nf_sugars || 0,
     label: 'Sugars',
     header: false
   },
   {
-    value: info.nf_protein,
+    value: info.nf_protein || 0,
     label: 'Protein',
     header: true
   },
   {
-    value: info.nf_vitamin_a_dv,
+    value: info.nf_vitamin_a_dv || 0,
     label: 'Vitamin A',
     header: true
   },
   {
-    value: info.nf_vitamin_c_dv,
+    value: info.nf_vitamin_c_dv || 0,
     label: 'Vitamin C',
     header: true
   },
   {
-    value: info.nf_iron_dv,
+    value: info.nf_iron_dv || 0,
     label: 'Iron',
     header: true
   },
   {
-    value: info.nf_potassium,
+    value: info.nf_potassium || 0,
     label: 'Potassium',
     header: true
   }
-])
+]
 
 export const getNutrition = food => {
   return async dispatch => {
