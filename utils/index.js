@@ -74,6 +74,8 @@ export const formatRecipe = recipe => {
     : [...recipe.usedIngredients, ...recipe.missedIngredients].map(
         ingredient => ingredient.original
       );
+  const apiId = recipe.apiId ? recipe.apiId : recipe.id;
+
   return {
     title: recipe.title,
     image: recipe.image,
@@ -81,6 +83,7 @@ export const formatRecipe = recipe => {
     servings: recipe.servings,
     instructions,
     ingredients,
+    apiId,
   };
 };
 
