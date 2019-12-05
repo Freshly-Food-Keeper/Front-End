@@ -15,6 +15,9 @@ import axios from 'axios'
 
 
 const ConfirmFoodScreen = props => {
+  const defaultExp = new Date()
+  defaultExp.setDate(defaultExp.getDate() + 7)
+
   const [name, setName] = React.useState(
     props.navigation.state.params.topFoods[0]
   );
@@ -25,7 +28,7 @@ const ConfirmFoodScreen = props => {
       : props.navigation.state.params.life
   );
   const [expDate, setExpDate] = React.useState(
-    life ? new Date(new Date().getTime() + life * 1000 * 3600 * 24) : new Date()
+    life ? new Date(new Date().getTime() + life * 1000 * 3600 * 24) : defaultExp
   );
 
   const foodOne = props.navigation.state.params.topFoods[0];
@@ -136,8 +139,9 @@ const ConfirmFoodScreen = props => {
                   setName(text);
                   setSelectedButtonIndex(3);
                 }}
-                // value=""
+                onFocus={() => setSelectedButtonIndex(3)}
                 placeholder="Other"
+                placeholderTextColor="white"
               />
             </View>
           </TouchableOpacity>
@@ -285,6 +289,7 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 15,
     margin: 10,
+    marginTop: 30,
     borderRadius: 5
   },
   submitButtonText: {

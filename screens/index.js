@@ -9,6 +9,7 @@ import RecipeScreen from './RecipeScreen';
 import SingleRecipeScreen from './SingleRecipeScreen';
 import AddScreen from './AddScreen';
 import ConfirmFoodScreen from './ConfirmFoodScreen';
+import AddFormScreen from './AddFormScreen';
 import LoadingScreen from './LoadingScreen';
 
 export {
@@ -23,5 +24,6 @@ export {
   SingleRecipeScreen,
   AddScreen,
   ConfirmFoodScreen,
+  AddFormScreen,
   LoadingScreen,
 };

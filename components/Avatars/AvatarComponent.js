@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { Badge, Avatar } from 'react-native-elements';
 
 export function AvatarComponent({ food, showBadge }) {
-  // console.log(showBadge)
   return (
     <View>
       <Avatar
