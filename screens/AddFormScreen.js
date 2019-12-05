@@ -12,9 +12,11 @@ import { addFood } from "../store/reducers/food";
 import DatePicker from "react-native-datepicker";
 
 const AddFormScreen = props => {
+  const defaultExp = new Date()
+  defaultExp.setDate(defaultExp.getDate() + 7)
   const [name, setName] = React.useState("");
   const [life, setLife] = React.useState(0);
-  const [expDate, setExpDate] = React.useState(new Date());
+  const [expDate, setExpDate] = React.useState(defaultExp);
   console.log("name: ", name, "life: ", life, "expiration date:", expDate);
 
 
