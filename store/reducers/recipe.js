@@ -75,7 +75,6 @@ export const addFavoriteRecipe = recipe => {
           },
         }
       );
-      console.log('data', data);
       dispatch(addedFavoriteRecipe(data));
     } catch (error) {
       console.error(error);
