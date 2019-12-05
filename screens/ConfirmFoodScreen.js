@@ -14,6 +14,7 @@ import DatePicker from 'react-native-datepicker'
 
 const ConfirmFoodScreen = props => {
   const defaultExp = new Date()
+  // Set State
   defaultExp.setDate(defaultExp.getDate() + 7)
 
   const [name, setName] = React.useState(

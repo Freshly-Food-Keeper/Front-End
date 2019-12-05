@@ -12,6 +12,7 @@ import DatePicker from 'react-native-datepicker'
 
 const AddFormScreen = props => {
   const defaultExp = new Date()
+  // Set State
   defaultExp.setDate(defaultExp.getDate() + 7)
   const [name, setName] = React.useState('')
   const [life, setLife] = React.useState(7)
