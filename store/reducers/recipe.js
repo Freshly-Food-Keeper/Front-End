@@ -86,7 +86,7 @@ export const deleteFavoriteRecipe = recipeId => {
   return async dispatch => {
     try {
       const userId = await AsyncStorage.getItem('userId');
-      await axios.delete(`${BACK_END_SERVER}/api/recipes/`, {
+      await axios.delete(`${BACK_END_SERVER}/api/recipe/`, {
         params: {
           userId,
           recipeId,

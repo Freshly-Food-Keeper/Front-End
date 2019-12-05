@@ -9,8 +9,9 @@ import { formatRecipe } from '../../utils';
 
 const RecipeCard = props => {
   const navigation = props.navigation;
+  // console.log('props/recipe', props.recipe[0]);
   const formattedRecipe = formatRecipe(props.recipe);
-
+  // console.log('formatted recipe', formattedRecipe);
   return (
     <Card
       containerStyle={{ padding: 0 }}
