@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
-import AddFoodForm from '../components/Forms/AddFoodForm';
+import { Text, View, Button, TouchableOpacity } from 'react-native';
+import AddFormScreen from './AddFormScreen';
 import Dialog from 'react-native-popup-dialog';
 import { connect } from 'react-redux';
-import { addFood } from '../store/reducers/food';
+import { addFood, updateFoodLife } from '../store/reducers/food';
 import { Avatar, ButtonGroup } from 'react-native-elements';
 import NutritionInfo from '../components/Food/NutritionInfo';
 import RecipeComponent from '../components/Recipes/RecipeComponent';
@@ -21,30 +21,9 @@ class SingleItemScreen extends React.Component {
     this.updateSelectedIndex = this.updateSelectedIndex.bind(this);
   }
 
-  componentDidMount() {
-    this.props.navigation.setParams({ handlePressEdit: this.handlePressEdit });
-  }
-
   updateSelectedIndex(index) {
     this.setState({ selectedIndex: index });
   }
-
-  handlePressEdit = () => {
-    this.setState({ editVisible: !this.state.editVisible });
-  };
-
-  static navigationOptions = props => {
-    return {
-      editVisible: false,
-      title: 'My Profile',
-      headerRight: (
-        <Button
-          title="Edit"
-          onPress={props.navigation.getParam('handlePressEdit')}
-        />
-      ),
-    };
-  };
 
   render() {
     const navigation = this.props.navigation;
@@ -57,20 +36,6 @@ class SingleItemScreen extends React.Component {
     const buttons = ['RECIPES', 'NUTRITION'];
     return (
       <View style={styles.flex}>
-        <View>
-          <Dialog
-            containerStyle={styles.dialogContainer}
-            visible={this.state.editVisible}
-            onTouchOutside={this.handlePressEdit}
-          >
-            <AddFoodForm
-              name={food.name}
-              expiresIn={food.expiresIn}
-              navigation={navigation}
-              addFood={this.props.addFood}
-            />
-          </Dialog>
-        </View>
         <View style={styles.avatarContainer}>
           <Avatar
             size="large"
@@ -106,8 +71,25 @@ class SingleItemScreen extends React.Component {
   }
 }
 
+SingleItemScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerRight: (
+      <Button
+      onPress={() => navigation.navigate('AddForm', {
+        isEdit: true,
+        name: navigation.getParam('name'),
+        expiresIn: navigation.getParam('expiresIn')
+      })}
+        title="Edit"
+        color="black"
+    />
+    )
+  }
+}
+
 const mapDispatchToProps = dispatch => ({
   addFood: food => dispatch(addFood(food)),
+  updateFoodLife: (foodId, shelfLife) => dispatch(updateFoodLife(foodId, shelfLife))
 });
 
 export default connect(null, mapDispatchToProps)(SingleItemScreen);

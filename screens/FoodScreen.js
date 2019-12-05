@@ -5,7 +5,7 @@ import {
   getAllInventory,
   addFood,
   deleteFood,
-  updateFood
+  updateFoodStatus
 } from '../store/reducers/food'
 import { getWastedPercentage } from '../store/reducers/dataVisuals'
 import Dialog, {
@@ -36,10 +36,10 @@ class FoodScreen extends React.Component {
   async handleStatusUpdate(food, selectedButton) {
     switch (selectedButton) {
       case 'Eaten':
-        await this.props.updateFood(food.id, selectedButton)
+        await this.props.updateFoodStatus(food.id, selectedButton)
         break
       case 'Thrown Away':
-        await this.props.updateFood(food.id, selectedButton)
+        await this.props.updateFoodStatus(food.id, selectedButton)
         break
       case 'Delete':
         this.props.deleteFood(food.id)
@@ -139,7 +139,7 @@ const mapDispatchToProps = dispatch => ({
   getInventory: () => dispatch(getAllInventory()),
   addFood: food => dispatch(addFood(food)),
   deleteFood: id => dispatch(deleteFood(id)),
-  updateFood: (id, status) => dispatch(updateFood(id, status)),
+  updateFoodStatus: (id, status) => dispatch(updateFoodStatus(id, status)),
   getWastedPercentage: () => dispatch(getWastedPercentage())
 })
 
