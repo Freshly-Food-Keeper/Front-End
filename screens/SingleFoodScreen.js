@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Button, TouchableOpacity } from 'react-native';
-import AddFormScreen from './AddFormScreen';
+import EditFormScreen from './EditFormScreen';
 import Dialog from 'react-native-popup-dialog';
 import { connect } from 'react-redux';
 import { addFood, updateFoodLife } from '../store/reducers/food';
@@ -75,10 +75,10 @@ SingleItemScreen.navigationOptions = ({ navigation }) => {
   return {
     headerRight: (
       <Button
-      onPress={() => navigation.navigate('AddForm', {
-        isEdit: true,
+      onPress={() => navigation.navigate('EditForm', {
         name: navigation.getParam('name'),
-        expiresIn: navigation.getParam('expiresIn')
+        expiresIn: navigation.getParam('expiresIn'),
+        foodId: navigation.getParam('id'),
       })}
         title="Edit"
         color="black"
@@ -88,7 +88,6 @@ SingleItemScreen.navigationOptions = ({ navigation }) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addFood: food => dispatch(addFood(food)),
   updateFoodLife: (foodId, shelfLife) => dispatch(updateFoodLife(foodId, shelfLife))
 });
 

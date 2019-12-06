@@ -11,6 +11,7 @@ import AddScreen from './AddScreen';
 import ConfirmFoodScreen from './ConfirmFoodScreen';
 import AddFormScreen from './AddFormScreen';
 import LoadingScreen from './LoadingScreen';
+import EditFormScreen from './EditFormScreen'
 
 export {
   FoodScreen,
@@ -26,4 +27,5 @@ export {
   ConfirmFoodScreen,
   AddFormScreen,
   LoadingScreen,
+  EditFormScreen,
 };
