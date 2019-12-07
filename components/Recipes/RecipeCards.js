@@ -5,7 +5,6 @@ import { styles } from '../../styles';
 
 const RecipeCards = props => {
   const recipes = props.recipes;
-  console.log('RECIPE CARDS:', recipes);
   const navigation = props.navigation;
   const addFavoriteRecipe = props.addFavoriteRecipe;
   return (

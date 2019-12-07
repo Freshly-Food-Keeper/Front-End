@@ -85,12 +85,13 @@ export const styles = StyleSheet.create({
   },
   cardButton: {
     borderRadius: 5,
-    margin: 5,
-    width: '75%',
+    marginBottom: 5,
+    width: '65%',
     backgroundColor: 'white',
     borderWidth: 1.5,
     borderColor: 'black',
     justifyContent: 'center',
+    alignSelf: 'center',
   },
   formContainer: {
     flex: 1,

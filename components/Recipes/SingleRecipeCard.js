@@ -11,23 +11,15 @@ import {
 } from '../../store';
 
 class SingleRecipeCard extends React.Component {
-  componentDidMount() {
-    const recipes = this.props.recipes;
-    const recipe = this.props.recipe;
-    console.log('SINGLE RECIPE CARD - Recipes', recipes);
-    console.log('SINGLE RECIPE CARD - Recipes', recipe);
-    this.props.getFavorites();
+  async componentDidMount() {
+    await this.props.getFavorites();
   }
 
-  // console.log('props', props);
   render() {
     const favoriteRecipes = this.props.favoriteRecipes;
     const recipe = this.props.recipe;
-    // console.log('favoriterecipes', favoriteRecipes);
-    const isFavorite = favoriteRecipes.filter(
-      rec => recipe.apiId === rec.apiId
-    );
-    // console.log('isFav', isFavorite);
+    const favoriteRecipesIds = favoriteRecipes.map(rec => rec.apiId);
+    const isFavorite = favoriteRecipesIds.includes(recipe.apiId);
     return (
       <View>
         <Card
@@ -47,8 +39,7 @@ class SingleRecipeCard extends React.Component {
                 name={Platform.OS === 'ios' ? 'ios-heart' : 'md-heart'}
                 size={30}
                 onPress={() => {
-                  // console.log(recipe.id);
-                  this.props.deleteFavRecipe(recipe.id);
+                  this.props.deleteFavRecipe(recipe.apiId);
                 }}
               />
             ) : (
@@ -58,7 +49,7 @@ class SingleRecipeCard extends React.Component {
                 }
                 size={30}
                 onPress={() => {
-                  this.props.addFavoriteRecipe(recipe);
+                  this.props.addFavRecipe(recipe);
                 }}
               />
             )}
@@ -92,11 +83,9 @@ class SingleRecipeCard extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state);
   return {
     recipes: state.recipe.recipes,
     favoriteRecipes: state.recipe.favoriteRecipes,
-    selectedRecipe: state.recipe.selectedRecipe,
   };
 };
 

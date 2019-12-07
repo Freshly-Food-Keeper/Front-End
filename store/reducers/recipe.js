@@ -27,9 +27,9 @@ const addedFavoriteRecipe = recipe => ({
   recipe,
 });
 
-const deletedFavoriteRecipe = recipeId => ({
+const deletedFavoriteRecipe = apiId => ({
   type: DELETED_FAVORITE_RECIPE,
-  recipeId,
+  apiId,
 });
 
 export const getRecipesWithIngredient = ingredient => {
@@ -49,14 +49,13 @@ export const getRecipesWithIngredient = ingredient => {
         ].map(ingred => ingred.original);
 
         return {
-          id: _recipe.id,
           title: _recipe.title,
           image: _recipe.image,
           readyInMinutes: _recipe.readyInMinutes,
           servings: _recipe.servings,
           instructions,
           ingredients,
-          apiId: _recipe.apiId,
+          apiId: _recipe.id,
         };
       });
       dispatch(gotRecipesWithIngredient(recipes));
@@ -102,17 +101,17 @@ export const addFavoriteRecipe = recipe => {
   };
 };
 
-export const deleteFavoriteRecipe = recipeId => {
+export const deleteFavoriteRecipe = apiId => {
   return async dispatch => {
     try {
       const userId = await AsyncStorage.getItem('userId');
       await axios.delete(`${BACK_END_SERVER}/api/recipe/`, {
         params: {
           userId,
-          recipeId,
+          apiId,
         },
       });
-      dispatch(deletedFavoriteRecipe(recipeId));
+      dispatch(deletedFavoriteRecipe(apiId));
     } catch (error) {
       console.error(error);
     }
@@ -132,8 +131,8 @@ export default function(state = initialState, action) {
       };
     }
     case DELETED_FAVORITE_RECIPE: {
-      const favoriteRecipes = [state.favoriteRecipes].filter(
-        recipe => action.recipeId !== recipe.id
+      const favoriteRecipes = [...state.favoriteRecipes].filter(
+        recipe => action.apiId !== recipe.apiId
       );
       return { ...state, favoriteRecipes };
     }
