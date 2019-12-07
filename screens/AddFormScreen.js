@@ -12,7 +12,7 @@ const AddFormScreen = props => {
     props.navigation.state.params.name || ''
   );
   const [life, setLife] = React.useState(
-    props.navigation.state.params.expiresIn || 0
+    props.navigation.state.params.expiresIn || 7
   );
   const [expDate, setExpDate] = React.useState(defaultExp);
   const [isEdit] = React.useState(
