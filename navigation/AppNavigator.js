@@ -18,10 +18,9 @@ import {
   AddScreen,
   ConfirmFoodScreen,
   LoadingScreen,
-  AddFormScreen
+  AddFormScreen,
 } from '../screens';
 import TabBarIcon from './TabBarIcon';
-import AddButton from '../components/Buttons/AddButton';
 import RecipeScreen from '../screens/RecipeScreen';
 
 const AuthStack = createStackNavigator({
@@ -67,12 +66,11 @@ FoodStack.navigationOptions = {
 const AddStack = createStackNavigator({
   Add: AddScreen,
   ConfirmFood: ConfirmFoodScreen,
-  AddForm: AddFormScreen
+  AddForm: AddFormScreen,
 });
 
-
 AddStack.navigationOptions = {
-  tabBarLabel: 'Add',
+  tabBarLabel: 'Add Food',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -87,7 +85,7 @@ const RecipeStack = createStackNavigator({
 });
 
 RecipeStack.navigationOptions = {
-  tabBarLabel: 'Favorites',
+  tabBarLabel: 'Recipes',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -114,21 +112,14 @@ const LoadingStack = createStackNavigator({
   LoadingStack: LoadingScreen,
 });
 
-const TabNavigator = createBottomTabNavigator(
-  {
-    UserHomeStack,
-    FoodStack,
-    AddStack,
-    // Add: {
-    //   screen: () => null,
-    //   navigationOptions: {
-    //     tabBarIcon: props => <AddButton {...props}/>,
-    //   },
-    // },
-    RecipeStack,
-    SettingsStack,
-  }
-);
+const TabNavigator = createBottomTabNavigator({
+  UserHomeStack,
+  FoodStack,
+  AddStack,
+
+  RecipeStack,
+  SettingsStack,
+});
 
 const App = createAppContainer(
   createSwitchNavigator(

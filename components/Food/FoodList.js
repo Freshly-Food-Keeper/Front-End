@@ -3,14 +3,15 @@ import { ScrollView } from 'react-native';
 import { titleCase } from '../../utils';
 import { styles } from '../../styles';
 import SingleFood from './SingleFood';
+import LoadingScreen from '../../screens/LoadingScreen';
 
 const FoodList = props => {
   const { foods, visible, navigation, onLongPress } = props;
 
-  return (
+  return foods ? (
     <ScrollView style={styles.flex}>
       {props.renderStatusDialog()}
-      {foods.map((food, index) => {
+      {foods.map((food, i) => {
         // Creating a new object here so that the calculations we do can also easily be sent to the Single Food View
         const singleFood = {
           id: food.id,
@@ -20,15 +21,17 @@ const FoodList = props => {
         };
         return (
           <SingleFood
-            key={index}
+            key={i}
             singleFood={singleFood}
             visible={visible}
             navigation={navigation}
             onLongPress={onLongPress}
           />
-        )
+        );
       })}
     </ScrollView>
+  ) : (
+    <LoadingScreen />
   );
 };
 export default FoodList;

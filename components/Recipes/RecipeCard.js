@@ -9,6 +9,7 @@ import {
   getFavoriteRecipes,
   deleteFavoriteRecipe,
 } from '../../store';
+import LoadingScreen from '../../screens/LoadingScreen';
 
 class RecipeCard extends React.Component {
   componentDidMount() {
@@ -21,7 +22,7 @@ class RecipeCard extends React.Component {
     const favoriteRecipesIds = favoriteRecipes.map(rec => rec.apiId);
     const isFavorite = favoriteRecipesIds.includes(recipe.apiId);
 
-    return (
+    return recipe ? (
       <Card
         containerStyle={{ padding: 0 }}
         friction={90}
@@ -74,6 +75,8 @@ class RecipeCard extends React.Component {
           />
         </View>
       </Card>
+    ) : (
+      <LoadingScreen />
     );
   }
 }
