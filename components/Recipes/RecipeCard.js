@@ -5,23 +5,22 @@ import { styles } from '../../styles';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { addFavoriteRecipe } from '../../store';
-import { formatRecipe } from '../../utils';
 
 const RecipeCard = props => {
   const navigation = props.navigation;
-  // console.log('props/recipe', props.recipe[0]);
-  const formattedRecipe = formatRecipe(props.recipe);
-  // console.log('formatted recipe', formattedRecipe);
+  const recipe = props.recipe;
+  console.log('RECIPE CARD:', recipe);
+
   return (
     <Card
       containerStyle={{ padding: 0 }}
       friction={90}
       tension={100}
       activeScale={0.95}
-      title={formattedRecipe.title}
+      title={recipe.title}
       titleStyle={styles.cardTitle}
       chevron={{ color: '#262626' }}
-      image={{ uri: formattedRecipe.image }}
+      image={{ uri: recipe.image }}
       imageStyle={styles.cardImage}
     >
       <View style={styles.row}>
@@ -30,13 +29,13 @@ const RecipeCard = props => {
           title="View Recipe"
           titleStyle={styles.buttonTitle}
           onPress={() =>
-            navigation.navigate('SingleRecipe', { recipe: { formattedRecipe } })
+            navigation.navigate('SingleRecipe', { recipe: { recipe } })
           }
         />
         <Ionicons
           name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'}
           size={30}
-          onPress={() => props.addFavRecipe(formattedRecipe)}
+          onPress={() => props.addFavRecipe(recipe)}
           style={styles.icon}
         />
       </View>
@@ -44,7 +43,7 @@ const RecipeCard = props => {
   );
 };
 const mapStateToProps = state => ({
-  recipes: state.recipe.recipes.results,
+  recipes: state.recipe.recipes,
   favoriteRecipes: state.recipe.favoriteRecipes,
 });
 

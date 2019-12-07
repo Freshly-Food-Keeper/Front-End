@@ -39,7 +39,27 @@ export const getRecipesWithIngredient = ingredient => {
         `https://api.spoonacular.com/recipes/complexSearch?query=${ingredient}&includeIngredients=${ingredient}&instructionsRequired=true&addRecipeInformation=true&fillIngredients=true&limitLicense=true&number=5&apiKey=${SPOONACULAR_API_KEY}`
       );
 
-      dispatch(gotRecipesWithIngredient(data));
+      const recipes = data.results.map(_recipe => {
+        const instructions = _recipe.analyzedInstructions[0].steps.map(
+          instruction => instruction.step
+        );
+        const ingredients = [
+          ..._recipe.usedIngredients,
+          ..._recipe.missedIngredients,
+        ].map(ingred => ingred.original);
+
+        return {
+          id: _recipe.id,
+          title: _recipe.title,
+          image: _recipe.image,
+          readyInMinutes: _recipe.readyInMinutes,
+          servings: _recipe.servings,
+          instructions,
+          ingredients,
+          apiId: _recipe.apiId,
+        };
+      });
+      dispatch(gotRecipesWithIngredient(recipes));
     } catch (error) {
       console.error(error);
     }

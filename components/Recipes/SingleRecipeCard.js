@@ -12,14 +12,17 @@ import {
 
 class SingleRecipeCard extends React.Component {
   componentDidMount() {
+    const recipes = this.props.recipes;
+    const recipe = this.props.recipe;
+    console.log('SINGLE RECIPE CARD - Recipes', recipes);
+    console.log('SINGLE RECIPE CARD - Recipes', recipe);
     this.props.getFavorites();
   }
 
   // console.log('props', props);
   render() {
-    const recipe = this.props.recipe;
     const favoriteRecipes = this.props.favoriteRecipes;
-
+    const recipe = this.props.recipe;
     // console.log('favoriterecipes', favoriteRecipes);
     const isFavorite = favoriteRecipes.filter(
       rec => recipe.apiId === rec.apiId
@@ -55,7 +58,6 @@ class SingleRecipeCard extends React.Component {
                 }
                 size={30}
                 onPress={() => {
-                  console.log('adding recipe!');
                   this.props.addFavoriteRecipe(recipe);
                 }}
               />
@@ -92,8 +94,9 @@ class SingleRecipeCard extends React.Component {
 const mapStateToProps = state => {
   // console.log(state);
   return {
-    recipes: state.recipe.recipes.results,
+    recipes: state.recipe.recipes,
     favoriteRecipes: state.recipe.favoriteRecipes,
+    selectedRecipe: state.recipe.selectedRecipe,
   };
 };
 

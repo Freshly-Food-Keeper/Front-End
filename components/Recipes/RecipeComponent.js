@@ -11,8 +11,9 @@ class RecipeComponent extends React.Component {
     await this.props.getRecipes(food.name);
   }
   render() {
-    const recipes = this.props.allRecipes.results;
+    const recipes = this.props.allRecipes;
     const navigation = this.props.navigation;
+    console.log('RECIPE COMPONENT:', recipes);
     return recipes ? (
       <ScrollView contentInset={{ top: 0, left: 0, bottom: 225, right: 0 }}>
         <RecipeCards recipes={recipes} navigation={navigation} />

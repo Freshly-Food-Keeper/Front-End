@@ -1,11 +1,9 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-
 import SingleRecipeCard from '../components/Recipes/SingleRecipeCard';
 const SingleRecipeScreen = props => {
-  console.log('HI');
-  const recipe = props.navigation.getParam('recipe').formattedRecipe;
-  console.log('single recipe card', recipe);
+  const recipe = props.navigation.getParam('recipe').recipe;
+  console.log('SINGLE RECIPE SCREEN', recipe);
 
   return (
     <View style={styles.container}>

@@ -65,30 +65,6 @@ export const sortFoodsByExpirationDate = foods => {
 export const sortFoodsAlphabetically = foods =>
   foods.sort((a, b) => (a.name > b.name ? 1 : -1));
 
-export const formatRecipe = recipe => {
-  const instructions = recipe.instructions
-    ? recipe.instructions
-    : recipe.analyzedInstructions[0].steps.map(instruction => instruction.step);
-
-  const ingredients = recipe.ingredients
-    ? recipe.ingredients
-    : [...recipe.usedIngredients, ...recipe.missedIngredients].map(
-        ingredient => ingredient.original
-      );
-  const apiId = recipe.apiId ? recipe.apiId : recipe.id;
-
-  return {
-    id: recipe.id,
-    title: recipe.title,
-    image: recipe.image,
-    readyInMinutes: recipe.readyInMinutes,
-    servings: recipe.servings,
-    instructions,
-    ingredients,
-    apiId,
-  };
-};
-
 // If a user has no food to display, show them a friendly message!
 export function NoFoodComponent() {
   return (
