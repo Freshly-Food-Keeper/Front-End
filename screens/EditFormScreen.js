@@ -5,19 +5,22 @@ import { connect } from 'react-redux';
 import { addFood, updateFoodLife } from '../store/reducers/food';
 import DatePicker from 'react-native-datepicker';
 
-const AddFormScreen = props => {
+const EditFormScreen = props => {
   const defaultExp = new Date();
   defaultExp.setDate(defaultExp.getDate() + 7);
-  const [name, setName] = React.useState('');
-  const [life, setLife] = React.useState(7);
+  const [name, setName] = React.useState(props.navigation.state.params.name);
+  const [foodId] = React.useState(props.navigation.state.params.foodId);
+  const [life, setLife] = React.useState(
+    props.navigation.state.params.expiresIn || 7
+  );
   const [expDate, setExpDate] = React.useState(defaultExp);
-  const [nameError, setNameError] = React.useState(true);
+  const [nameError, setNameError] = React.useState(false);
 
   return (
     <View style={styles.view}>
       <View style={styles.form}>
         <View style={styles.labelContainer}>
-            <Text style={styles.label}>Add a food:</Text>
+          <Text style={styles.label}>Edit food:</Text>
         </View>
         <View style={styles.input}>
           <TouchableOpacity style={styles.selectedButton}>
@@ -27,7 +30,7 @@ const AddFormScreen = props => {
                   setName(text);
                   setNameError(!text);
                 }}
-                placeholder={'Food'}
+                defaultValue={`${name}`}
               />
             </View>
             {nameError && (
@@ -86,7 +89,7 @@ const AddFormScreen = props => {
             onPress={() => {
               props.navigation.popToTop();
               props.navigation.navigate('Food');
-              props.addFood(name, life);
+              props.updateFoodLife(foodId, life, name)
             }}
           >
             <Text style={styles.submitButtonText}>SUBMIT</Text>
@@ -97,9 +100,9 @@ const AddFormScreen = props => {
   );
 };
 
-AddFormScreen.navigationOptions = () => {
+EditFormScreen.navigationOptions = () => {
   return {
-    headerTitle: 'Add a food',
+    headerTitle: 'Edit a food',
     headerStyle: {
       backgroundColor: '#035640',
     },
@@ -111,10 +114,11 @@ AddFormScreen.navigationOptions = () => {
 };
 
 const mapDispatch = dispatch => ({
-  addFood: (food, shelfLife) => dispatch(addFood(food, shelfLife)),
+  updateFoodLife: (foodId, shelfLife, name) =>
+    dispatch(updateFoodLife(foodId, shelfLife, name)),
 });
 
-export default connect(null, mapDispatch)(AddFormScreen);
+export default connect(null, mapDispatch)(EditFormScreen);
 
 const styles = StyleSheet.create({
   view: {

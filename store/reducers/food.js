@@ -104,16 +104,34 @@ export const updateFoodStatus = (foodId, status) => {
   };
 };
 
-export const updateFoodLife = (foodId, shelfLife) => {
+export const updateFoodLife = (foodId, shelfLife, food) => {
+  console.log(food)
   return async dispatch => {
     try {
+      const imageUrl = await getImage(food)
       const userId = await AsyncStorage.getItem('userId');
-      await axios.put(`${BACK_END_SERVER}/api/food/`, {
+      const foodObj = {
         userId,
         foodId,
-        shelfLife,
-      });
+        imageUrl,
+        food,
+        shelfLife
+      };
+
+      const { data } = await axios.post(`${BACK_END_SERVER}/api/food/updateFood`, foodObj);
+      console.log("DATA", data)
+      const newObj = {
+        userId,
+        expiresIn: shelfLife,
+        foodId: data[0].foodId,
+        imageUrl: imageUrl,
+        name: food,
+      };
+      console.log("newObj", newObj)
+      // await axios.put(`${BACK_END_SERVER}/api/food/`, newObj);
+
       dispatch(getAllInventory());
+
     } catch (error) {
       console.error(error);
     }
