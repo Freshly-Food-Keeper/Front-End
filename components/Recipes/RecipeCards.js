@@ -2,12 +2,13 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import RecipeCard from './RecipeCard';
 import { styles } from '../../styles';
+import LoadingScreen from '../../screens/LoadingScreen';
 
 const RecipeCards = props => {
   const recipes = props.recipes;
   const navigation = props.navigation;
   const addFavoriteRecipe = props.addFavoriteRecipe;
-  return (
+  return recipes ? (
     <ScrollView style={styles.flex}>
       {recipes.map((recipe, i) => {
         return (
@@ -20,6 +21,8 @@ const RecipeCards = props => {
         );
       })}
     </ScrollView>
+  ) : (
+    <LoadingScreen />
   );
 };
 export default RecipeCards;

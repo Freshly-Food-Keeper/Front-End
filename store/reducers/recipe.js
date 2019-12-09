@@ -27,9 +27,9 @@ const addedFavoriteRecipe = recipe => ({
   recipe,
 });
 
-const deletedFavoriteRecipe = recipeId => ({
+const deletedFavoriteRecipe = apiId => ({
   type: DELETED_FAVORITE_RECIPE,
-  recipeId,
+  apiId,
 });
 
 export const getRecipesWithIngredient = ingredient => {
@@ -39,7 +39,26 @@ export const getRecipesWithIngredient = ingredient => {
         `https://api.spoonacular.com/recipes/complexSearch?query=${ingredient}&includeIngredients=${ingredient}&instructionsRequired=true&addRecipeInformation=true&fillIngredients=true&limitLicense=true&number=5&apiKey=${SPOONACULAR_API_KEY}`
       );
 
-      dispatch(gotRecipesWithIngredient(data));
+      const recipes = data.results.map(_recipe => {
+        const instructions = _recipe.analyzedInstructions[0].steps.map(
+          instruction => instruction.step
+        );
+        const ingredients = [
+          ..._recipe.usedIngredients,
+          ..._recipe.missedIngredients,
+        ].map(ingred => ingred.original);
+
+        return {
+          title: _recipe.title,
+          image: _recipe.image,
+          readyInMinutes: _recipe.readyInMinutes,
+          servings: _recipe.servings,
+          instructions,
+          ingredients,
+          apiId: _recipe.id,
+        };
+      });
+      dispatch(gotRecipesWithIngredient(recipes));
     } catch (error) {
       console.error(error);
     }
@@ -82,17 +101,17 @@ export const addFavoriteRecipe = recipe => {
   };
 };
 
-export const deleteFavoriteRecipe = recipeId => {
+export const deleteFavoriteRecipe = apiId => {
   return async dispatch => {
     try {
       const userId = await AsyncStorage.getItem('userId');
-      await axios.delete(`${BACK_END_SERVER}/api/recipes/`, {
+      await axios.delete(`${BACK_END_SERVER}/api/recipe/`, {
         params: {
           userId,
-          recipeId,
+          apiId,
         },
       });
-      dispatch(deletedFavoriteRecipe(recipeId));
+      dispatch(deletedFavoriteRecipe(apiId));
     } catch (error) {
       console.error(error);
     }
@@ -112,8 +131,8 @@ export default function(state = initialState, action) {
       };
     }
     case DELETED_FAVORITE_RECIPE: {
-      const favoriteRecipes = [state.favoriteRecipes].filter(
-        recipe => action.recipeId !== recipe.id
+      const favoriteRecipes = [...state.favoriteRecipes].filter(
+        recipe => action.apiId !== recipe.apiId
       );
       return { ...state, favoriteRecipes };
     }
