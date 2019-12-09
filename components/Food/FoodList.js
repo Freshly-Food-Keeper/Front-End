@@ -18,6 +18,7 @@ const FoodList = props => {
           expiresIn: food.expiresIn,
           imageUrl: food.imageUrl,
         };
+        console.log(food.expiresIn)
         return (
           <SingleFood
             key={index}
