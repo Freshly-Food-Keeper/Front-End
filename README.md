@@ -19,3 +19,6 @@ We designed the freshly mobile app to help consumers reduce this waste. Freshly 
 To build Freshly, we choose to use React Native and Expo for our frontend because we wanted to create a modular mobile app that would run on both IOS and Android. We also used Redux to manage state throughout the app and React-Native Elements for styling.
 On our backend, Freshly runs on an Express server, built in a Node environment. We chose Sequelize to interact with our PostgreSQL database so that we could relationally store information about expiration dates, our users, the foods they've added, the recipes they've favorited, and data about the amount of food they've saved vs wasted.
 To identify images of food so that users could easily add foods to their account, we chose the Google Cloud Vision API. We also integrated with the Spoonacular API to get recipes for each food and the Nutrionix API to get nutrition information.
+
+## Try It Out
+https://expo.io/@emmamunley/freshly
